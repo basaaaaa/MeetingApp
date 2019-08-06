@@ -1,7 +1,7 @@
-﻿using Prism;
-using Prism.Ioc;
 using MeetingApp.ViewModels;
 using MeetingApp.Views;
+using Prism;
+using Prism.Ioc;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,6 +10,7 @@ namespace MeetingApp
 {
     public partial class App
     {
+
         /* 
          * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
          * This imposes a limitation in which the App class must have a default constructor. 
@@ -30,6 +31,8 @@ namespace MeetingApp
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<MeetingDataTopPage, MeetingDataTopPageViewModel>();
+            containerRegistry.RegisterForNavigation<MeetingDataTopPage, MeetingDataTopPageViewModel>();
         }
     }
 }
