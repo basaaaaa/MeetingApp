@@ -3,6 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="MeetingApp.Views.MeetingDataTopPage">
-  
+             x:Class="MeetingApp.Views.MeetingDataTopPage"
+             Title="Meeting List">
+
+    <StackLayout Margin="0,20,0,0">
+        <Frame CornerRadius="10" Margin="20,0,20,0" Opacity="0.7" BackgroundColor="Azure">
+            <StackLayout>
+                <Label Text="{Binding MeetingTitle}" FontSize="30" />
+                <Grid Margin="0,35,20,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*" />
+                        <ColumnDefinition Width="0.7*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <Label Text="Date" />
+                    <Label Grid.Column="1" Text="{Binding ScheduledDate}" />
+                    <Label Grid.Row="1" Text="Time"/>
+                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding ScheduledTime}"/>
+                    <Label Grid.Row="2" Text="Location"/>
+                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding Location}"/>
+                </Grid>
+                <Grid Margin="20,0,20,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="0.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Text="Attend"/>
+                    <Button Grid.Column="1" Text="Delete"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
+
+    </StackLayout>
+
 </ContentPage>
+                        
