@@ -1,5 +1,7 @@
+using MeetingApp.Constants;
 using MeetingApp.Data;
 using Prism.Navigation;
+using System;
 using System.Collections.Generic;
 
 namespace MeetingApp.ViewModels
@@ -45,6 +47,7 @@ namespace MeetingApp.ViewModels
 
 
         RestService _restService;
+        MeetingConstants _meetingConstants;
 
 
         public MeetingDataTopPageViewModel(INavigationService navigationService) : base(navigationService)
@@ -61,13 +64,22 @@ namespace MeetingApp.ViewModels
 
             base.OnNavigatingTo(parameters);
 
+            //âÔãcèÓïÒëSåèéÊìæAPIÇÃÉRÅ[Éã
+            string uri = "api/meetings";
+            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint + uri);
 
-            var meetingData = await _restService.GetMeetingDataAsync("https://meeting-app-api.azurewebsites.net/api/meetings/2");
 
-            MeetingTitle = meetingData.Title;
-            ScheduledDate = meetingData.ScheduledDate.ToShortDateString();
-            ScheduledTime = meetingData.ScheduledDate.ToShortTimeString();
-            Location = meetingData.Location;
+
+            //MeetingTitle = meetingData.Title;
+            //ScheduledDate = meetingData.ScheduledDate.ToShortDateString();
+            //ScheduledTime = meetingData.ScheduledDate.ToShortTimeString();
+            //Location = meetingData.Location;
+
+            foreach (MeetingData meeting in Meetings)
+            {
+                Console.WriteLine(meeting.Title);
+
+            }
         }
 
 

@@ -40,5 +40,28 @@ namespace MeetingApp
             return meetingData;
         }
 
+        //‰ï‹cî•ñ‚ğ‘SŒæ“¾‚·‚éAPIƒR[ƒ‹
+        public async Task<List<MeetingData>> GetMeetingsDataAsync(string uri)
+        {
+            List<MeetingData> meetingDatas = new List<MeetingData>();
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(content);
+                    meetingDatas = JsonConvert.DeserializeObject<List<MeetingData>>(content);
+                    Console.WriteLine(meetingDatas);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+
+            return meetingDatas;
+        }
+
     }
 }
