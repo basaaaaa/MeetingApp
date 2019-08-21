@@ -1,7 +1,6 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
 using Prism.Navigation;
-using System;
 using System.Collections.Generic;
 
 namespace MeetingApp.ViewModels
@@ -65,23 +64,12 @@ namespace MeetingApp.ViewModels
             base.OnNavigatingTo(parameters);
 
             //‰ï‹cî•ñ‘SŒæ“¾API‚ÌƒR[ƒ‹
-            string uri = "api/meetings";
-            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint + uri);
+            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint);
 
 
-
-            //MeetingTitle = meetingData.Title;
-            //ScheduledDate = meetingData.ScheduledDate.ToShortDateString();
-            //ScheduledTime = meetingData.ScheduledDate.ToShortTimeString();
-            //Location = meetingData.Location;
-
-            foreach (MeetingData meeting in Meetings)
-            {
-                Console.WriteLine(meeting.Title);
-
-            }
         }
-
-
     }
+
+
 }
+

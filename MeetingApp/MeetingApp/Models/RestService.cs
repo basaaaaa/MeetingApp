@@ -1,9 +1,11 @@
 using MeetingApp.Data;
+using MeetingApp.Models.Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MeetingApp
@@ -61,6 +63,29 @@ namespace MeetingApp
             }
 
             return meetingDatas;
+        }
+
+        //ユーザー情報を新規登録するAPIのコール
+        public async void SignUpUserDataAsync(string uri, string userId, string password)
+        {
+            var user = new UserData(4, userId, password);
+            var json = JsonConvert.SerializeObject(user);
+
+            try
+            {
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _client.PostAsync(uri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+
         }
 
     }
