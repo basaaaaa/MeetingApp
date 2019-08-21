@@ -66,9 +66,9 @@ namespace MeetingApp
         }
 
         //ユーザー情報を新規登録するAPIのコール
-        public async void SignUpUserDataAsync(string uri, string userId, string password)
+        public async Task<bool> SignUpUserDataAsync(string uri, string userId, string password)
         {
-            var user = new UserData(4, userId, password);
+            var user = new UserData(userId, password);
             var json = JsonConvert.SerializeObject(user);
 
             try
@@ -79,12 +79,15 @@ namespace MeetingApp
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(responseContent);
+                    return response.IsSuccessStatusCode;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("\tERROR {0}", ex.Message);
             }
+            return false;
+
 
         }
 

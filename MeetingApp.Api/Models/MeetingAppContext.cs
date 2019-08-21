@@ -64,9 +64,7 @@ namespace MeetingApp.Api.Models
             {
                 entity.ToTable("user");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
