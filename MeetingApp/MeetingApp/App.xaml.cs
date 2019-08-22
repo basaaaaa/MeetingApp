@@ -24,7 +24,7 @@ namespace MeetingApp
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/SignUpPage");
+            await NavigationService.NavigateAsync("NavigationPage/LoginPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -32,8 +32,8 @@ namespace MeetingApp
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<MeetingDataTopPage, MeetingDataTopPageViewModel>();
-            containerRegistry.RegisterForNavigation<MeetingDataTopPage, MeetingDataTopPageViewModel>();
             containerRegistry.RegisterForNavigation<SignUpPage, SignUpPageViewModel>();
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
         }
     }
 }

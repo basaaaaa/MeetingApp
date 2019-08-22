@@ -5,15 +5,16 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MeetingApp.Views.SignUpPage"
              Title="SignUp">
-
-    <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Azure" HorizontalOptions="Center" VerticalOptions="Center">
-        <StackLayout>
-            <Label Text="User Registration"  HorizontalOptions="Center" FontSize="30"/>
-            <Entry Placeholder="Enter your userId" Text="{Binding SignUpUserId}" />
-            <Entry Placeholder="Enter your password" Text="{Binding SignUpPassword}"/>
-            <Button Text="POST" Command="{Binding SignUpCommand}" />
-            <Label IsVisible="{Binding SignUpFlag}" Text="Post Successed" TextColor="Red" HorizontalOptions="Center"/>
-        </StackLayout>
-    </Frame>
+    <StackLayout>
+        <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Azure" HorizontalOptions="Center" VerticalOptions="Center">
+            <StackLayout>
+                <Label Text="User Registration"  HorizontalOptions="Center" FontSize="30"/>
+                <Entry Placeholder="Enter your userId" Text="{Binding SignUpUserId}" />
+                <Entry Placeholder="Enter your password" Text="{Binding SignUpPassword}"/>
+                <Button Text="POST" Command="{Binding SignUpCommand}" />
+                <Label IsVisible="{Binding SignUpFlag}" Text="Post Successed" TextColor="Red" HorizontalOptions="Center"/>
+            </StackLayout>
+        </Frame>
+    </StackLayout>
 
 </ContentPage>
