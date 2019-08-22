@@ -13,7 +13,7 @@ namespace MeetingApp.ViewModels
             _navigationService = navigationService;
             NavigationSignUpPageCommand = new DelegateCommand(() =>
            {
-               _navigationService.NavigateAsync("SignUpPage", useModalNavigation: true);
+               _navigationService.NavigateAsync("SignUpPage");
            });
         }
 

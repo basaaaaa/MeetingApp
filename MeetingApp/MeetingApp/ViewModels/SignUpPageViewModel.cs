@@ -30,16 +30,28 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _signUpFlag, value); }
         }
         public ICommand SignUpCommand { get; }
+        public ICommand GoBackCommand { get; }
         RestService _restService;
+        INavigationService _navigationService;
 
         public SignUpPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _restService = new RestService();
+            _navigationService = navigationService;
 
             SignUpCommand = new DelegateCommand(async () =>
             {
                 SignUpFlag = await _restService.SignUpUserDataAsync(UserConstants.OpenUserEndPoint, SignUpUserId, SignUpPassword);
+                if (SignUpFlag == true)
+                {
+                    await _navigationService.NavigateAsync("LoginPage");
+                }
 
+            });
+
+            GoBackCommand = new DelegateCommand(async () =>
+            {
+                _ = await _navigationService.GoBackAsync();
             });
         }
 

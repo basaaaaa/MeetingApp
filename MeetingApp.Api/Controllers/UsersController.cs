@@ -1,4 +1,5 @@
 using MeetingApp.Api.Models;
+using MeetingApp.Api.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace MeetingApp.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly MeetingAppContext _context;
+        Hash _hash;
 
         public UsersController(MeetingAppContext context)
         {
@@ -88,6 +90,11 @@ namespace MeetingApp.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            string userPassword = user.Password;
+
+            _hash = new Hash();
+            user.Password = _hash.encrypt(userPassword);
 
             _context.User.Add(user);
             try
