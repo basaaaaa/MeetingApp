@@ -3,6 +3,7 @@ using MeetingApp.Api.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +24,13 @@ namespace MeetingApp.Api.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<User> GetUser([FromQuery]string userId)
         {
-            return _context.User;
+            if (userId == null) { return _context.User; }
+
+            var user = _context.User.Where(u => u.UserId == userId).FirstOrDefault();
+            return new User[] { user };
+
         }
 
         // GET: api/Users/5
@@ -37,6 +42,9 @@ namespace MeetingApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            string query = Request.QueryString.ToString();
+            Console.WriteLine(query);
+
             var user = await _context.User.FindAsync(id);
 
             if (user == null)
@@ -46,6 +54,9 @@ namespace MeetingApp.Api.Controllers
 
             return Ok(user);
         }
+
+
+
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
