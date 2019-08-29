@@ -3,7 +3,6 @@ using MeetingApp.Api.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +15,8 @@ namespace MeetingApp.Api.Controllers
     {
         private readonly MeetingAppContext _context;
         Hash _hash;
+        LoginService _loginService = new LoginService();
+
 
         public UsersController(MeetingAppContext context)
         {
@@ -42,8 +43,6 @@ namespace MeetingApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            string query = Request.QueryString.ToString();
-            Console.WriteLine(query);
 
             var user = await _context.User.FindAsync(id);
 
@@ -102,8 +101,8 @@ namespace MeetingApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            //Bodyに入力されたPasswordをハッシュ化
             string userPassword = user.Password;
-
             _hash = new Hash();
             user.Password = _hash.encrypt(userPassword);
 
@@ -124,7 +123,45 @@ namespace MeetingApp.Api.Controllers
                 }
             }
 
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        }
+
+        // POST: api/Users/login
+        [HttpPost("{login}")]
+        public async Task<IActionResult> LoginUser([FromBody] User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //Bodyに入力されたpasswordをハッシュ化
+            string userPassword = user.Password;
+            _hash = new Hash();
+            user.Password = _hash.encrypt(userPassword);
+
+            //bodyで与えられたuserIdとPasswordからテーブル内の一致情報を取得
+            var searchedUser = _context.User.Where(u => u.UserId == user.UserId && u.Password == user.Password).FirstOrDefault();
+            Token token = new Token();
+
+            //Userが存在すればtokenを発行しtokenDBに保存
+            if (searchedUser != null)
+            {
+                token = _loginService.CreateToken();
+                _context.Token.Add(token);
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    throw;
+                }
+
+            }
+
+            return Ok(token);
         }
 
         // DELETE: api/Users/5

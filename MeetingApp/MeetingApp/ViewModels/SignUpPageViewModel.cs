@@ -1,6 +1,9 @@
 using MeetingApp.Models.Constants;
+using MeetingApp.Models.Param;
+using MeetingApp.Utils;
 using Prism.Commands;
 using Prism.Navigation;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MeetingApp.ViewModels
@@ -11,7 +14,9 @@ namespace MeetingApp.ViewModels
 
         private string _signUpUserId;
         private string _signUpPassword;
-        private bool _signUpFlag;
+
+        private SignUpParam _signUpParam;
+
         public string SignUpUserId
         {
             get { return _signUpUserId; }
@@ -24,13 +29,19 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _signUpPassword, value); }
         }
 
-        public bool SignUpFlag
+        public SignUpParam SignUpParam
         {
-            get { return _signUpFlag; }
-            set { SetProperty(ref _signUpFlag, value); }
+            get { return _signUpParam; }
+            set { SetProperty(ref _signUpParam, value); }
         }
+
+
+
+
+
         public ICommand SignUpCommand { get; }
         public ICommand GoBackCommand { get; }
+
         RestService _restService;
         INavigationService _navigationService;
 
@@ -38,12 +49,18 @@ namespace MeetingApp.ViewModels
         {
             _restService = new RestService();
             _navigationService = navigationService;
+            _signUpParam = new SignUpParam();
+
 
             SignUpCommand = new DelegateCommand(async () =>
             {
-                SignUpFlag = await _restService.SignUpUserDataAsync(UserConstants.OpenUserEndPoint, SignUpUserId, SignUpPassword);
-                if (SignUpFlag == true)
+                //SignUpParam‚ÉV‹K“o˜^‚Ì¬Œ÷¸”s‚ğ•Ô‚·
+                SignUpParam = await _restService.SignUpUserDataAsync(UserConstants.OpenUserEndPoint, SignUpUserId, SignUpPassword);
+
+                //V‹K“o˜^‚ÉƒGƒ‰[‚ª–³‚­’Ç‰Á‚ªÀs‚³‚ê‚Ä‚¢‚ê‚ÎLoginPage‚É‘JˆÚ‚·‚é
+                if (SignUpParam.HasError == false)
                 {
+                    await Task.Delay(1000);
                     await _navigationService.NavigateAsync("LoginPage");
                 }
 
@@ -55,13 +72,13 @@ namespace MeetingApp.ViewModels
             });
         }
 
-        public override async void OnNavigatingTo(INavigationParameters parameters)
+        public override void OnNavigatingTo(INavigationParameters parameters)
         {
 
             base.OnNavigatingTo(parameters);
 
             //‰ï‹cî•ñ‘SŒæ“¾API‚ÌƒR[ƒ‹
-            SignUpFlag = false;
+            SignUpParam.HasError = false;
 
 
         }

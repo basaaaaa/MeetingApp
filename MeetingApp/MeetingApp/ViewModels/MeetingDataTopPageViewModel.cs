@@ -46,7 +46,6 @@ namespace MeetingApp.ViewModels
 
 
         RestService _restService;
-        MeetingConstants _meetingConstants;
 
 
         public MeetingDataTopPageViewModel(INavigationService navigationService) : base(navigationService)

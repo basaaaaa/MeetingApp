@@ -16,6 +16,7 @@ namespace MeetingApp.Api.Models
         }
 
         public virtual DbSet<Meeting> Meeting { get; set; }
+        public virtual DbSet<Token> Token { get; set; }
         public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -60,21 +61,48 @@ namespace MeetingApp.Api.Models
                     .HasColumnType("text");
             });
 
+            modelBuilder.Entity<Token>(entity =>
+            {
+                entity.ToTable("token");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.EndTime)
+                    .HasColumnName("endTime")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.StartTime)
+                    .HasColumnName("startTime")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.TokenText)
+                    .IsRequired()
+                    .HasColumnName("tokenText")
+                    .HasMaxLength(64)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("user");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("Unique_userId")
+                    .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password")
-                    .HasColumnType("text");
+                    .HasMaxLength(64)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasColumnName("userId")
-                    .HasColumnType("text");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
         }
     }

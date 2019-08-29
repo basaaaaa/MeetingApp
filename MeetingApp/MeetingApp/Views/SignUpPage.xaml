@@ -4,7 +4,7 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MeetingApp.Views.SignUpPage"
-             Title="SignUp">
+             Title="新規登録">
     <StackLayout VerticalOptions="Center">
         <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Azure" HorizontalOptions="Center" VerticalOptions="Center">
             <StackLayout>
@@ -12,7 +12,13 @@
                 <Entry Placeholder="Enter your userId" Text="{Binding SignUpUserId}" />
                 <Entry Placeholder="Enter your password" Text="{Binding SignUpPassword}"/>
                 <Button Text="POST" Command="{Binding SignUpCommand}" />
-                <Label IsVisible="{Binding SignUpFlag}" Text="Post Successed" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding SignUpParam.IsSuccessed}" Text="Post Successed" TextColor="Blue" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding SignUpParam.UserExists}" Text="Error:UserId already exists" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding SignUpParam.BlankUserId}" Text="Error:UserId is Blank" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding SignUpParam.BlankPassword}" Text="Error:Password is Blank" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding SignUpParam.ShortPassword}" Text="Error:Password is too short" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding SignUpParam.UnSpecifiedUserId}" Text="Error:Unusable characters are used for UserId" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding SignUpParam.UnSpecifiedPassword}" Text="Error:Unusable characters are used for Password" TextColor="Red" HorizontalOptions="Center"/>
                 <Label HorizontalOptions="End">
                     <Label.FormattedText>
                         <FormattedString>
