@@ -142,17 +142,17 @@ namespace MeetingApp.Api.Controllers
 
             //bodyÇ≈ó^Ç¶ÇÁÇÍÇΩuserIdÇ∆PasswordÇ©ÇÁÉeÅ[ÉuÉãì‡ÇÃàÍívèÓïÒÇéÊìæ
             var searchedUser = _context.User.Where(u => u.UserId == user.UserId && u.Password == user.Password).FirstOrDefault();
-            Token token = new Token();
 
             //UserÇ™ë∂ç›Ç∑ÇÍÇŒtokenÇî≠çsÇµtokenDBÇ…ï€ë∂
             if (searchedUser != null)
             {
-                token = _loginService.CreateToken();
+                var token = _loginService.CreateToken();
                 _context.Token.Add(token);
 
                 try
                 {
                     await _context.SaveChangesAsync();
+                    return Ok(token);
                 }
                 catch (DbUpdateException)
                 {
@@ -161,7 +161,14 @@ namespace MeetingApp.Api.Controllers
 
             }
 
-            return Ok(token);
+            //new StatusCodeResult(StatusCodes.Status404NotFound);
+
+            ////é∏îsTokenÇî≠çs
+            //Token faultToken = new Token();
+            //faultToken.TokenText = "failed";
+
+
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
         }
 
         // DELETE: api/Users/5

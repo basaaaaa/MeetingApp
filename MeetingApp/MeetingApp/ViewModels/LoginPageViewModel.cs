@@ -52,7 +52,7 @@ namespace MeetingApp.ViewModels
                 //V‹K“o˜^‚ÉƒGƒ‰[‚ª–³‚­’Ç‰Á‚ªÀs‚³‚ê‚Ä‚¢‚ê‚ÎLoginPage‚É‘JˆÚ‚·‚é
                 if (_loginParam.HasError == false)
                 {
-                    await _navigationService.NavigateAsync("LoginPage");
+                    await _navigationService.NavigateAsync("MeetingDataTopPage");
                 }
             });
         }

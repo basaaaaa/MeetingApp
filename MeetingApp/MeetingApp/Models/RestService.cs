@@ -164,8 +164,6 @@ namespace MeetingApp
             {
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                //ユーザーが存在しない場合（userId,PasswordがUsersテーブルに存在しない）
-
 
                 //入力されたuserIdが空かどうかチェック
                 if (string.IsNullOrEmpty(userId))
@@ -186,6 +184,9 @@ namespace MeetingApp
                 }
 
                 var response = await _client.PostAsync(uri, content);
+                
+
+
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
