@@ -1,6 +1,11 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
+using MeetingApp.Models.Constants;
+using MeetingApp.Models.Data;
+using MeetingApp.Models.Param;
+using MeetingApp.Utils;
 using Prism.Navigation;
+using System;
 using System.Collections.Generic;
 
 namespace MeetingApp.ViewModels
@@ -13,6 +18,7 @@ namespace MeetingApp.ViewModels
         private string _scheduledTime;
         private string _location;
         private List<MeetingData> _meetings;
+
         public List<MeetingData> Meetings
         {
             get { return _meetings; }
@@ -46,12 +52,17 @@ namespace MeetingApp.ViewModels
 
 
         RestService _restService;
+        ApplicationProperties _applicationProperties;
+        TokenCheckParam _tokenCheckParam;
+        INavigationService _navigationService;
 
 
         public MeetingDataTopPageViewModel(INavigationService navigationService) : base(navigationService)
         {
-            //Test = "aaaaaaaaaaaaaa";
             _restService = new RestService();
+            _applicationProperties = new ApplicationProperties();
+            _tokenCheckParam = new TokenCheckParam();
+            _navigationService = navigationService;
 
 
         }
@@ -65,6 +76,28 @@ namespace MeetingApp.ViewModels
             //会議情報全件取得APIのコール
             Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint);
 
+            if (_applicationProperties.GetFromProperties<TokenData>("token") == null)
+            {
+                _tokenCheckParam.HasError = true;
+                _tokenCheckParam.NoExistMyToken = true;
+
+            }
+            else
+            {
+                //Localのtoken情報参照
+                var tokenData = _applicationProperties.GetFromProperties<TokenData>("token");
+                //DBのtokenと照合するAPIのコール
+                _tokenCheckParam = await _restService.CheckTokenDataAsync(TokenConstants.OpenTokenEndPoint, tokenData);
+
+
+            }
+
+            if (_tokenCheckParam.HasError == true)
+            {
+                //token照合の際にエラーが発生した際の処理
+                Console.WriteLine("ログインに失敗しました");
+                await _navigationService.NavigateAsync("LoginPage");
+            }
 
         }
     }

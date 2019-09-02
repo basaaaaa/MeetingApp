@@ -18,12 +18,24 @@ namespace MeetingApp.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Tokens
+        //// GET: api/Tokens
+        //[HttpGet]
+        //public IEnumerable<Token> GetToken()
+        //{
+        //    return _context.Token;
+        //}
+
+        // GET: api/Users
         [HttpGet]
-        public IEnumerable<Token> GetToken()
+        public IEnumerable<Token> GetToken([FromQuery]string tokenText)
         {
-            return _context.Token;
+            if (tokenText == null) { return _context.Token; }
+
+            var token = _context.Token.Where(t => t.TokenText == tokenText).FirstOrDefault();
+            return new Token[] { token };
+
         }
+
 
         // GET: api/Tokens/5
         [HttpGet("{id}")]

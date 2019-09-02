@@ -3,7 +3,7 @@ using System;
 
 namespace MeetingApp.Models.Data
 {
-    class TokenData
+    public class TokenData
     {
 
         [JsonProperty("tokenText")]

@@ -184,13 +184,24 @@ namespace MeetingApp
                 }
 
                 var response = await _client.PostAsync(uri, content);
-                
+
+                //入力されたUserが見つからない場合
+                if (!response.IsSuccessStatusCode)
+                {
+                    LoginParam.HasError = true;
+                    LoginParam.NotFoundUser = true;
+                    return LoginParam;
+                }
 
 
+                //ログイン処理が成功した場合
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseContent);
+                    //token情報を取得
+                    var tokenData = JsonConvert.DeserializeObject<TokenData>(responseContent);
+                    LoginParam.TokenData = tokenData;
+                    //LoginParamを成功に
                     LoginParam.IsSuccessed = response.IsSuccessStatusCode;
                     return LoginParam;
                 }
@@ -198,6 +209,7 @@ namespace MeetingApp
             catch (Exception ex)
             {
                 Debug.WriteLine("\tERROR {0}", ex.Message);
+                LoginParam.HasError = true;
             }
             return LoginParam;
 
@@ -223,6 +235,49 @@ namespace MeetingApp
             }
 
             return true; ;
+        }
+
+        //Localに保持するtoken情報がDB内に存在するかチェックするAPIコール
+        public async Task<TokenCheckParam> CheckTokenDataAsync(string uri, TokenData token)
+        {
+            var TokenCheckParam = new TokenCheckParam();
+            var tokenCheckUrl = uri + "?tokenText=" + token.TokenText;
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(tokenCheckUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    var receivedTokenData = JsonConvert.DeserializeObject<TokenData>(content);
+
+                    //有効時間内かどうか検証
+                    DateTime dt = DateTime.Now;
+                    if (receivedTokenData.StartTime < dt && receivedTokenData.EndTime > dt)
+                    {
+                        TokenCheckParam.IsSuccessed = true;
+                        return TokenCheckParam;
+                    }
+                    else
+                    {
+                        //有効時間外のTokenだった場合
+                        TokenCheckParam.HasError = true;
+                        TokenCheckParam.IsOverTimeToken = true;
+                    }
+
+                }
+                else
+                {
+                    //該当するtokenTextがDB内に見つからないとき
+                    TokenCheckParam.HasError = true;
+                    TokenCheckParam.NotFoundTokenText = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+
+            return TokenCheckParam;
         }
 
     }

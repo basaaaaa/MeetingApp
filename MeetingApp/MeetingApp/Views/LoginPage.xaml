@@ -12,6 +12,9 @@
                 <Entry Placeholder="Enter your userId" Text="{Binding LoginUserId}" />
                 <Entry Placeholder="Enter your password" Text="{Binding LoginPassword}"/>
                 <Button Text="ログイン" Command="{Binding LoginCommand}" />
+                <Label IsVisible="{Binding LoginParam.NotFoundUser}" Text="Error:User is not found" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding LoginParam.BlankUserId}" Text="Error:UserId is Blank" TextColor="Red" HorizontalOptions="Center"/>
+                <Label IsVisible="{Binding LoginParam.BlankPassword}" Text="Error:Password is Blank" TextColor="Red" HorizontalOptions="Center"/>
 
                 <Label HorizontalOptions="Center">
                     <Label.FormattedText>
