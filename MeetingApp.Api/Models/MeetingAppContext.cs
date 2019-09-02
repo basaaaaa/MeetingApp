@@ -1,4 +1,6 @@
+﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MeetingApp.Api.Models
 {
@@ -14,15 +16,17 @@ namespace MeetingApp.Api.Models
         }
 
         public virtual DbSet<Meeting> Meeting { get; set; }
+        public virtual DbSet<Token> Token { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            if (!optionsBuilder.IsConfigured)
-        //            {
-        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-        //                optionsBuilder.UseSqlServer("Server=tcp:meeting-app.database.windows.net,1433;Initial Catalog=MeetingApp;Persist Security Info=False;User ID=matsumoto_ts;Password='!283kb4;';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-        //            }
-        //        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=tcp:meeting-app.database.windows.net,1433;Initial Catalog=MeetingApp;Persist Security Info=False;User ID=matsumoto_ts;Password='!283kb4;';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,6 +59,50 @@ namespace MeetingApp.Api.Models
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
                     .HasColumnType("text");
+            });
+
+            modelBuilder.Entity<Token>(entity =>
+            {
+                entity.ToTable("token");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.EndTime)
+                    .HasColumnName("endTime")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.StartTime)
+                    .HasColumnName("startTime")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.TokenText)
+                    .IsRequired()
+                    .HasColumnName("tokenText")
+                    .HasMaxLength(64)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("user");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("Unique_userId")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnName("password")
+                    .HasMaxLength(64)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("userId")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
         }
     }
