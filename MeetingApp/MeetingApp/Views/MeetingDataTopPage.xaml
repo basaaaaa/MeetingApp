@@ -39,7 +39,7 @@
                                         <ColumnDefinition Width="0.5*" />
                                     </Grid.ColumnDefinitions>
                                     <Button Text="Attend"/>
-                                    <Button Grid.Column="1" Text="Delete"/>
+                                    <Button Grid.Column="1" Text="Delete" IsVisible="{Binding IsOwner}"/>
                                 </Grid>
                             </StackLayout>
                         </Frame>

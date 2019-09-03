@@ -17,7 +17,9 @@ namespace MeetingApp.ViewModels
         private string _scheduledDate;
         private string _scheduledTime;
         private string _location;
+        private string _myUserId;
         private List<MeetingData> _meetings;
+        private Boolean _isOwner;
 
         public List<MeetingData> Meetings
         {
@@ -49,6 +51,16 @@ namespace MeetingApp.ViewModels
             get { return _location; }
             set { SetProperty(ref _location, value); }
         }
+        public string MyUserId
+        {
+            get { return _myUserId; }
+            set { SetProperty(ref _myUserId, value); }
+        }
+        public Boolean IsOwner
+        {
+            get { return _isOwner; }
+            set { SetProperty(ref _isOwner, value); }
+        }
 
 
         RestService _restService;
@@ -73,9 +85,7 @@ namespace MeetingApp.ViewModels
 
             base.OnNavigatingTo(parameters);
 
-            //会議情報全件取得APIのコール
-            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint);
-
+            //Localのtoken情報参照
             if (_applicationProperties.GetFromProperties<TokenData>("token") == null)
             {
                 _tokenCheckParam.HasError = true;
@@ -84,7 +94,6 @@ namespace MeetingApp.ViewModels
             }
             else
             {
-                //Localのtoken情報参照
                 var tokenData = _applicationProperties.GetFromProperties<TokenData>("token");
                 //DBのtokenと照合するAPIのコール
                 _tokenCheckParam = await _restService.CheckTokenDataAsync(TokenConstants.OpenTokenEndPoint, tokenData);
@@ -97,6 +106,24 @@ namespace MeetingApp.ViewModels
                 //token照合の際にエラーが発生した際の処理
                 Console.WriteLine("ログインに失敗しました");
                 await _navigationService.NavigateAsync("LoginPage");
+            }
+
+            //myUserIdの取得
+            MyUserId = _applicationProperties.GetFromProperties<string>("userId");
+
+            //会議情報全件取得APIのコール
+            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint);
+
+            foreach (MeetingData meeting in Meetings)
+            {
+                if (meeting.Owner == MyUserId)
+                {
+                    meeting.IsOwner = true;
+                }
+                else
+                {
+                    meeting.IsOwner = false;
+                }
             }
 
         }

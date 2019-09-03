@@ -23,5 +23,7 @@ namespace MeetingApp.Data
         [JsonProperty("title")]
         public String Title { get; set; }
 
+        public Boolean IsOwner { get; set; }
+
     }
 }
