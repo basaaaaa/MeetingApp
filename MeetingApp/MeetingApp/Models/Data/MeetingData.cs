@@ -5,11 +5,17 @@ namespace MeetingApp.Data
 {
     public class MeetingData
     {
-        [JsonProperty("scheduledDate")]
-        public DateTime ScheduledDate { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("createdDate")]
-        public DateTime CreatedDate { get; set; }
+        [JsonProperty("title")]
+        public String Title { get; set; }
+
+        [JsonProperty("startDatetime")]
+        public DateTime StartDatetime { get; set; }
+
+        [JsonProperty("endDatetime")]
+        public DateTime endDatetime { get; set; }
 
         [JsonProperty("regular")]
         public Boolean Regular { get; set; }
@@ -20,8 +26,13 @@ namespace MeetingApp.Data
         [JsonProperty("location")]
         public String Location { get; set; }
 
-        [JsonProperty("title")]
-        public String Title { get; set; }
+
+        public Boolean IsOwner { get; set; }
+
+        public string StartTime { get; set; }
+
+        public string EndTime { get; set; }
+        public string Date { get; set; }
 
     }
 }

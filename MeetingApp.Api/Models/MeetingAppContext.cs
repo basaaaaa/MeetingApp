@@ -34,31 +34,32 @@ namespace MeetingApp.Api.Models
             {
                 entity.ToTable("meeting");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnName("created_date")
+                entity.Property(e => e.EndDatetime)
+                    .HasColumnName("end_datetime")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Location)
+                    .IsRequired()
                     .HasColumnName("location")
-                    .HasColumnType("text");
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Owner)
+                    .IsRequired()
                     .HasColumnName("owner")
-                    .HasColumnType("text");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Regular).HasColumnName("regular");
 
-                entity.Property(e => e.ScheduledDate)
-                    .HasColumnName("scheduled_date")
+                entity.Property(e => e.StartDatetime)
+                    .HasColumnName("start_datetime")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
-                    .HasColumnType("text");
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Token>(entity =>

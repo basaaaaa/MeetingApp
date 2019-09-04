@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
-             xmlns:behaviors="clr-namespace:Behaviors;assembly=Behaviors" 
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MeetingApp.Views.MeetingDataTopPage"
-             Title="Meeting List">
+             Title="Meeting List"
+             x:Name="Root">
 
     <StackLayout Margin="0,20,0,20">
 
@@ -25,13 +25,16 @@
                                         <RowDefinition Height="30" />
                                         <RowDefinition Height="30" />
                                         <RowDefinition Height="30" />
+                                        <RowDefinition Height="30" />
                                     </Grid.RowDefinitions>
-                                    <Label Text="Date" />
-                                    <Label Grid.Column="1" Text="{Binding ScheduledDate}" />
-                                    <Label Grid.Row="1" Text="Time"/>
-                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding ScheduledTime}"/>
-                                    <Label Grid.Row="2" Text="Location"/>
-                                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding Location}"/>
+                                    <Label Text="実施日" />
+                                    <Label Grid.Column="1" Text="{Binding Date}" />
+                                    <Label Grid.Row="1" Text="開始時間"/>
+                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding StartTime}"/>
+                                    <Label Grid.Row="2" Text="終了時間"/>
+                                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding EndTime}"/>
+                                    <Label Grid.Row="3" Text="場所"/>
+                                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding Location}"/>
                                 </Grid>
                                 <Grid Margin="20,0,20,5">
                                     <Grid.ColumnDefinitions>
@@ -39,7 +42,7 @@
                                         <ColumnDefinition Width="0.5*" />
                                     </Grid.ColumnDefinitions>
                                     <Button Text="Attend"/>
-                                    <Button Grid.Column="1" Text="Delete"/>
+                                    <Button Grid.Column="1" Text="Delete" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}"/>
                                 </Grid>
                             </StackLayout>
                         </Frame>

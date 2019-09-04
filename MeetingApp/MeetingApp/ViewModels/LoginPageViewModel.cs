@@ -65,6 +65,8 @@ namespace MeetingApp.ViewModels
                     //token情報を保持する
                     var tokenData = LoginParam.TokenData;
                     _applicationProperties.SaveToProperties<TokenData>("token", tokenData);
+                    //ローカルにuserId情報を保持する
+                    _applicationProperties.SaveToProperties<string>("userId", LoginUserId);
 
                     //会議情報トップページに遷移する
                     await _navigationService.NavigateAsync("MeetingDataTopPage");

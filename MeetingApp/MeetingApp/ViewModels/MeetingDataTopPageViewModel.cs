@@ -4,9 +4,11 @@ using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Utils;
+using Prism.Commands;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace MeetingApp.ViewModels
 {
@@ -17,7 +19,11 @@ namespace MeetingApp.ViewModels
         private string _scheduledDate;
         private string _scheduledTime;
         private string _location;
+        private string _myUserId;
         private List<MeetingData> _meetings;
+        private Boolean _isOwner;
+
+        public ICommand DeleteMeetingCommand { get; }
 
         public List<MeetingData> Meetings
         {
@@ -49,6 +55,16 @@ namespace MeetingApp.ViewModels
             get { return _location; }
             set { SetProperty(ref _location, value); }
         }
+        public string MyUserId
+        {
+            get { return _myUserId; }
+            set { SetProperty(ref _myUserId, value); }
+        }
+        public Boolean IsOwner
+        {
+            get { return _isOwner; }
+            set { SetProperty(ref _isOwner, value); }
+        }
 
 
         RestService _restService;
@@ -64,6 +80,18 @@ namespace MeetingApp.ViewModels
             _tokenCheckParam = new TokenCheckParam();
             _navigationService = navigationService;
 
+            //会議の削除ボタンが押されたときのコマンド
+            DeleteMeetingCommand = new DelegateCommand<object>(async id =>
+            {
+
+                var mid = Convert.ToInt32(id);
+                _restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+
+                //会議情報再取得
+                //会議情報全件取得APIのコール
+                Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+
+            });
 
         }
 
@@ -73,9 +101,7 @@ namespace MeetingApp.ViewModels
 
             base.OnNavigatingTo(parameters);
 
-            //会議情報全件取得APIのコール
-            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint);
-
+            //Localのtoken情報参照
             if (_applicationProperties.GetFromProperties<TokenData>("token") == null)
             {
                 _tokenCheckParam.HasError = true;
@@ -84,7 +110,6 @@ namespace MeetingApp.ViewModels
             }
             else
             {
-                //Localのtoken情報参照
                 var tokenData = _applicationProperties.GetFromProperties<TokenData>("token");
                 //DBのtokenと照合するAPIのコール
                 _tokenCheckParam = await _restService.CheckTokenDataAsync(TokenConstants.OpenTokenEndPoint, tokenData);
@@ -98,6 +123,30 @@ namespace MeetingApp.ViewModels
                 Console.WriteLine("ログインに失敗しました");
                 await _navigationService.NavigateAsync("LoginPage");
             }
+
+            //myUserIdの取得
+            MyUserId = _applicationProperties.GetFromProperties<string>("userId");
+
+            //会議情報全件取得APIのコール
+            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+
+            //foreach (MeetingData meeting in Meetings)
+            //{
+            //    meeting.StartTime = meeting.StartDatetime.ToShortTimeString();
+            //    meeting.EndTime = meeting.endDatetime.ToShortTimeString();
+            //    meeting.Date = meeting.StartDatetime.ToShortDateString();
+
+            //    //会議管理者かどうかそれぞれのmeetingモデルに通知
+            //    if (meeting.Owner == MyUserId)
+            //    {
+            //        meeting.IsOwner = true;
+
+            //    }
+            //    else
+            //    {
+            //        meeting.IsOwner = false;
+            //    }
+            //}
 
         }
     }
