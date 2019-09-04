@@ -47,7 +47,7 @@ namespace MeetingApp
         }
 
         //会議情報を全件取得するAPIコール
-        public async Task<List<MeetingData>> GetMeetingsDataAsync(string uri)
+        public async Task<List<MeetingData>> GetMeetingsDataAsync(string uri, string myUserId)
         {
             List<MeetingData> meetingDatas = new List<MeetingData>();
             try
@@ -59,6 +59,24 @@ namespace MeetingApp
                     Console.WriteLine(content);
                     meetingDatas = JsonConvert.DeserializeObject<List<MeetingData>>(content);
                     Console.WriteLine(meetingDatas);
+
+                    foreach (MeetingData meeting in meetingDatas)
+                    {
+                        meeting.StartTime = meeting.StartDatetime.ToShortTimeString();
+                        meeting.EndTime = meeting.endDatetime.ToShortTimeString();
+                        meeting.Date = meeting.StartDatetime.ToShortDateString();
+
+                        //会議管理者かどうかそれぞれのmeetingモデルに通知
+                        if (meeting.Owner == myUserId)
+                        {
+                            meeting.IsOwner = true;
+
+                        }
+                        else
+                        {
+                            meeting.IsOwner = false;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -67,6 +85,25 @@ namespace MeetingApp
             }
 
             return meetingDatas;
+        }
+
+        //会議情報を
+        public async void DeleteMeetingDataAsync(string uri, int mid)
+        {
+            uri = uri + mid;
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("DELETE SUCCESSED");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
         }
 
         //ユーザー情報を新規登録するAPIのコール
