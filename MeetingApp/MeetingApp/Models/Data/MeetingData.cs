@@ -15,7 +15,7 @@ namespace MeetingApp.Data
         public DateTime StartDatetime { get; set; }
 
         [JsonProperty("endDatetime")]
-        public DateTime endDatetime { get; set; }
+        public DateTime EndDatetime { get; set; }
 
         [JsonProperty("regular")]
         public Boolean Regular { get; set; }
@@ -25,7 +25,6 @@ namespace MeetingApp.Data
 
         [JsonProperty("location")]
         public String Location { get; set; }
-
 
         public Boolean IsOwner { get; set; }
 

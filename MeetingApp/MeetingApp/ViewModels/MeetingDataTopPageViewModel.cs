@@ -130,24 +130,6 @@ namespace MeetingApp.ViewModels
             //会議情報全件取得APIのコール
             Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
 
-            //foreach (MeetingData meeting in Meetings)
-            //{
-            //    meeting.StartTime = meeting.StartDatetime.ToShortTimeString();
-            //    meeting.EndTime = meeting.endDatetime.ToShortTimeString();
-            //    meeting.Date = meeting.StartDatetime.ToShortDateString();
-
-            //    //会議管理者かどうかそれぞれのmeetingモデルに通知
-            //    if (meeting.Owner == MyUserId)
-            //    {
-            //        meeting.IsOwner = true;
-
-            //    }
-            //    else
-            //    {
-            //        meeting.IsOwner = false;
-            //    }
-            //}
-
         }
     }
 

@@ -63,7 +63,7 @@ namespace MeetingApp
                     foreach (MeetingData meeting in meetingDatas)
                     {
                         meeting.StartTime = meeting.StartDatetime.ToShortTimeString();
-                        meeting.EndTime = meeting.endDatetime.ToShortTimeString();
+                        meeting.EndTime = meeting.EndDatetime.ToShortTimeString();
                         meeting.Date = meeting.StartDatetime.ToShortDateString();
 
                         //会議管理者かどうかそれぞれのmeetingモデルに通知
@@ -87,7 +87,140 @@ namespace MeetingApp
             return meetingDatas;
         }
 
-        //会議情報を
+        //会議ラベル情報を新規登録するAPIのコール
+        public async Task<CreateMeetingParam> CreateMeetingDataAsync(string uri, MeetingData meetingData)
+        {
+            var json = JsonConvert.SerializeObject(meetingData);
+
+            var createMeetingParam = new CreateMeetingParam();
+
+            try
+            {
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                //入力された会議タイトルが空かどうかチェック
+                if (string.IsNullOrEmpty(meetingData.Title))
+                {
+                    //存在していた場合POSTを失敗で終了
+                    createMeetingParam.HasError = true;
+                    createMeetingParam.BlankMeetingTitle = true;
+                    return createMeetingParam;
+                }
+
+                //入力された会議実施日が空かどうかチェック
+                if (string.IsNullOrEmpty(meetingData.Date))
+                {
+                    //存在していた場合POSTを失敗で終了
+                    createMeetingParam.HasError = true;
+                    createMeetingParam.BlankMeetingDate = true;
+                    return createMeetingParam;
+                }
+
+                //入力された会議開始時間が空かどうかチェック
+                if (string.IsNullOrEmpty(meetingData.StartTime))
+                {
+                    //存在していた場合POSTを失敗で終了
+                    createMeetingParam.HasError = true;
+                    createMeetingParam.BlankMeetingStartTime = true;
+                    return createMeetingParam;
+                }
+
+                //入力された会議終了時間が空かどうかチェック
+                if (string.IsNullOrEmpty(meetingData.EndTime))
+                {
+                    //存在していた場合POSTを失敗で終了
+                    createMeetingParam.HasError = true;
+                    createMeetingParam.BlankMeetingEndTime = true;
+                    return createMeetingParam;
+                }
+
+
+                var response = await _client.PostAsync(uri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);
+                    createMeetingParam.IsSuccessed = response.IsSuccessStatusCode;
+                    return createMeetingParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+            return createMeetingParam;
+
+
+        }
+
+        //会議ラベル情報を全件取得するAPIコール
+        public async Task<List<MeetingLabelData>> GetMeetingLabelsDataAsync(string uri, int mid)
+        {
+            List<MeetingLabelData> meetingLabelDatas = new List<MeetingLabelData>();
+
+            //midをクエリストリングに加える
+            uri = uri + "?mid=" + mid;
+
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(content);
+                    meetingLabelDatas = JsonConvert.DeserializeObject<List<MeetingLabelData>>(content);
+                    Console.WriteLine(meetingLabelDatas);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+
+            return meetingLabelDatas;
+        }
+
+        //会議ラベル情報を新規登録するAPIのコール
+        public async Task<CreateMeetingLabelParam> CreateMeetingLabelDataAsync(string uri, string labelName)
+        {
+            var meetingLabel = new MeetingLabelData(labelName);
+            var json = JsonConvert.SerializeObject(meetingLabel);
+
+            var createMeetingLabelParam = new CreateMeetingLabelParam();
+
+            try
+            {
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                //入力されたカードラベル名が空かどうかチェック
+                if (string.IsNullOrEmpty(labelName))
+                {
+                    //存在していた場合POSTを失敗で終了
+                    createMeetingLabelParam.HasError = true;
+                    createMeetingLabelParam.BlankLabelName = true;
+                    return createMeetingLabelParam;
+                }
+
+
+                var response = await _client.PostAsync(uri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);
+                    createMeetingLabelParam.IsSuccessed = response.IsSuccessStatusCode;
+                    return createMeetingLabelParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+            return createMeetingLabelParam;
+
+
+        }
+
+        //会議情報を1件削除するAPIコール
         public async void DeleteMeetingDataAsync(string uri, int mid)
         {
             uri = uri + mid;

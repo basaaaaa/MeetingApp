@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="MeetingApp.Views.MeetingDataCreatePage">
+    <ScrollView>
+        <StackLayout VerticalOptions="Center">
+            <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Azure" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+                <StackLayout>
+                    <Label Text="会議タイトル" />
+                    <Entry Placeholder="朝会" Text="{Binding InputMeetingTitle}" />
+                       
+                    <Label Text="実施日" />
+                    <Entry Placeholder="2019-09-04" Text="{Binding InputMeetingDate}"/>
+
+                    <Label Text="開始時間" />
+                    <Entry Placeholder="10:00" Text="{Binding InputMeetingStartTime}"/>
+
+                    <Label Text="終了時間" />
+                    <Entry Placeholder="10:15" Text="{Binding InputMeetingEndTime}" />
+
+                    <Label Text="実施場所" />
+                    <Entry Placeholder="第3MTGスペース" Text="{Binding InputMeetingLocation}"/>
+
+                <Button Text="会議作成" Command="{Binding CreateMeetingDataCommand}"/>
+                    <Label Text="カードラベル" VerticalOptions="Center"/>
+                    <Entry Text="{Binding CreateLabelName}"/>
+                    <Button Text="追加" Command="{Binding CreateMeetingLabelCommand}"/>
+                <ListView ItemsSource="{Binding Labels}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame  CornerRadius="5" BackgroundColor="Beige" Padding="0" Margin="0,5,0,0">
+                                    <StackLayout>
+                                        <Label Text="{Binding LabelName}" HorizontalOptions="Center" FontSize="20"/>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+    
+
+</ContentPage>

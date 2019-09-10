@@ -16,6 +16,7 @@ namespace MeetingApp.Api.Models
         }
 
         public virtual DbSet<Meeting> Meeting { get; set; }
+        public virtual DbSet<MeetingLabel> MeetingLabel { get; set; }
         public virtual DbSet<Token> Token { get; set; }
         public virtual DbSet<User> User { get; set; }
 
@@ -60,6 +61,20 @@ namespace MeetingApp.Api.Models
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<MeetingLabel>(entity =>
+            {
+                entity.ToTable("meetingLabel");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.LabelName)
+                    .IsRequired()
+                    .HasColumnName("label_name")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Mid).HasColumnName("mid");
             });
 
             modelBuilder.Entity<Token>(entity =>
