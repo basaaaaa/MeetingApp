@@ -1,10 +1,14 @@
+using MeetingApp.Constants;
 using MeetingApp.Data;
+using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
@@ -47,9 +51,13 @@ namespace MeetingApp
         }
 
         //会議情報を全件取得するAPIコール
-        public async Task<List<MeetingData>> GetMeetingsDataAsync(string uri, string myUserId)
+        public async Task<List<MeetingData>> GetMeetingsDataAsync(string uri, string userId)
         {
             List<MeetingData> meetingDatas = new List<MeetingData>();
+
+            //userIdからidを取得
+            GetUserParam getUserParam = await GetUserDataAsync(UserConstants.OpenUserEndPoint, userId);
+
             try
             {
                 HttpResponseMessage response = await _client.GetAsync(uri);
@@ -67,7 +75,7 @@ namespace MeetingApp
                         meeting.Date = meeting.StartDatetime.ToShortDateString();
 
                         //会議管理者かどうかそれぞれのmeetingモデルに通知
-                        if (meeting.Owner == myUserId)
+                        if (meeting.Owner == getUserParam.User.Id)
                         {
                             meeting.IsOwner = true;
 
@@ -87,10 +95,20 @@ namespace MeetingApp
             return meetingDatas;
         }
 
-        //会議ラベル情報を新規登録するAPIのコール
-        public async Task<CreateMeetingParam> CreateMeetingDataAsync(string uri, MeetingData meetingData)
+        //会議情報を新規登録するAPIのコール
+        public async Task<CreateMeetingParam> CreateMeetingDataAsync(string uri, MeetingData meetingData, ObservableCollection<MeetingLabelData> labels)
         {
+
             var json = JsonConvert.SerializeObject(meetingData);
+            var jobj = JObject.Parse(json);
+            //MeetingDataモデルからJSON化に不要な属性を削除
+            jobj.Remove("StartTime");
+            jobj.Remove("EndTime");
+            jobj.Remove("Date");
+            jobj.Remove("IsOwner");
+
+            json = JsonConvert.SerializeObject(jobj);
+
 
             var createMeetingParam = new CreateMeetingParam();
 
@@ -98,55 +116,36 @@ namespace MeetingApp
             {
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                //入力された会議タイトルが空かどうかチェック
-                if (string.IsNullOrEmpty(meetingData.Title))
-                {
-                    //存在していた場合POSTを失敗で終了
-                    createMeetingParam.HasError = true;
-                    createMeetingParam.BlankMeetingTitle = true;
-                    return createMeetingParam;
-                }
-
-                //入力された会議実施日が空かどうかチェック
-                if (string.IsNullOrEmpty(meetingData.Date))
-                {
-                    //存在していた場合POSTを失敗で終了
-                    createMeetingParam.HasError = true;
-                    createMeetingParam.BlankMeetingDate = true;
-                    return createMeetingParam;
-                }
-
-                //入力された会議開始時間が空かどうかチェック
-                if (string.IsNullOrEmpty(meetingData.StartTime))
-                {
-                    //存在していた場合POSTを失敗で終了
-                    createMeetingParam.HasError = true;
-                    createMeetingParam.BlankMeetingStartTime = true;
-                    return createMeetingParam;
-                }
-
-                //入力された会議終了時間が空かどうかチェック
-                if (string.IsNullOrEmpty(meetingData.EndTime))
-                {
-                    //存在していた場合POSTを失敗で終了
-                    createMeetingParam.HasError = true;
-                    createMeetingParam.BlankMeetingEndTime = true;
-                    return createMeetingParam;
-                }
-
 
                 var response = await _client.PostAsync(uri, content);
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(responseContent);
+
+                    //midを取得し会議ラベルDBにLabels分をPOSTする処理
+                    var responseMeetingData = JsonConvert.DeserializeObject<MeetingData>(responseContent);
+                    var mid = responseMeetingData.Id;
+
+                    foreach (var label in labels)
+                    {
+                        await CreateMeetingLabelDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, label.LabelName, mid);
+                    }
+
                     createMeetingParam.IsSuccessed = response.IsSuccessStatusCode;
+                    return createMeetingParam;
+                }
+                else
+                {
+                    createMeetingParam.HasError = true;
+                    createMeetingParam.ApiCallError = true;
                     return createMeetingParam;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("\tERROR {0}", ex.Message);
+                createMeetingParam.HasError = true;
             }
             return createMeetingParam;
 
@@ -181,9 +180,9 @@ namespace MeetingApp
         }
 
         //会議ラベル情報を新規登録するAPIのコール
-        public async Task<CreateMeetingLabelParam> CreateMeetingLabelDataAsync(string uri, string labelName)
+        public async Task<CreateMeetingLabelParam> CreateMeetingLabelDataAsync(string uri, string labelName, int mid)
         {
-            var meetingLabel = new MeetingLabelData(labelName);
+            var meetingLabel = new MeetingLabelData(mid, labelName);
             var json = JsonConvert.SerializeObject(meetingLabel);
 
             var createMeetingLabelParam = new CreateMeetingLabelParam();
@@ -237,6 +236,37 @@ namespace MeetingApp
             {
                 Debug.WriteLine("\tERROR {0}", ex.Message);
             }
+        }
+
+        //userIdからユーザー情報を取得するAPIコール
+        public async Task<GetUserParam> GetUserDataAsync(string uri, string userId)
+        {
+            var getUserParam = new GetUserParam();
+
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri + "?userId=" + userId);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(content);
+                    content = content.TrimStart('[');
+                    content = content.TrimEnd(']');
+                    Console.WriteLine(content);
+
+                    getUserParam.User = JsonConvert.DeserializeObject<UserData>(content);
+
+                    getUserParam.IsSuccessed = true;
+                    return getUserParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                getUserParam.HasError = true;
+            }
+
+            return getUserParam;
         }
 
         //ユーザー情報を新規登録するAPIのコール
@@ -404,7 +434,7 @@ namespace MeetingApp
                 Debug.WriteLine("\tERROR {0}", ex.Message);
             }
 
-            return true; ;
+            return true;
         }
 
         //Localに保持するtoken情報がDB内に存在するかチェックするAPIコール

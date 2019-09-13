@@ -9,6 +9,8 @@
 
     <StackLayout Margin="0,20,0,20">
 
+        <Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>
+
         <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None">
             <ListView.ItemTemplate>
                 <DataTemplate>

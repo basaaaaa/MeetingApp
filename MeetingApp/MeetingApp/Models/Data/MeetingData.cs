@@ -21,7 +21,7 @@ namespace MeetingApp.Data
         public Boolean Regular { get; set; }
 
         [JsonProperty("owner")]
-        public String Owner { get; set; }
+        public int Owner { get; set; }
 
         [JsonProperty("location")]
         public String Location { get; set; }

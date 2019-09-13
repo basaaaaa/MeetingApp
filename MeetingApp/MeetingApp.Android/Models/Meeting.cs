@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MeetingApp.Api.Models
+namespace MeetingApp.Droid.Models
 {
     public partial class Meeting
     {

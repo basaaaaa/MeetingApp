@@ -18,5 +18,11 @@ namespace MeetingApp.Models.Data
             this.LabelName = labelName;
         }
 
+        public MeetingLabelData(int mid, string labelName)
+        {
+            this.Mid = mid;
+            this.LabelName = labelName;
+        }
+
     }
 }
