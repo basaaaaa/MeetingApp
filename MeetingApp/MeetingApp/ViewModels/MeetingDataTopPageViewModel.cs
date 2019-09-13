@@ -82,7 +82,7 @@ namespace MeetingApp.ViewModels
             _navigationService = navigationService;
 
             //myUserIdの取得
-            var userData = _restService.GetUserDataAsync(UserConstants.OpenUserEndPoint, _applicationProperties.GetFromProperties<string>("userId"));
+            MyUserId = _applicationProperties.GetFromProperties<string>("userId");
 
 
             //会議の削除ボタンが押されたときのコマンド
