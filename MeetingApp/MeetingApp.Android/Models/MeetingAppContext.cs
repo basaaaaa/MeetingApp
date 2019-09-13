@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace MeetingApp.Api.Models
+namespace MeetingApp.Droid.Models
 {
     public partial class MeetingAppContext : DbContext
     {

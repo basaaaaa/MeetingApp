@@ -1,6 +1,6 @@
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Param;
-using MeetingApp.Utils;
+using MeetingApp.Models.Validate;
 using Prism.Commands;
 using Prism.Navigation;
 using System.Threading.Tasks;
@@ -44,16 +44,23 @@ namespace MeetingApp.ViewModels
 
         RestService _restService;
         INavigationService _navigationService;
+        SignUpValidation _signUpValidation;
 
         public SignUpPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _restService = new RestService();
             _navigationService = navigationService;
             _signUpParam = new SignUpParam();
+            _signUpValidation = new SignUpValidation();
 
 
             SignUpCommand = new DelegateCommand(async () =>
             {
+
+                //V‹K“o˜^‚Ì“ü—ÍŒnƒoƒŠƒf[ƒVƒ‡ƒ“
+                SignUpParam = _signUpValidation.InputValidate(SignUpUserId, SignUpPassword);
+                if (SignUpParam.HasError == true) { return; }
+
                 //SignUpParam‚ÉV‹K“o˜^‚Ì¬Œ÷¸”s‚ğ•Ô‚·
                 SignUpParam = await _restService.SignUpUserDataAsync(UserConstants.OpenUserEndPoint, SignUpUserId, SignUpPassword);
 

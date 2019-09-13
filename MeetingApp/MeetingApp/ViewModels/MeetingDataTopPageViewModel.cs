@@ -66,6 +66,7 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _isOwner, value); }
         }
 
+        public ICommand NavigateMeetingCreatePage { get; }
 
         RestService _restService;
         ApplicationProperties _applicationProperties;
@@ -80,6 +81,10 @@ namespace MeetingApp.ViewModels
             _tokenCheckParam = new TokenCheckParam();
             _navigationService = navigationService;
 
+            //myUserIdの取得
+            MyUserId = _applicationProperties.GetFromProperties<string>("userId");
+
+
             //会議の削除ボタンが押されたときのコマンド
             DeleteMeetingCommand = new DelegateCommand<object>(async id =>
             {
@@ -90,6 +95,14 @@ namespace MeetingApp.ViewModels
                 //会議情報再取得
                 //会議情報全件取得APIのコール
                 Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+
+            });
+
+            //会議の削除ボタンが押されたときのコマンド
+            NavigateMeetingCreatePage = new DelegateCommand(async () =>
+            {
+                //会議情報トップページに遷移する
+                await _navigationService.NavigateAsync("MeetingDataCreatePage");
 
             });
 
@@ -129,24 +142,6 @@ namespace MeetingApp.ViewModels
 
             //会議情報全件取得APIのコール
             Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
-
-            //foreach (MeetingData meeting in Meetings)
-            //{
-            //    meeting.StartTime = meeting.StartDatetime.ToShortTimeString();
-            //    meeting.EndTime = meeting.endDatetime.ToShortTimeString();
-            //    meeting.Date = meeting.StartDatetime.ToShortDateString();
-
-            //    //会議管理者かどうかそれぞれのmeetingモデルに通知
-            //    if (meeting.Owner == MyUserId)
-            //    {
-            //        meeting.IsOwner = true;
-
-            //    }
-            //    else
-            //    {
-            //        meeting.IsOwner = false;
-            //    }
-            //}
 
         }
     }

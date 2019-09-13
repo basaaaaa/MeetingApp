@@ -48,6 +48,9 @@ namespace MeetingApp.ViewModels
             _loginParam = new LoginParam();
             _applicationProperties = new ApplicationProperties();
 
+            LoginUserId = "test";
+            LoginPassword = "password";
+
             //V‹K“o˜^ƒy[ƒW‚Ö‘JˆÚ
             NavigationSignUpPageCommand = new DelegateCommand(() =>
            {
