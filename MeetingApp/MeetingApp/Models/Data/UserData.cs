@@ -27,10 +27,7 @@ namespace MeetingApp.Models.Data
             this.Password = password;
         }
 
-        public UserData()
-        {
-
-        }
+        public UserData() { }
 
     }
 }
