@@ -10,7 +10,7 @@
             <StackLayout>
                 <Label Text="Login"  HorizontalOptions="Center" FontSize="30"/>
                 <Entry Placeholder="Enter your userId" Text="{Binding LoginUserId}" />
-                <Entry Placeholder="Enter your password" Text="{Binding LoginPassword}"/>
+                <Entry Placeholder="Enter your password" Text="{Binding LoginPassword}" IsPassword="True"/>
                 <Button Text="ログイン" Command="{Binding LoginCommand}" />
                 <Label IsVisible="{Binding LoginParam.NotFoundUser}" Text="Error:User is not found" TextColor="Red" HorizontalOptions="Center"/>
                 <Label IsVisible="{Binding LoginParam.BlankUserId}" Text="Error:UserId is Blank" TextColor="Red" HorizontalOptions="Center"/>
