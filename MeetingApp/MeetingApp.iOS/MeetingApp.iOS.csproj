@@ -93,9 +93,6 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <ITunesArtwork Include="iTunesArtwork@1x.png" />
-    <ITunesArtwork Include="iTunesArtwork@2x.png" />
-    <ITunesArtwork Include="iTunesArtwork@3x.png" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\Contents.json">
@@ -197,7 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MeetingApp\MeetingApp.csproj">
-      <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
+      <Project>{6BAC8BD7-A3D0-42E6-B067-D7CB036F5ABB}</Project>
       <Name>MeetingApp</Name>
     </ProjectReference>
   </ItemGroup>
