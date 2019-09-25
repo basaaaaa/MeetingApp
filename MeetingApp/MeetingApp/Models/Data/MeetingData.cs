@@ -25,6 +25,8 @@ namespace MeetingApp.Data
 
         [JsonProperty("location")]
         public String Location { get; set; }
+        [JsonProperty("deleted")]
+        public Boolean Deleted { get; set; }
 
         public Boolean IsOwner { get; set; }
 

@@ -45,6 +45,34 @@ namespace MeetingApp.Api.Controllers
             return Ok(meeting);
         }
 
+        //[HttpPatch("{id}")]
+        //public async Task<IActionResult> PatchMeeting([FromRoute] int id, [FromBody] Meeting meeting)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    _context.Meeting.Update(meeting);
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateException)
+        //    {
+        //        if (MeetingExists(meeting.Id))
+        //        {
+        //            return new StatusCodeResult(StatusCodes.Status409Conflict);
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+
+        //    }
+        //}
+
         // PUT: api/Meetings/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMeeting([FromRoute] int id, [FromBody] Meeting meeting)
