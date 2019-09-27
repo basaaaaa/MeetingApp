@@ -21,9 +21,15 @@ namespace MeetingApp.Api.Controllers
 
         // GET: api/Meetings
         [HttpGet]
-        public IEnumerable<Meeting> GetMeeting()
+        public IEnumerable<Meeting> GetMeeting([FromQuery]string mid)
         {
-            return _context.Meeting;
+            if (mid == null) { return _context.Meeting.Where(m => m.Isvisible == true); }
+
+            var id = int.Parse(mid);
+
+            var meeting = _context.Meeting.Where(m => m.Id == id).FirstOrDefault();
+            return new Meeting[] { meeting };
+
         }
 
         // GET: api/Meetings/5
@@ -72,6 +78,37 @@ namespace MeetingApp.Api.Controllers
 
         //    }
         //}
+
+        // PUT: api/Meetings/5
+        [HttpPut]
+        public async Task<IActionResult> PutMeeting([FromBody] Meeting meeting)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.Entry(meeting).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MeetingExists(meeting.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
 
         // PUT: api/Meetings/5
         [HttpPut("{id}")]

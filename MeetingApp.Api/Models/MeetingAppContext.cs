@@ -37,11 +37,11 @@ namespace MeetingApp.Api.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Deleted).HasColumnName("deleted");
-
                 entity.Property(e => e.EndDatetime)
                     .HasColumnName("end_datetime")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Isvisible).HasColumnName("isvisible");
 
                 entity.Property(e => e.Location)
                     .IsRequired()

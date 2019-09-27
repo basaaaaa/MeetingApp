@@ -81,6 +81,7 @@ namespace MeetingApp.ViewModels
             _tokenCheckParam = new TokenCheckParam();
             _navigationService = navigationService;
 
+
             //myUserIdの取得
             MyUserId = _applicationProperties.GetFromProperties<string>("userId");
 
@@ -90,7 +91,16 @@ namespace MeetingApp.ViewModels
             {
 
                 var mid = Convert.ToInt32(id);
-                _restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+
+                ////物理削除
+                //_restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+
+                //論理削除
+                GetMeetingParam getMeetingParam = new GetMeetingParam();
+                getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+                var updateMeetingData = getMeetingParam.MeetingData;
+                updateMeetingData.IsVisible = false;
+                await _restService.UpdateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, updateMeetingData);
 
                 //会議情報再取得
                 //会議情報全件取得APIのコール
@@ -98,7 +108,7 @@ namespace MeetingApp.ViewModels
 
             });
 
-            //会議の削除ボタンが押されたときのコマンド
+            //会議新規作成ページに遷移するコマンド
             NavigateMeetingCreatePage = new DelegateCommand(async () =>
             {
                 //会議情報トップページに遷移する
