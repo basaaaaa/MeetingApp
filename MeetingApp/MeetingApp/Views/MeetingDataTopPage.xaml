@@ -4,7 +4,7 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MeetingApp.Views.MeetingDataTopPage"
-             Title="Meeting List"
+             Title="会議一覧"
              x:Name="Root">
 
     <StackLayout Margin="0,20,0,20">
@@ -16,7 +16,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Azure">
-                            <StackLayout>
+                            
+                            <StackLayout >
                                 <Label Text="{Binding Title}" FontSize="30" />
                                 <Grid Margin="0,20,0,20">
                                     <Grid.ColumnDefinitions>

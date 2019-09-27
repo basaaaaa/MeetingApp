@@ -136,6 +136,7 @@ namespace MeetingApp.ViewModels
                 CreateMeetingData.Regular = false;
                 CreateMeetingData.Owner = getUserParam.User.Id;
                 CreateMeetingData.Location = InputMeetingLocation;
+                CreateMeetingData.IsVisible = true;
 
                 CreateMeetingParam = await _restService.CreateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, CreateMeetingData, Labels);
 

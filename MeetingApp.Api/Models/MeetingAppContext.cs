@@ -41,6 +41,8 @@ namespace MeetingApp.Api.Models
                     .HasColumnName("end_datetime")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Isvisible).HasColumnName("isvisible");
+
                 entity.Property(e => e.Location)
                     .IsRequired()
                     .HasColumnName("location")

@@ -25,6 +25,8 @@ namespace MeetingApp.Data
 
         [JsonProperty("location")]
         public String Location { get; set; }
+        [JsonProperty("isvisible")]
+        public Boolean IsVisible { get; set; }
 
         public Boolean IsOwner { get; set; }
 
@@ -32,6 +34,8 @@ namespace MeetingApp.Data
 
         public string EndTime { get; set; }
         public string Date { get; set; }
+
+        public MeetingData() { }
 
     }
 }

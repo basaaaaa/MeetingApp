@@ -12,5 +12,6 @@ namespace MeetingApp.Api.Models
         public bool Regular { get; set; }
         public int Owner { get; set; }
         public string Location { get; set; }
+        public bool Isvisible { get; set; }
     }
 }
