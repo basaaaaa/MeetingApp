@@ -13,6 +13,8 @@ namespace MeetingApp.Models.Data
         [JsonProperty("labelName")]
         public string LabelName { get; set; }
 
+        public MeetingLabelData() { }
+
         public MeetingLabelData(string labelName)
         {
             this.LabelName = labelName;

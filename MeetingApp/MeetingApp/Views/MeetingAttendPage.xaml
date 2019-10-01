@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             x:Class="MeetingApp.Views.MeetingAttendPage"
+             Title="会議入室画面">
+
+    <StackLayout>
+        <Frame CornerRadius="10" Margin="10,10,10,10" Opacity="0.7" BackgroundColor="Azure" HeightRequest="180">
+            <StackLayout >
+                <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" />
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*" />
+                        <ColumnDefinition Width="0.7*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+                    <Label Text="実施日" />
+                    <Label Grid.Column="1" Text="{Binding TargetMeetingData.Date}" />
+                    <Label Grid.Row="1" Text="開始時間"/>
+                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding TargetMeetingData.StartTime}"/>
+                    <Label Grid.Row="2" Text="終了時間"/>
+                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding TargetMeetingData.EndTime}"/>
+                    <Label Grid.Row="3" Text="場所"/>
+                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding TargetMeetingData.Location}"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
+        <StackLayout>
+            <Grid Margin="5,5,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Button Text="入室" HeightRequest="100"/>
+                <Button Grid.Column="1" Text="退室" />
+            </Grid>
+
+            <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  Margin="5,5,5,5"  SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Beige">
+
+                                <StackLayout >
+                                    <Label Text="{Binding LabelName}" FontSize="25" />
+                                    <Frame>
+                                        <Label Text="test" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="test2" />
+                                    </Frame>
+                                    <Frame>
+                                        <Label Text="test3" />
+                                    </Frame>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+        </StackLayout>
+
+    </StackLayout>
+  
+</ContentPage>

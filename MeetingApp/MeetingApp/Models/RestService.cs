@@ -42,12 +42,23 @@ namespace MeetingApp
                     content = content.TrimStart('[');
                     content = content.TrimEnd(']');
                     getMeetingParam.MeetingData = JsonConvert.DeserializeObject<MeetingData>(content);
+
+                    getMeetingParam.MeetingData.StartTime = getMeetingParam.MeetingData.StartDatetime.ToShortTimeString();
+                    getMeetingParam.MeetingData.EndTime = getMeetingParam.MeetingData.EndDatetime.ToShortTimeString();
+                    getMeetingParam.MeetingData.Date = getMeetingParam.MeetingData.StartDatetime.ToShortDateString();
+
+                    getMeetingParam.IsSuccessed = true;
                     return getMeetingParam;
+                }
+                else
+                {
+                    getMeetingParam.HasError = true;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("\tERROR {0}", ex.Message);
+                getMeetingParam.HasError = true;
             }
 
             return getMeetingParam;
@@ -156,9 +167,9 @@ namespace MeetingApp
         }
 
         //会議ラベル情報を全件取得するAPIコール
-        public async Task<List<MeetingLabelData>> GetMeetingLabelsDataAsync(string uri, int mid)
+        public async Task<GetMeetingLabelsParam> GetMeetingLabelsDataAsync(string uri, int mid)
         {
-            List<MeetingLabelData> meetingLabelDatas = new List<MeetingLabelData>();
+            GetMeetingLabelsParam getMeetingLabelsParam = new GetMeetingLabelsParam();
 
             //midをクエリストリングに加える
             uri = uri + "?mid=" + mid;
@@ -170,16 +181,21 @@ namespace MeetingApp
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
-                    meetingLabelDatas = JsonConvert.DeserializeObject<List<MeetingLabelData>>(content);
-                    Console.WriteLine(meetingLabelDatas);
+                    getMeetingLabelsParam.MeetingLabelDatas = JsonConvert.DeserializeObject<List<MeetingLabelData>>(content);
+                    getMeetingLabelsParam.IsSuccessed = true;
+                }
+                else
+                {
+                    getMeetingLabelsParam.HasError = true;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("\tERROR {0}", ex.Message);
+                getMeetingLabelsParam.HasError = true;
             }
 
-            return meetingLabelDatas;
+            return getMeetingLabelsParam;
         }
 
         //会議ラベル情報を新規登録するAPIのコール
