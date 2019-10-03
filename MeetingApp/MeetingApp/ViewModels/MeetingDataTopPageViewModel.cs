@@ -23,7 +23,6 @@ namespace MeetingApp.ViewModels
         private List<MeetingData> _meetings;
         private Boolean _isOwner;
 
-        public ICommand DeleteMeetingCommand { get; }
 
         public List<MeetingData> Meetings
         {
@@ -68,6 +67,7 @@ namespace MeetingApp.ViewModels
 
         public ICommand NavigateMeetingCreatePage { get; }
         public ICommand NavigateMeetingAttendPage { get; }
+        public ICommand DeleteMeetingCommand { get; }
 
         RestService _restService;
         ApplicationProperties _applicationProperties;

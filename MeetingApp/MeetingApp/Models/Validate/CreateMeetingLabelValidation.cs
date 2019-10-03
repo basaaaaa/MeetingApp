@@ -2,7 +2,7 @@ using MeetingApp.Models.Param;
 
 namespace MeetingApp.Models.Validate
 {
-    class CreateMeetingLabelValidation
+    public class CreateMeetingLabelValidation
     {
         public CreateMeetingLabelParam InputValidate(string labelName)
         {

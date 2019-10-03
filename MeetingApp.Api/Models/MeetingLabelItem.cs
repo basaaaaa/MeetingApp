@@ -7,6 +7,7 @@ namespace MeetingApp.Api.Models
     {
         public int Id { get; set; }
         public int Lid { get; set; }
+        public int Uid { get; set; }
         public string ItemName { get; set; }
     }
 }

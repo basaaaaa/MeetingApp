@@ -27,6 +27,9 @@ namespace MeetingApp
             _checkString = new CheckString();
         }
 
+
+        //Meeting系API
+
         //会議情報を単一で取得するAPIコール
         public async Task<GetMeetingParam> GetMeetingDataAsync(string uri, int mid)
         {
@@ -166,6 +169,66 @@ namespace MeetingApp
 
         }
 
+        //会議情報を1件削除するAPIコール
+        public async void DeleteMeetingDataAsync(string uri, int mid)
+        {
+            uri = uri + mid;
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("DELETE SUCCESSED");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+        }
+
+        //会議情報を更新するAPIコール
+        public async Task<UpdateMeetingParam> UpdateMeetingDataAsync(string uri, MeetingData meeting)
+        {
+
+            var json = JsonConvert.SerializeObject(meeting);
+            var updateMeetingParam = new UpdateMeetingParam();
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                HttpResponseMessage response = await _client.PutAsync(uri, content);
+
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    updateMeetingParam.HasError = true;
+                    return updateMeetingParam;
+                }
+
+
+                //成功した場合
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    //Paramを成功に
+                    updateMeetingParam.IsSuccessed = response.IsSuccessStatusCode;
+                    return updateMeetingParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                updateMeetingParam.HasError = true;
+            }
+            return updateMeetingParam;
+        }
+
+
+        //MeetingLabel系API
+
         //会議ラベル情報を全件取得するAPIコール
         public async Task<GetMeetingLabelsParam> GetMeetingLabelsDataAsync(string uri, int mid)
         {
@@ -238,25 +301,40 @@ namespace MeetingApp
 
         }
 
-        //会議情報を1件削除するAPIコール
-        public async void DeleteMeetingDataAsync(string uri, int mid)
+        //MeetingLabelItem系API
+
+        //会議ラベル項目情報を新規登録するAPIのコール
+        public async Task<CreateMeetingLabelItemParam> CreateMeetingLabelItemDataAsync(string uri, string itemName, int lid, int uid)
         {
-            uri = uri + mid;
+            var meetingLabelItem = new MeetingLabelItemData(lid, uid, itemName);
+            var json = JsonConvert.SerializeObject(meetingLabelItem);
+
+            var createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
+
             try
             {
-                HttpResponseMessage response = await _client.DeleteAsync(uri);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                var response = await _client.PostAsync(uri, content);
                 if (response.IsSuccessStatusCode)
                 {
-                    string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("DELETE SUCCESSED");
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);
+                    createMeetingLabelItemParam.IsSuccessed = response.IsSuccessStatusCode;
+                    return createMeetingLabelItemParam;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("\tERROR {0}", ex.Message);
             }
+            return createMeetingLabelItemParam;
+
+
         }
 
+        //ユーザー情報系API
         //userIdからユーザー情報を取得するAPIコール
         public async Task<GetUserParam> GetUserDataAsync(string uri, string userId)
         {
@@ -395,43 +473,7 @@ namespace MeetingApp
         }
 
 
-        //会議情報を更新するAPIコール
-        public async Task<UpdateMeetingParam> UpdateMeetingDataAsync(string uri, MeetingData meeting)
-        {
-
-            var json = JsonConvert.SerializeObject(meeting);
-            var updateMeetingParam = new UpdateMeetingParam();
-
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            try
-            {
-                HttpResponseMessage response = await _client.PutAsync(uri, content);
-
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    updateMeetingParam.HasError = true;
-                    return updateMeetingParam;
-                }
-
-
-                //成功した場合
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync();
-                    //Paramを成功に
-                    updateMeetingParam.IsSuccessed = response.IsSuccessStatusCode;
-                    return updateMeetingParam;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("\tERROR {0}", ex.Message);
-                updateMeetingParam.HasError = true;
-            }
-            return updateMeetingParam;
-        }
+        //Token情報系API
 
         //Localに保持するtoken情報がDB内に存在するかチェックするAPIコール
         public async Task<TokenCheckParam> CheckTokenDataAsync(string uri, TokenData token)

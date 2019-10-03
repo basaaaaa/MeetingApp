@@ -89,6 +89,8 @@ namespace MeetingApp.Api.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Lid).HasColumnName("lid");
+
+                entity.Property(e => e.Uid).HasColumnName("uid");
             });
 
             modelBuilder.Entity<Token>(entity =>
