@@ -23,7 +23,6 @@ namespace MeetingApp.ViewModels
         private List<MeetingData> _meetings;
         private Boolean _isOwner;
 
-        public ICommand DeleteMeetingCommand { get; }
 
         public List<MeetingData> Meetings
         {
@@ -67,6 +66,8 @@ namespace MeetingApp.ViewModels
         }
 
         public ICommand NavigateMeetingCreatePage { get; }
+        public ICommand NavigateMeetingAttendPage { get; }
+        public ICommand DeleteMeetingCommand { get; }
 
         RestService _restService;
         ApplicationProperties _applicationProperties;
@@ -96,9 +97,12 @@ namespace MeetingApp.ViewModels
                 //_restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
 
                 //論理削除
+
+                //対象となる会議情報を1件取得
                 GetMeetingParam getMeetingParam = new GetMeetingParam();
                 getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
                 var updateMeetingData = getMeetingParam.MeetingData;
+                //フラグをfalseに変更
                 updateMeetingData.IsVisible = false;
                 await _restService.UpdateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, updateMeetingData);
 
@@ -113,6 +117,26 @@ namespace MeetingApp.ViewModels
             {
                 //会議情報トップページに遷移する
                 await _navigationService.NavigateAsync("MeetingDataCreatePage");
+
+            });
+
+            //会議出席ページに遷移するコマンド
+            NavigateMeetingAttendPage = new DelegateCommand<object>(async id =>
+            {
+
+                var mid = Convert.ToInt32(id);
+
+                //指定の会議の情報をCommandParameterで受け取り、会議id(mid)を取得する
+                GetMeetingParam getMeetingParam = new GetMeetingParam();
+                getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+
+                var p = new NavigationParameters
+                {
+                    { "mid", getMeetingParam.MeetingData.Id}
+                };
+
+                //会議情報トップページに遷移する
+                await _navigationService.NavigateAsync("MeetingAttendPage", p);
 
             });
 

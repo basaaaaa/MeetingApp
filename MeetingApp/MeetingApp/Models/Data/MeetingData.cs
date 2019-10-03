@@ -1,5 +1,7 @@
+using MeetingApp.Models.Data;
 using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
 
 namespace MeetingApp.Data
 {
@@ -34,6 +36,8 @@ namespace MeetingApp.Data
 
         public string EndTime { get; set; }
         public string Date { get; set; }
+
+        public ObservableCollection<MeetingLabelData> MeetingLabelDatas { get; set; }
 
         public MeetingData() { }
 
