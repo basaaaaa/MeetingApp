@@ -8,7 +8,7 @@
              x:Name="Root">
 
     <StackLayout>
-        <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Azure" HeightRequest="100">
+        <Frame CornerRadius="10" Margin="5,30,5,5" Opacity="0.7" BackgroundColor="Azure" HeightRequest="150">
             <StackLayout >
                 <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" />
                 <Grid Margin="0,0,0,0">
@@ -64,13 +64,15 @@
                                     </Entry>
                                     <Label IsVisible="{Binding Source={x:Reference Root} , Path=BindingContext.CreateMeetingLabelItemParam.BlankItemName}" Text="項目の入力が空白です" TextColor="Red"/>
 
-                                    <ListView ItemsSource="{Binding MeetingLabelItemDatas}" x:Name="Items">
+                                    <ListView ItemsSource="{Binding MeetingLabelItemDatas}" x:Name="Items" SeparatorVisibility="None" HasUnevenRows="true" RowHeight="30">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
                                                     <StackLayout>
-                                                        <Frame>
-                                                            <Label Text="{Binding ItemName}" />
+                                                        <Frame CornerRadius="5" BackgroundColor="White">
+                                                            <StackLayout>
+                                                                <Label Text="{Binding ItemName}" />
+                                                            </StackLayout>
                                                         </Frame>
                                                     </StackLayout>
                                                 </ViewCell>

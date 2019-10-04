@@ -7,27 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A3D20E972347139800257F4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D20E962347139800257F4A /* AppDelegate.swift */; };
-		A3D20E992347139800257F4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D20E982347139800257F4A /* SceneDelegate.swift */; };
-		A3D20E9B2347139800257F4A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D20E9A2347139800257F4A /* ContentView.swift */; };
-		A3D20E9D2347139A00257F4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3D20E9C2347139A00257F4A /* Assets.xcassets */; };
-		A3D20EA02347139A00257F4A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3D20E9F2347139A00257F4A /* Preview Assets.xcassets */; };
-		A3D20EA32347139A00257F4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D20EA12347139A00257F4A /* LaunchScreen.storyboard */; };
+		A3D20EB7234719CF00257F4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D20EB6234719CF00257F4A /* AppDelegate.swift */; };
+		A3D20EB9234719CF00257F4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D20EB8234719CF00257F4A /* SceneDelegate.swift */; };
+		A3D20EBB234719CF00257F4A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D20EBA234719CF00257F4A /* ContentView.swift */; };
+		A3D20EBD234719D000257F4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3D20EBC234719D000257F4A /* Assets.xcassets */; };
+		A3D20EC0234719D000257F4A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3D20EBF234719D000257F4A /* Preview Assets.xcassets */; };
+		A3D20EC3234719D000257F4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D20EC1234719D000257F4A /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A3D20E932347139800257F4A /* MeetingAppXCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeetingAppXCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3D20E962347139800257F4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A3D20E982347139800257F4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A3D20E9A2347139800257F4A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A3D20E9C2347139A00257F4A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A3D20E9F2347139A00257F4A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A3D20EA22347139A00257F4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A3D20EA42347139A00257F4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3D20EB3234719CF00257F4A /* MeetingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeetingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3D20EB6234719CF00257F4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A3D20EB8234719CF00257F4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A3D20EBA234719CF00257F4A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A3D20EBC234719D000257F4A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A3D20EBF234719D000257F4A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A3D20EC2234719D000257F4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A3D20EC4234719D000257F4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A3D20E902347139800257F4A /* Frameworks */ = {
+		A3D20EB0234719CF00257F4A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -37,40 +37,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A3D20E8A2347139800257F4A = {
+		A3D20EAA234719CF00257F4A = {
 			isa = PBXGroup;
 			children = (
-				A3D20E952347139800257F4A /* MeetingAppXCode */,
-				A3D20E942347139800257F4A /* Products */,
+				A3D20EB5234719CF00257F4A /* MeetingApp */,
+				A3D20EB4234719CF00257F4A /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A3D20E942347139800257F4A /* Products */ = {
+		A3D20EB4234719CF00257F4A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A3D20E932347139800257F4A /* MeetingAppXCode.app */,
+				A3D20EB3234719CF00257F4A /* MeetingApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A3D20E952347139800257F4A /* MeetingAppXCode */ = {
+		A3D20EB5234719CF00257F4A /* MeetingApp */ = {
 			isa = PBXGroup;
 			children = (
-				A3D20E962347139800257F4A /* AppDelegate.swift */,
-				A3D20E982347139800257F4A /* SceneDelegate.swift */,
-				A3D20E9A2347139800257F4A /* ContentView.swift */,
-				A3D20E9C2347139A00257F4A /* Assets.xcassets */,
-				A3D20EA12347139A00257F4A /* LaunchScreen.storyboard */,
-				A3D20EA42347139A00257F4A /* Info.plist */,
-				A3D20E9E2347139A00257F4A /* Preview Content */,
+				A3D20EB6234719CF00257F4A /* AppDelegate.swift */,
+				A3D20EB8234719CF00257F4A /* SceneDelegate.swift */,
+				A3D20EBA234719CF00257F4A /* ContentView.swift */,
+				A3D20EBC234719D000257F4A /* Assets.xcassets */,
+				A3D20EC1234719D000257F4A /* LaunchScreen.storyboard */,
+				A3D20EC4234719D000257F4A /* Info.plist */,
+				A3D20EBE234719D000257F4A /* Preview Content */,
 			);
-			path = MeetingAppXCode;
+			path = MeetingApp;
 			sourceTree = "<group>";
 		};
-		A3D20E9E2347139A00257F4A /* Preview Content */ = {
+		A3D20EBE234719D000257F4A /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				A3D20E9F2347139A00257F4A /* Preview Assets.xcassets */,
+				A3D20EBF234719D000257F4A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -78,39 +78,39 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A3D20E922347139800257F4A /* MeetingAppXCode */ = {
+		A3D20EB2234719CF00257F4A /* MeetingApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A3D20EA72347139A00257F4A /* Build configuration list for PBXNativeTarget "MeetingAppXCode" */;
+			buildConfigurationList = A3D20EC7234719D000257F4A /* Build configuration list for PBXNativeTarget "MeetingApp" */;
 			buildPhases = (
-				A3D20E8F2347139800257F4A /* Sources */,
-				A3D20E902347139800257F4A /* Frameworks */,
-				A3D20E912347139800257F4A /* Resources */,
+				A3D20EAF234719CF00257F4A /* Sources */,
+				A3D20EB0234719CF00257F4A /* Frameworks */,
+				A3D20EB1234719CF00257F4A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = MeetingAppXCode;
-			productName = MeetingAppXCode;
-			productReference = A3D20E932347139800257F4A /* MeetingAppXCode.app */;
+			name = MeetingApp;
+			productName = MeetingApp;
+			productReference = A3D20EB3234719CF00257F4A /* MeetingApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A3D20E8B2347139800257F4A /* Project object */ = {
+		A3D20EAB234719CF00257F4A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "松本 翼";
 				TargetAttributes = {
-					A3D20E922347139800257F4A = {
+					A3D20EB2234719CF00257F4A = {
 						CreatedOnToolsVersion = 11.0;
 					};
 				};
 			};
-			buildConfigurationList = A3D20E8E2347139800257F4A /* Build configuration list for PBXProject "MeetingAppXCode" */;
+			buildConfigurationList = A3D20EAE234719CF00257F4A /* Build configuration list for PBXProject "MeetingApp" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -118,47 +118,47 @@
 				en,
 				Base,
 			);
-			mainGroup = A3D20E8A2347139800257F4A;
-			productRefGroup = A3D20E942347139800257F4A /* Products */;
+			mainGroup = A3D20EAA234719CF00257F4A;
+			productRefGroup = A3D20EB4234719CF00257F4A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A3D20E922347139800257F4A /* MeetingAppXCode */,
+				A3D20EB2234719CF00257F4A /* MeetingApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A3D20E912347139800257F4A /* Resources */ = {
+		A3D20EB1234719CF00257F4A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3D20EA32347139A00257F4A /* LaunchScreen.storyboard in Resources */,
-				A3D20EA02347139A00257F4A /* Preview Assets.xcassets in Resources */,
-				A3D20E9D2347139A00257F4A /* Assets.xcassets in Resources */,
+				A3D20EC3234719D000257F4A /* LaunchScreen.storyboard in Resources */,
+				A3D20EC0234719D000257F4A /* Preview Assets.xcassets in Resources */,
+				A3D20EBD234719D000257F4A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A3D20E8F2347139800257F4A /* Sources */ = {
+		A3D20EAF234719CF00257F4A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3D20E972347139800257F4A /* AppDelegate.swift in Sources */,
-				A3D20E992347139800257F4A /* SceneDelegate.swift in Sources */,
-				A3D20E9B2347139800257F4A /* ContentView.swift in Sources */,
+				A3D20EB7234719CF00257F4A /* AppDelegate.swift in Sources */,
+				A3D20EB9234719CF00257F4A /* SceneDelegate.swift in Sources */,
+				A3D20EBB234719CF00257F4A /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A3D20EA12347139A00257F4A /* LaunchScreen.storyboard */ = {
+		A3D20EC1234719D000257F4A /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A3D20EA22347139A00257F4A /* Base */,
+				A3D20EC2234719D000257F4A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -166,7 +166,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		A3D20EA52347139A00257F4A /* Debug */ = {
+		A3D20EC5234719D000257F4A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -226,7 +226,7 @@
 			};
 			name = Debug;
 		};
-		A3D20EA62347139A00257F4A /* Release */ = {
+		A3D20EC6234719D000257F4A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -280,40 +280,40 @@
 			};
 			name = Release;
 		};
-		A3D20EA82347139A00257F4A /* Debug */ = {
+		A3D20EC8234719D000257F4A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"MeetingAppXCode/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MeetingApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 9MN72CG488;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = MeetingAppXCode/Info.plist;
+				INFOPLIST_FILE = MeetingApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "matsumoto-ts.MeetingAppXCode";
+				PRODUCT_BUNDLE_IDENTIFIER = "matsumoto-ts.MeetingApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		A3D20EA92347139A00257F4A /* Release */ = {
+		A3D20EC9234719D000257F4A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"MeetingAppXCode/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MeetingApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 9MN72CG488;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = MeetingAppXCode/Info.plist;
+				INFOPLIST_FILE = MeetingApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "matsumoto-ts.MeetingAppXCode";
+				PRODUCT_BUNDLE_IDENTIFIER = "matsumoto-ts.MeetingApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -323,25 +323,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A3D20E8E2347139800257F4A /* Build configuration list for PBXProject "MeetingAppXCode" */ = {
+		A3D20EAE234719CF00257F4A /* Build configuration list for PBXProject "MeetingApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A3D20EA52347139A00257F4A /* Debug */,
-				A3D20EA62347139A00257F4A /* Release */,
+				A3D20EC5234719D000257F4A /* Debug */,
+				A3D20EC6234719D000257F4A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A3D20EA72347139A00257F4A /* Build configuration list for PBXNativeTarget "MeetingAppXCode" */ = {
+		A3D20EC7234719D000257F4A /* Build configuration list for PBXNativeTarget "MeetingApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A3D20EA82347139A00257F4A /* Debug */,
-				A3D20EA92347139A00257F4A /* Release */,
+				A3D20EC8234719D000257F4A /* Debug */,
+				A3D20EC9234719D000257F4A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = A3D20E8B2347139800257F4A /* Project object */;
+	rootObject = A3D20EAB234719CF00257F4A /* Project object */;
 }
