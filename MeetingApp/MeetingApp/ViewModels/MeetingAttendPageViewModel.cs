@@ -75,9 +75,9 @@ namespace MeetingApp.ViewModels
 
                 //項目入力値のバリデーション
                 CreateMeetingLabelItemParam = _createMeetingLabelItemValidation.InputValidate(InputLabelItemName);
-
                 if (CreateMeetingLabelItemParam.HasError == true) { return; }
 
+                //項目を追加する先のリストを特定し追加
                 var meetingLabelItemData = new MeetingLabelItemData(lid, InputLabelItemName);
                 TargetMeetingLabels.FirstOrDefault(l => l.Id == lid).MeetingLabelItemDatas.Add(meetingLabelItemData);
 
@@ -92,6 +92,7 @@ namespace MeetingApp.ViewModels
                 //CreateMeetingLabelItemParam = _createMeetingLabelItemValidation.InputValidate();
             });
 
+            //会議入室画面から退室するコマンド
             ExitMeetingCommand = new DelegateCommand(() =>
             {
                 _navigationService.NavigateAsync("MeetingDataTopPage");
