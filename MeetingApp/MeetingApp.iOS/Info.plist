@@ -25,7 +25,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>MeetingApp</string>
 	<key>CFBundleIdentifier</key>
-	<string>matsumoto-ts.MeetingAppXCode</string>
+	<string>matsumoto-ts.MeetingApp</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleIconFiles</key>
