@@ -8,7 +8,7 @@
              x:Name="Root">
 
     <StackLayout>
-        <Frame CornerRadius="10" Margin="10,10,10,10" Opacity="0.7" BackgroundColor="Azure" HeightRequest="180">
+        <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Azure" HeightRequest="100">
             <StackLayout >
                 <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" />
                 <Grid Margin="0,0,0,0">
@@ -35,15 +35,18 @@
         </Frame>
         <StackLayout>
             <Grid Margin="5,5,5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.5*" />
                     <ColumnDefinition Width="0.5*" />
                 </Grid.ColumnDefinitions>
-                <Button Text="入室" HeightRequest="100"/>
+                <Button Text="入室" />
                 <Button Grid.Column="1" Text="退室" Command="{Binding ExitMeetingCommand}"/>
             </Grid>
 
-            <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  Margin="5,5,5,5"  SeparatorVisibility="None" SelectionMode="None">
+            <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  Margin="5,5,5,5"  SeparatorVisibility="None" SelectionMode="None" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

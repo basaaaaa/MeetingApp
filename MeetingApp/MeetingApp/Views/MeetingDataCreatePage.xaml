@@ -38,13 +38,13 @@
                     <Entry Text="{Binding CreateLabelName}" Placeholder="共有事項"/>
                     <Button Text="追加" Command="{Binding CreateMeetingLabelCommand}"/>
                     <Label TextColor="Red" Text="ラベル名が入力されていません" IsVisible="{Binding CreateMeetingLabelParam.BlankLabelName}" />
-                    <ListView ItemsSource="{Binding Labels}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None">
+                    <ListView ItemsSource="{Binding Labels}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None" SelectionMode="None">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
                                     <Frame  CornerRadius="5" BackgroundColor="Beige" Padding="0" Margin="0,5,0,0">
                                         <StackLayout>
-                                            <Label Text="{Binding LabelName}" HorizontalOptions="Center" FontSize="20"/>
+                                            <Label Text="{Binding LabelName}" HorizontalOptions="Center" FontSize="25"/>
                                         </StackLayout>
                                     </Frame>
                                 </ViewCell>
