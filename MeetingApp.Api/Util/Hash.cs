@@ -4,9 +4,9 @@ namespace MeetingApp.Api.Util
 {
     public class Hash
     {
-        public String encrypt(string password)
+        public String Encrypt(string text)
         {
-            byte[] bytedPassword = System.Text.Encoding.UTF8.GetBytes(password);
+            byte[] bytedPassword = System.Text.Encoding.UTF8.GetBytes(text);
             using (var sha256 = new System.Security.Cryptography.SHA256CryptoServiceProvider())
             {
                 byte[] sha256edPassword = sha256.ComputeHash(bytedPassword);
@@ -20,9 +20,9 @@ namespace MeetingApp.Api.Util
                     hashedPassword.Append(b.ToString("x2"));
                 }
 
-                password = hashedPassword.ToString();
+                text = hashedPassword.ToString();
 
-                return password;
+                return text;
             }
         }
     }
