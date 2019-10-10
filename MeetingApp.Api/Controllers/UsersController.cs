@@ -104,7 +104,7 @@ namespace MeetingApp.Api.Controllers
             //Bodyに入力されたPasswordをハッシュ化
             string userPassword = user.Password;
             _hash = new Hash();
-            user.Password = _hash.encrypt(userPassword);
+            user.Password = _hash.Encrypt(userPassword);
 
             _context.User.Add(user);
             try
@@ -138,7 +138,7 @@ namespace MeetingApp.Api.Controllers
             //Bodyに入力されたpasswordをハッシュ化
             string userPassword = user.Password;
             _hash = new Hash();
-            user.Password = _hash.encrypt(userPassword);
+            user.Password = _hash.Encrypt(userPassword);
 
             //bodyで与えられたuserIdとPasswordからテーブル内の一致情報を取得
             var searchedUser = _context.User.Where(u => u.UserId == user.UserId && u.Password == user.Password).FirstOrDefault();
