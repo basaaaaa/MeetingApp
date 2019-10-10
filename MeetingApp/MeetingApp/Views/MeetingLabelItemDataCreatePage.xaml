@@ -2,24 +2,25 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              x:Class="MeetingApp.Views.MeetingLabelItemDataCreatePage"
-             Title="Label Name">
+             Title="{Binding TargetMeetingLabel.LabelName}">
     <StackLayout>
-        <Entry  Placeholder="ラベルに関する項目を入力" />
+        <Entry  Placeholder="ラベルに関する項目を入力" Text="{Binding InputLabelItemName}">            <Entry.Behaviors>                <behaviors:EventToCommandBehavior                    EventName="Unfocused"                    Command="{Binding CreateMeetingLabelItemCommand}" />            </Entry.Behaviors>        </Entry>
+        
+        <!--<Label IsVisible="{Binding CreateMeetingLabelItemParam.BlankItemName}" Text="項目の入力が空白です" TextColor="Red"/>-->
 
-        <!--<Label IsVisible="{Binding Source={x:Reference Root} , Path=BindingContext.CreateMeetingLabelItemParam.BlankItemName}" Text="項目の入力が空白です" TextColor="Red"/>-->
-
-        <!--<ListView ItemsSource="{Binding MeetingLabelItemDatas}" x:Name="Items" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="True"  BackgroundColor="Beige" Margin="0,10,0,10" >
+        <ListView ItemsSource="{Binding MeetingLabelItemDatas}"  SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="True"  Margin="0,10,0,10" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Frame CornerRadius="5" BackgroundColor="White" Margin="0,5,0,0" Parent="{x:Reference Items}">
+                        <Frame CornerRadius="5" BackgroundColor="White" Margin="0,5,0,0" >
                             <Label Text="{Binding ItemName}"  TextColor="Red" />
                         </Frame>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>-->
+        </ListView>
     </StackLayout>
   
 </ContentPage>
