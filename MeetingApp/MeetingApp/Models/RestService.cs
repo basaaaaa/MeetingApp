@@ -304,9 +304,8 @@ namespace MeetingApp
         //MeetingLabelItemŒnAPI
 
         //‰ï‹cƒ‰ƒxƒ‹€–Úî•ñ‚ğV‹K“o˜^‚·‚éAPI‚ÌƒR[ƒ‹
-        public async Task<CreateMeetingLabelItemParam> CreateMeetingLabelItemDataAsync(string uri, string itemName, int lid, int uid)
+        public async Task<CreateMeetingLabelItemParam> CreateMeetingLabelItemDataAsync(string uri, MeetingLabelItemData meetingLabelItem)
         {
-            var meetingLabelItem = new MeetingLabelItemData(lid, uid, itemName);
             var json = JsonConvert.SerializeObject(meetingLabelItem);
 
             var createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
@@ -486,6 +485,9 @@ namespace MeetingApp
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
+                    content = content.TrimStart('[');
+                    content = content.TrimEnd(']');
+
                     var receivedTokenData = JsonConvert.DeserializeObject<TokenData>(content);
 
                     //—LŒøŠÔ“à‚©‚Ç‚¤‚©ŒŸØ

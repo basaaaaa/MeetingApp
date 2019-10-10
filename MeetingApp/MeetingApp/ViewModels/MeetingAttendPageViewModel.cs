@@ -1,8 +1,10 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
+using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Models.Validate;
+using MeetingApp.Utils;
 using Prism.Commands;
 using Prism.Navigation;
 using System;
@@ -17,10 +19,15 @@ namespace MeetingApp.ViewModels
         private MeetingData _targetMeetingData;
         private ObservableCollection<MeetingLabelData> _targetMeetingLabels;
         private string _inputLabelItemName;
+        private int _labelheight;
+
+        private CreateMeetingLabelItemValidation _createMeetingLabelItemValidation;
+
+        private TokenCheckParam _tokenCheckParam;
+        private GetUserParam _getUserParam;
+        private GetMeetingParam _getMeetingParam;
         private CreateMeetingLabelItemParam _createMeetingLabelItemParam;
         private GetMeetingLabelsParam _getMeetingLabelsParam;
-        private CreateMeetingLabelItemValidation _createMeetingLabelItemValidation;
-        private GetMeetingParam _getMeetingParam;
 
         public MeetingData TargetMeetingData
         {
@@ -53,49 +60,135 @@ namespace MeetingApp.ViewModels
             get { return _getMeetingParam; }
             set { SetProperty(ref _getMeetingParam, value); }
         }
+        public int LabelHeight
+        {
+            get { return _labelheight; }
+            set { SetProperty(ref _labelheight, value); }
+        }
+        public TokenCheckParam TokenCheckParam
+        {
+            get { return _tokenCheckParam; }
+            set { SetProperty(ref _tokenCheckParam, value); }
+        }
+
+        public GetUserParam GetUserParam
+        {
+            get { return _getUserParam; }
+            set { SetProperty(ref _getUserParam, value); }
+        }
 
 
         public ICommand CreateMeetingLabelItemCommand { get; }
         public ICommand EnterMeetingCommand { get; }
         public ICommand ExitMeetingCommand { get; }
 
+        public ICommand NavigateMeetingLabelItemDataCreatePage { get; }
+
         INavigationService _navigationService;
 
         RestService _restService;
+        TokenCheckValidation _tokenCheckValidation;
+        ApplicationProperties _applicationProperties;
+
+
         public MeetingAttendPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
             _createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
             _navigationService = navigationService;
+            _tokenCheckValidation = new TokenCheckValidation();
+            _applicationProperties = new ApplicationProperties();
+
 
             //会議の各ラベルに項目（Item)を追加するコマンド
-            CreateMeetingLabelItemCommand = new DelegateCommand<object>((id) =>
+            CreateMeetingLabelItemCommand = new DelegateCommand<object>(async (id) =>
             {
                 var lid = Convert.ToInt32(id);
+                var uid = 0;
 
                 //項目入力値のバリデーション
                 CreateMeetingLabelItemParam = _createMeetingLabelItemValidation.InputValidate(InputLabelItemName);
                 if (CreateMeetingLabelItemParam.HasError == true) { return; }
 
+
                 //項目を追加する先のリストを特定し追加
-                var meetingLabelItemData = new MeetingLabelItemData(lid, InputLabelItemName);
+
+                //uid取得の際のtoken情報照合
+                TokenCheckParam = await _tokenCheckValidation.Validate();
+
+                if (TokenCheckParam.HasError == true)
+                {
+                    return;
+                }
+                else
+                {
+                    //token情報照合に成功したらuid取得
+                    GetUserParam = await _restService.GetUserDataAsync(UserConstants.OpenUserEndPoint, _applicationProperties.GetFromProperties<string>("userId"));
+
+                    if (GetUserParam.HasError == true)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        //userDataの取得に成功したらuidを代入
+                        var userData = GetUserParam.User;
+                        uid = userData.Id;
+
+                    }
+
+                }
+
+                var meetingLabelItemData = new MeetingLabelItemData(lid, uid, InputLabelItemName);
                 TargetMeetingLabels.FirstOrDefault(l => l.Id == lid).MeetingLabelItemDatas.Add(meetingLabelItemData);
 
                 InputLabelItemName = "";
 
             });
 
+
+            //ラベルに項目を追加するページへ遷移するコマンド
+            NavigateMeetingLabelItemDataCreatePage = new DelegateCommand<object>((meetingLabelData) =>
+            {
+                var targetMeetingLabelData = (MeetingLabelData)(meetingLabelData);
+
+
+                var p = new NavigationParameters
+                {
+                    { "meetingLabelData", targetMeetingLabelData}
+                };
+                _navigationService.NavigateAsync("MeetingLabelItemDataCreatePage");
+            });
+
+
             //会議に入室するコマンド
-            EnterMeetingCommand = new DelegateCommand(() =>
+            EnterMeetingCommand = new DelegateCommand(async () =>
             {
                 //バリデーション
                 //CreateMeetingLabelItemParam = _createMeetingLabelItemValidation.InputValidate();
+
+                //ラベルアイテムをDBにInsert
+                foreach (MeetingLabelData l in TargetMeetingLabels)
+                {
+                    foreach (MeetingLabelItemData i in l.MeetingLabelItemDatas)
+                    {
+                        CreateMeetingLabelItemParam = await _restService.CreateMeetingLabelItemDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, i);
+                    }
+                }
+
+                if (CreateMeetingLabelItemParam.IsSuccessed == true)
+                {
+                    await _navigationService.NavigateAsync("MeetingExecuteTopPage");
+                }
+
             });
 
             //会議入室画面から退室するコマンド
             ExitMeetingCommand = new DelegateCommand(() =>
             {
                 _navigationService.NavigateAsync("MeetingDataTopPage");
+
+
             });
 
 

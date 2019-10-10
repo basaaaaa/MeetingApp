@@ -15,7 +15,7 @@ namespace MeetingApp.Api.Models
             _randomText = new RandomText();
 
             var tokenText = _randomText.CreateRandomText();
-            DateTime startTime = DateTime.Now;
+            DateTime startTime = DateTime.UtcNow.AddHours(9);
             DateTime endTime = startTime.AddHours(1);
 
             token.TokenText = tokenText;

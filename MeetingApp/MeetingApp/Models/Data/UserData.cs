@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace MeetingApp.Models.Data
 {
-    class UserData
+    public class UserData
     {
         [JsonProperty("id")]
         public int Id { get; set; }

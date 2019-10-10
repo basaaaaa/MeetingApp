@@ -2,7 +2,7 @@ using MeetingApp.Models.Data;
 
 namespace MeetingApp.Models.Param
 {
-    class GetUserParam
+    public class GetUserParam
     {
         public bool IsSuccessed { get; set; }   //ユーザー単一処理取得が正常に成功したかどうか
 
