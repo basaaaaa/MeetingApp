@@ -21,5 +21,6 @@ namespace MeetingApp.Models.Data
             this.StartTime = startTime;
             this.EndTime = endTime;
         }
+        public TokenData() { }
     }
 }

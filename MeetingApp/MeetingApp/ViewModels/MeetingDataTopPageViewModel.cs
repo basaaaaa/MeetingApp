@@ -1,8 +1,7 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
-using MeetingApp.Models.Constants;
-using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
+using MeetingApp.Models.Validate;
 using MeetingApp.Utils;
 using Prism.Commands;
 using Prism.Navigation;
@@ -22,6 +21,7 @@ namespace MeetingApp.ViewModels
         private string _myUserId;
         private List<MeetingData> _meetings;
         private Boolean _isOwner;
+        private TokenCheckParam _tokenCheckParam;
 
 
         public List<MeetingData> Meetings
@@ -64,6 +64,11 @@ namespace MeetingApp.ViewModels
             get { return _isOwner; }
             set { SetProperty(ref _isOwner, value); }
         }
+        public TokenCheckParam TokenCheckParam
+        {
+            get { return _tokenCheckParam; }
+            set { SetProperty(ref _tokenCheckParam, value); }
+        }
 
         public ICommand NavigateMeetingCreatePage { get; }
         public ICommand NavigateMeetingAttendPage { get; }
@@ -71,7 +76,6 @@ namespace MeetingApp.ViewModels
 
         RestService _restService;
         ApplicationProperties _applicationProperties;
-        TokenCheckParam _tokenCheckParam;
         INavigationService _navigationService;
 
 
@@ -148,21 +152,8 @@ namespace MeetingApp.ViewModels
 
             base.OnNavigatingTo(parameters);
 
-            //LocalÇÃtokenèÓïÒéQè∆
-            if (_applicationProperties.GetFromProperties<TokenData>("token") == null)
-            {
-                _tokenCheckParam.HasError = true;
-                _tokenCheckParam.NoExistMyToken = true;
-
-            }
-            else
-            {
-                var tokenData = _applicationProperties.GetFromProperties<TokenData>("token");
-                //DBÇÃtokenÇ∆è∆çáÇ∑ÇÈAPIÇÃÉRÅ[Éã
-                _tokenCheckParam = await _restService.CheckTokenDataAsync(TokenConstants.OpenTokenEndPoint, tokenData);
-
-
-            }
+            TokenCheckValidation tokenCheckValidation = new TokenCheckValidation();
+            TokenCheckParam = await tokenCheckValidation.Validate();
 
             if (_tokenCheckParam.HasError == true)
             {

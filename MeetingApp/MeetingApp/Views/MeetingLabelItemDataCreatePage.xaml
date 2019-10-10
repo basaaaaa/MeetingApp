@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             x:Class="MeetingApp.Views.MeetingLabelItemDataCreatePage"
+             Title="Label Name">
+    <StackLayout>
+        <Entry  Placeholder="ラベルに関する項目を入力" />
+
+        <!--<Label IsVisible="{Binding Source={x:Reference Root} , Path=BindingContext.CreateMeetingLabelItemParam.BlankItemName}" Text="項目の入力が空白です" TextColor="Red"/>-->
+
+        <!--<ListView ItemsSource="{Binding MeetingLabelItemDatas}" x:Name="Items" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="True"  BackgroundColor="Beige" Margin="0,10,0,10" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame CornerRadius="5" BackgroundColor="White" Margin="0,5,0,0" Parent="{x:Reference Items}">
+                            <Label Text="{Binding ItemName}"  TextColor="Red" />
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>-->
+    </StackLayout>
+  
+</ContentPage>
