@@ -1,11 +1,9 @@
-﻿using System;
+using MeetingApp.Api.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MeetingApp.Api.Models;
 
 namespace MeetingApp.Api.Controllers
 {
@@ -22,9 +20,14 @@ namespace MeetingApp.Api.Controllers
 
         // GET: api/MeetingLabelItems
         [HttpGet]
-        public IEnumerable<MeetingLabelItem> GetMeetingLabelItem()
+        public IEnumerable<MeetingLabelItem> GetMeetingLabelItem([FromQuery]string lid)
         {
-            return _context.MeetingLabelItem;
+            if (lid == null) { return _context.MeetingLabelItem; }
+
+            var integerLid = int.Parse(lid);
+
+            return _context.MeetingLabelItem.Where(i => i.Lid == integerLid);
+
         }
 
         // GET: api/MeetingLabelItems/5

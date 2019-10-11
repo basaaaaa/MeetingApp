@@ -1,4 +1,6 @@
+using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
+using System.Collections.Generic;
 
 namespace MeetingApp.Models.Validate
 {
@@ -14,6 +16,21 @@ namespace MeetingApp.Models.Validate
                 //存在していた場合作成を失敗で終了
                 createMeetingLabelItemParam.HasError = true;
                 createMeetingLabelItemParam.BlankItemName = true;
+            }
+
+            return createMeetingLabelItemParam;
+        }
+
+        public CreateMeetingLabelItemParam AddValidate(List<MeetingLabelItemData> meetingLabelItemDatas)
+        {
+            CreateMeetingLabelItemParam createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
+
+            //リストが空かどうかチェック
+            if (meetingLabelItemDatas.Count == 0)
+            {
+                //存在していた場合作成を失敗で終了
+                createMeetingLabelItemParam.HasError = true;
+                createMeetingLabelItemParam.NoExistItem = true;
             }
 
             return createMeetingLabelItemParam;

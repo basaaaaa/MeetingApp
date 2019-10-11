@@ -229,7 +229,7 @@ namespace MeetingApp
 
         //MeetingLabel系API
 
-        //会議ラベル情報を全件取得するAPIコール
+        //指定midの会議ラベル情報を全件取得するAPIコール
         public async Task<GetMeetingLabelsParam> GetMeetingLabelsDataAsync(string uri, int mid)
         {
             GetMeetingLabelsParam getMeetingLabelsParam = new GetMeetingLabelsParam();
@@ -245,6 +245,13 @@ namespace MeetingApp
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
                     getMeetingLabelsParam.MeetingLabelDatas = JsonConvert.DeserializeObject<List<MeetingLabelData>>(content);
+
+                    //取得したラベル群それぞれ自分の項目を取得する
+                    foreach (MeetingLabelData l in getMeetingLabelsParam.MeetingLabelDatas)
+                    {
+                        await l.GetMyItemsAsync();
+                    }
+
                     getMeetingLabelsParam.IsSuccessed = true;
                 }
                 else
@@ -331,6 +338,38 @@ namespace MeetingApp
             return createMeetingLabelItemParam;
 
 
+        }
+
+        //指定lidの会議ラベルアイテム情報を全件取得するAPIコール
+        public async Task<GetMeetingLabelItemsParam> GetMeetingLabelItemsDataAsync(string uri, int lid)
+        {
+            GetMeetingLabelItemsParam getMeetingLabelItemsParam = new GetMeetingLabelItemsParam();
+
+            //midをクエリストリングに加える
+            uri = uri + "?lid=" + lid;
+
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(content);
+                    getMeetingLabelItemsParam.MeetingLabelItemDatas = JsonConvert.DeserializeObject<List<MeetingLabelItemData>>(content);
+                    getMeetingLabelItemsParam.IsSuccessed = true;
+                }
+                else
+                {
+                    getMeetingLabelItemsParam.HasError = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                getMeetingLabelItemsParam.HasError = true;
+            }
+
+            return getMeetingLabelItemsParam;
         }
 
         //ユーザー情報系API

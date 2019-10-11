@@ -8,12 +8,14 @@ namespace MeetingApp.Models.Param
         public bool HasError { get; set; }  //
 
         public bool BlankItemName { get; set; }
+        public bool NoExistItem { get; set; }
 
         public CreateMeetingLabelItemParam()
         {
             this.IsSuccessed = false;
             this.HasError = false;
             this.BlankItemName = false;
+            this.NoExistItem = false;
         }
     }
 }

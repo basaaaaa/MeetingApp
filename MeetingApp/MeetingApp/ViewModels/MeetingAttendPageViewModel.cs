@@ -1,6 +1,5 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
-using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Models.Validate;
@@ -9,7 +8,6 @@ using Prism.Commands;
 using Prism.Navigation;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 
 namespace MeetingApp.ViewModels
@@ -19,7 +17,7 @@ namespace MeetingApp.ViewModels
         private MeetingData _targetMeetingData;
         private ObservableCollection<MeetingLabelData> _targetMeetingLabels;
         private string _inputLabelItemName;
-        private int _labelheight;
+        private int _labelItemCount;
 
         private CreateMeetingLabelItemValidation _createMeetingLabelItemValidation;
 
@@ -60,10 +58,10 @@ namespace MeetingApp.ViewModels
             get { return _getMeetingParam; }
             set { SetProperty(ref _getMeetingParam, value); }
         }
-        public int LabelHeight
+        public int LabelItemCount
         {
-            get { return _labelheight; }
-            set { SetProperty(ref _labelheight, value); }
+            get { return _labelItemCount; }
+            set { SetProperty(ref _labelItemCount, value); }
         }
         public TokenCheckParam TokenCheckParam
         {
@@ -99,53 +97,7 @@ namespace MeetingApp.ViewModels
             _tokenCheckValidation = new TokenCheckValidation();
             _applicationProperties = new ApplicationProperties();
 
-
-            //会議の各ラベルに項目（Item)を追加するコマンド
-            CreateMeetingLabelItemCommand = new DelegateCommand<object>(async (id) =>
-            {
-                var lid = Convert.ToInt32(id);
-                var uid = 0;
-
-                //項目入力値のバリデーション
-                CreateMeetingLabelItemParam = _createMeetingLabelItemValidation.InputValidate(InputLabelItemName);
-                if (CreateMeetingLabelItemParam.HasError == true) { return; }
-
-
-                //項目を追加する先のリストを特定し追加
-
-                //uid取得の際のtoken情報照合
-                TokenCheckParam = await _tokenCheckValidation.Validate();
-
-                if (TokenCheckParam.HasError == true)
-                {
-                    return;
-                }
-                else
-                {
-                    //token情報照合に成功したらuid取得
-                    GetUserParam = await _restService.GetUserDataAsync(UserConstants.OpenUserEndPoint, _applicationProperties.GetFromProperties<string>("userId"));
-
-                    if (GetUserParam.HasError == true)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        //userDataの取得に成功したらuidを代入
-                        var userData = GetUserParam.User;
-                        uid = userData.Id;
-
-                    }
-
-                }
-
-                var meetingLabelItemData = new MeetingLabelItemData(lid, uid, InputLabelItemName);
-                TargetMeetingLabels.FirstOrDefault(l => l.Id == lid).MeetingLabelItemDatas.Add(meetingLabelItemData);
-
-                InputLabelItemName = "";
-
-            });
-
+            Console.WriteLine(TargetMeetingLabels);
 
             //ラベルに項目を追加するページへ遷移するコマンド
             NavigateMeetingLabelItemDataCreatePage = new DelegateCommand<object>((meetingLabelData) =>
@@ -155,9 +107,9 @@ namespace MeetingApp.ViewModels
 
                 var p = new NavigationParameters
                 {
-                    { "meetingLabelData", targetMeetingLabelData}
+                    { "meetingLabelData", targetMeetingLabelData},
                 };
-                _navigationService.NavigateAsync("MeetingLabelItemDataCreatePage");
+                _navigationService.NavigateAsync("MeetingLabelItemDataCreatePage", p);
             });
 
 
@@ -210,6 +162,42 @@ namespace MeetingApp.ViewModels
             GetMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, (int)parameters["mid"]);
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
 
+            ////取得したラベル群それぞれ自分の項目を取得する
+            //foreach (MeetingLabelData l in TargetMeetingLabels)
+            //{
+            //    await l.GetMyItemsAsync();
+            //}
+
+            Console.WriteLine(TargetMeetingLabels);
+
+
+
         }
+
+        public override void OnNavigatedFrom(INavigationParameters parameters)
+        {
+
+        }
+
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            //項目追加から戻ってきたときの更新処理
+            _restService = new RestService();
+            _getMeetingLabelsParam = new GetMeetingLabelsParam();
+            _getMeetingParam = new GetMeetingParam();
+
+            //対象の会議データ取得
+            GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, (int)parameters["mid"]);
+            TargetMeetingData = GetMeetingParam.MeetingData;
+
+            //会議のラベルを取得
+            GetMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, (int)parameters["mid"]);
+            TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
+
+
+            Console.WriteLine(TargetMeetingLabels);
+
+        }
+
     }
 }
