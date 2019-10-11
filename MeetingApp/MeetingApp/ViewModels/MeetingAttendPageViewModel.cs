@@ -16,7 +16,7 @@ namespace MeetingApp.ViewModels
         private MeetingData _targetMeetingData;
         private ObservableCollection<MeetingLabelData> _targetMeetingLabels;
         private string _inputLabelItemName;
-        private int _labelheight;
+        private int _labelItemCount;
 
         private CreateMeetingLabelItemValidation _createMeetingLabelItemValidation;
 
@@ -57,10 +57,10 @@ namespace MeetingApp.ViewModels
             get { return _getMeetingParam; }
             set { SetProperty(ref _getMeetingParam, value); }
         }
-        public int LabelHeight
+        public int LabelItemCount
         {
-            get { return _labelheight; }
-            set { SetProperty(ref _labelheight, value); }
+            get { return _labelItemCount; }
+            set { SetProperty(ref _labelItemCount, value); }
         }
         public TokenCheckParam TokenCheckParam
         {
@@ -95,8 +95,6 @@ namespace MeetingApp.ViewModels
             _navigationService = navigationService;
             _tokenCheckValidation = new TokenCheckValidation();
             _applicationProperties = new ApplicationProperties();
-
-
 
 
 
@@ -162,6 +160,8 @@ namespace MeetingApp.ViewModels
             //会議のラベルを取得
             GetMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, (int)parameters["mid"]);
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
+
+
 
         }
     }

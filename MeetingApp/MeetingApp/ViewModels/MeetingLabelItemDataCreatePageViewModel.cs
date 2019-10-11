@@ -7,6 +7,7 @@ using MeetingApp.Utils;
 using Prism.Commands;
 using Prism.Navigation;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -17,12 +18,15 @@ namespace MeetingApp.ViewModels
         //データ
         private MeetingLabelData _targetMeetingLabel;
         private string _inputLabelItemName;
-        private ObservableCollection<MeetingLabelItemData> _meetingLabelItemList;
+        private List<MeetingLabelItemData> _additionalMeetingLabelItemDatas; //DB追加用のItemsリスト
+        private ObservableCollection<MeetingLabelItemData> _meetingLabelItemDatas; //
+        private ObservableCollection<MeetingLabelItemData> _getMeetingLabelItemList;　//画面初期化時にGetで全件取得するItemsリスト
 
         //Param
         private CreateMeetingLabelItemParam _createMeetingLabelItemParam;
         private TokenCheckParam _tokenCheckParam;
         private GetUserParam _getUserParam;
+        private GetMeetingLabelItemsParam _getMeetingLabelItemsParam;
 
 
         public MeetingLabelData TargetMeetingLabel
@@ -42,8 +46,18 @@ namespace MeetingApp.ViewModels
         }
         public ObservableCollection<MeetingLabelItemData> MeetingLabelItemDatas
         {
-            get { return _meetingLabelItemList; }
-            set { SetProperty(ref _meetingLabelItemList, value); }
+            get { return _meetingLabelItemDatas; }
+            set { SetProperty(ref _meetingLabelItemDatas, value); }
+        }
+        public List<MeetingLabelItemData> AdditionalMeetingLabelItemDatas
+        {
+            get { return _additionalMeetingLabelItemDatas; }
+            set { SetProperty(ref _additionalMeetingLabelItemDatas, value); }
+        }
+        public ObservableCollection<MeetingLabelItemData> GetMeetingLabelItemDatas
+        {
+            get { return _getMeetingLabelItemList; }
+            set { SetProperty(ref _getMeetingLabelItemList, value); }
         }
         public TokenCheckParam TokenCheckParam
         {
@@ -54,6 +68,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _getUserParam; }
             set { SetProperty(ref _getUserParam, value); }
+        }
+        public GetMeetingLabelItemsParam GetMeetingLabelItemsParam
+        {
+            get { return _getMeetingLabelItemsParam; }
+            set { SetProperty(ref _getMeetingLabelItemsParam, value); }
         }
 
         public ICommand CreateMeetingLabelItemCommand { get; }
@@ -70,7 +89,10 @@ namespace MeetingApp.ViewModels
             _tokenCheckValidation = new TokenCheckValidation();
             _restService = new RestService();
             _applicationProperties = new ApplicationProperties();
-            _meetingLabelItemList = new ObservableCollection<MeetingLabelItemData>();
+            _meetingLabelItemDatas = new ObservableCollection<MeetingLabelItemData>();
+            _createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
+
+            _additionalMeetingLabelItemDatas = new List<MeetingLabelItemData>();
 
             //会議の各ラベルに項目（Item)を追加するコマンド
             CreateMeetingLabelItemCommand = new DelegateCommand(async () =>
@@ -111,18 +133,24 @@ namespace MeetingApp.ViewModels
                 }
                 var meetingLabelItemData = new MeetingLabelItemData(TargetMeetingLabel.Id, inputUid, InputLabelItemName);
                 MeetingLabelItemDatas.Add(meetingLabelItemData);
+                AdditionalMeetingLabelItemDatas.Add(meetingLabelItemData);
 
                 InputLabelItemName = "";
 
             });
         }
 
-        public override void OnNavigatingTo(INavigationParameters parameters)
+        public override async void OnNavigatingTo(INavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
 
             //MeetingAttendPageからのラベルのパラメータを取得
             TargetMeetingLabel = (MeetingLabelData)parameters["meetingLabelData"];
+
+            var targetLid = TargetMeetingLabel.Id;
+            GetMeetingLabelItemsParam = await _restService.GetMeetingLabelItemsDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, targetLid);
+            GetMeetingLabelItemDatas = new ObservableCollection<MeetingLabelItemData>(GetMeetingLabelItemsParam.MeetingLabelItemDatas);
+            MeetingLabelItemDatas = new ObservableCollection<MeetingLabelItemData>(GetMeetingLabelItemDatas);
 
         }
 
@@ -131,7 +159,7 @@ namespace MeetingApp.ViewModels
             base.OnNavigatingTo(parameters);
 
             //ラベルアイテムをDBにInsert
-            foreach (MeetingLabelItemData i in MeetingLabelItemDatas)
+            foreach (MeetingLabelItemData i in AdditionalMeetingLabelItemDatas)
             {
                 CreateMeetingLabelItemParam = await _restService.CreateMeetingLabelItemDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, i);
             }

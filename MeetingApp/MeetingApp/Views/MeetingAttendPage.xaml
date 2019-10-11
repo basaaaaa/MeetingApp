@@ -53,7 +53,10 @@
                             <ViewCell>
                                 <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Beige" >
                                     <StackLayout>
-                                        <Label Text="{Binding LabelName}" FontSize="25"  VerticalOptions="Center"/>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding LabelName}" FontSize="25"  VerticalOptions="Center"/>
+                                            <Label Text="{Binding MeetingLabelItemDatasCount}" />
+                                        </StackLayout>
                                         <Button Text="項目追加" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingLabelItemDataCreatePage}" CommandParameter="{Binding .}" />
                                     </StackLayout>
                                 </Frame>
