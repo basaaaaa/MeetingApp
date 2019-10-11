@@ -1,3 +1,4 @@
+using MeetingApp.Constants;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -5,6 +6,8 @@ namespace MeetingApp.Models.Data
 {
     public class MeetingLabelData
     {
+        RestService _restService;
+
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -13,6 +16,8 @@ namespace MeetingApp.Models.Data
 
         [JsonProperty("labelName")]
         public string LabelName { get; set; }
+        public int MeetingLabelItemDatasCount { get; set; }
+        public string MeetingLabelItemDatasCountString { get; set; }
 
         public List<MeetingLabelItemData> MeetingLabelItemDatas { get; set; }
 
@@ -31,6 +36,14 @@ namespace MeetingApp.Models.Data
             this.Mid = mid;
             this.LabelName = labelName;
             this.MeetingLabelItemDatas = new List<MeetingLabelItemData>();
+        }
+        public async System.Threading.Tasks.Task GetMyItemsAsync()
+        {
+            _restService = new RestService();
+            var getMeetingLabelItemsParam = await _restService.GetMeetingLabelItemsDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, this.Id);
+            this.MeetingLabelItemDatas = getMeetingLabelItemsParam.MeetingLabelItemDatas;
+            this.MeetingLabelItemDatasCount = this.MeetingLabelItemDatas.Count;
+            this.MeetingLabelItemDatasCountString = (this.MeetingLabelItemDatas.Count).ToString();
         }
 
     }

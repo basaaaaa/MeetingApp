@@ -246,14 +246,11 @@ namespace MeetingApp
                     Console.WriteLine(content);
                     getMeetingLabelsParam.MeetingLabelDatas = JsonConvert.DeserializeObject<List<MeetingLabelData>>(content);
 
-                    ////ƒ‰ƒxƒ‹–ˆ‚Ì€–Ú”‚ğæ“¾
-                    //foreach (MeetingLabelData l in getMeetingLabelsParam.MeetingLabelDatas)
-                    //{
-                    //    var getMeetingLabelItemsParam = await GetMeetingLabelItemsDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, l.Id);
-                    //    l.MeetingLabelItemDatas = getMeetingLabelItemsParam.MeetingLabelItemDatas;
-                    //    l.MeetingLabelItemDatasCount = l.MeetingLabelItemDatas.Count;
-                    //}
-
+                    //æ“¾‚µ‚½ƒ‰ƒxƒ‹ŒQ‚»‚ê‚¼‚ê©•ª‚Ì€–Ú‚ğæ“¾‚·‚é
+                    foreach (MeetingLabelData l in getMeetingLabelsParam.MeetingLabelDatas)
+                    {
+                        await l.GetMyItemsAsync();
+                    }
 
                     getMeetingLabelsParam.IsSuccessed = true;
                 }
