@@ -7,6 +7,7 @@ using MeetingApp.Utils;
 using Prism.Commands;
 using Prism.Navigation;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -20,12 +21,16 @@ namespace MeetingApp.ViewModels
         private int _labelItemCount;
 
         private CreateMeetingLabelItemValidation _createMeetingLabelItemValidation;
+        private AttendMeetingValidation _attendMeetingValidation;
 
         private TokenCheckParam _tokenCheckParam;
         private GetUserParam _getUserParam;
         private GetMeetingParam _getMeetingParam;
         private CreateMeetingLabelItemParam _createMeetingLabelItemParam;
         private GetMeetingLabelsParam _getMeetingLabelsParam;
+        private AttendMeetingParam _attendMeetingParam;
+        private DeleteMeetingLabelItemParam _deleteMeetingLabelItemParam;
+
 
         public MeetingData TargetMeetingData
         {
@@ -74,6 +79,16 @@ namespace MeetingApp.ViewModels
             get { return _getUserParam; }
             set { SetProperty(ref _getUserParam, value); }
         }
+        public AttendMeetingParam AttendMeetingParam
+        {
+            get { return _attendMeetingParam; }
+            set { SetProperty(ref _attendMeetingParam, value); }
+        }
+        public DeleteMeetingLabelItemParam DeleteMeetingLabelItemParam
+        {
+            get { return _deleteMeetingLabelItemParam; }
+            set { SetProperty(ref _deleteMeetingLabelItemParam, value); }
+        }
 
 
         public ICommand CreateMeetingLabelItemCommand { get; }
@@ -92,10 +107,16 @@ namespace MeetingApp.ViewModels
         public MeetingAttendPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
+            _attendMeetingParam = new AttendMeetingParam();
+            _deleteMeetingLabelItemParam = new DeleteMeetingLabelItemParam();
+
             _createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
+            _attendMeetingValidation = new AttendMeetingValidation();
+
             _navigationService = navigationService;
             _tokenCheckValidation = new TokenCheckValidation();
             _applicationProperties = new ApplicationProperties();
+            _attendMeetingValidation = new AttendMeetingValidation();
 
             Console.WriteLine(TargetMeetingLabels);
 
@@ -117,18 +138,10 @@ namespace MeetingApp.ViewModels
             EnterMeetingCommand = new DelegateCommand(async () =>
             {
                 //バリデーション
-                //CreateMeetingLabelItemParam = _createMeetingLabelItemValidation.InputValidate();
+                AttendMeetingParam = _attendMeetingValidation.ButtonPushedValidate(new List<MeetingLabelData>(TargetMeetingLabels));
 
-                //ラベルアイテムをDBにInsert
-                foreach (MeetingLabelData l in TargetMeetingLabels)
-                {
-                    foreach (MeetingLabelItemData i in l.MeetingLabelItemDatas)
-                    {
-                        CreateMeetingLabelItemParam = await _restService.CreateMeetingLabelItemDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, i);
-                    }
-                }
 
-                if (CreateMeetingLabelItemParam.IsSuccessed == true)
+                if (AttendMeetingParam.IsSuccessed == true)
                 {
                     await _navigationService.NavigateAsync("MeetingExecuteTopPage");
                 }
@@ -136,9 +149,18 @@ namespace MeetingApp.ViewModels
             });
 
             //会議入室画面から退室するコマンド
-            ExitMeetingCommand = new DelegateCommand(() =>
+            ExitMeetingCommand = new DelegateCommand(async () =>
             {
-                _navigationService.NavigateAsync("MeetingDataTopPage");
+                //TargetMeetingLabelsが所持しているItemsを削除する
+                foreach (MeetingLabelData l in TargetMeetingLabels)
+                {
+                    foreach (MeetingLabelItemData i in l.MeetingLabelItemDatas)
+                    {
+                        DeleteMeetingLabelItemParam = await _restService.DeleteMeetingLabelItemDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, i.Id);
+                    }
+                }
+
+                await _navigationService.NavigateAsync("MeetingDataTopPage");
 
 
             });
@@ -161,12 +183,6 @@ namespace MeetingApp.ViewModels
             //会議のラベルを取得
             GetMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, (int)parameters["mid"]);
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
-
-            ////取得したラベル群それぞれ自分の項目を取得する
-            //foreach (MeetingLabelData l in TargetMeetingLabels)
-            //{
-            //    await l.GetMyItemsAsync();
-            //}
 
             Console.WriteLine(TargetMeetingLabels);
 

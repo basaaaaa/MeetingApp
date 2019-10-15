@@ -45,6 +45,7 @@
                 <Button Text="入室" Command="{Binding EnterMeetingCommand}"/>
                 <Button Grid.Column="1" Text="退室" Command="{Binding ExitMeetingCommand}"/>
             </Grid>
+            <Label Text="未入力のラベル項目があります" IsVisible="{Binding AttendMeetingParam.HasError}" TextColor="Red" />
 
             <StackLayout>
                 <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  Margin="5,5,5,5"  SeparatorVisibility="None" SelectionMode="Single"  RowHeight="50">

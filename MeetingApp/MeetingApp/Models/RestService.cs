@@ -372,6 +372,34 @@ namespace MeetingApp
             return getMeetingLabelItemsParam;
         }
 
+        //会議ラベル項目を1件削除するAPIコール
+        public async Task<DeleteMeetingLabelItemParam> DeleteMeetingLabelItemDataAsync(string uri, int iid)
+        {
+            uri = uri + iid;
+            var deleteMeetingLabelItemParam = new DeleteMeetingLabelItemParam();
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    deleteMeetingLabelItemParam.IsSuccessed = true;
+                    return deleteMeetingLabelItemParam;
+
+                }
+                else
+                {
+                    deleteMeetingLabelItemParam.HasError = true;
+                    return deleteMeetingLabelItemParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                return deleteMeetingLabelItemParam;
+            }
+        }
+
         //ユーザー情報系API
         //userIdからユーザー情報を取得するAPIコール
         public async Task<GetUserParam> GetUserDataAsync(string uri, string userId)
