@@ -1,4 +1,4 @@
-﻿using Xamarin.Forms;
+using Xamarin.Forms;
 
 namespace MeetingApp.Views
 {
@@ -7,6 +7,12 @@ namespace MeetingApp.Views
         public MeetingAttendPage()
         {
             InitializeComponent();
+        }
+        private void onItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item == null)
+                return;
+            ((ListView)sender).SelectedItem = null;
         }
     }
 }
