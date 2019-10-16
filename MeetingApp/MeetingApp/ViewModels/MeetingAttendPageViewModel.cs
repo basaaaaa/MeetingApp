@@ -143,7 +143,7 @@ namespace MeetingApp.ViewModels
 
                 if (AttendMeetingParam.IsSuccessed == true)
                 {
-                    await _navigationService.NavigateAsync("MeetingExecuteTopPage");
+                    await _navigationService.NavigateAsync("/MeetingExecuteTopPage");
                 }
 
             });
