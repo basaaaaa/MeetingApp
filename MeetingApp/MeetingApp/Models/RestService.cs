@@ -400,6 +400,102 @@ namespace MeetingApp
             }
         }
 
+        //Participant系API
+
+        //会議入室する際のParticipantDBにデータを登録するAPIコール
+        public async Task<CreateParticipateParam> CreateParticipateDataAsync(string uri, int uid, int mid)
+        {
+            var participantData = new ParticipantData(uid, mid);
+            var json = JsonConvert.SerializeObject(participantData);
+
+            var createParticipateParam = new CreateParticipateParam();
+
+            try
+            {
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                var response = await _client.PostAsync(uri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);
+                    createParticipateParam.IsSuccessed = response.IsSuccessStatusCode;
+                    return createParticipateParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+            }
+            return createParticipateParam;
+
+
+        }
+
+        //ParticipantにUserDataが存在するかどうかチェックするAPIコール
+        public async Task<CheckParticipantParam> CheckParticipantDataAsync(string uri, int uid)
+        {
+            var checkParticipantParam = new CheckParticipantParam();
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri + "?uid=" + uid);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    if (content == "[null]")
+                    {
+                        checkParticipantParam.HasError = true;
+                        checkParticipantParam.NoExistUser = true;
+                        return checkParticipantParam;
+                    }
+                    //ユーザーが見つかった場合
+                    checkParticipantParam.IsSuccessed = true;
+                    return checkParticipantParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                checkParticipantParam.HasError = true;
+            }
+
+            return checkParticipantParam;
+        }
+
+        //ParticipantsDB中の指定会議のuserを全件取得するAPIコール
+        public async Task<GetParticipantsParam> GetParticipantsDataAsync(string uri, int mid)
+        {
+            var getParticipantsParam = new GetParticipantsParam();
+
+            //midをクエリストリングに加える
+            uri = uri + "?mid=" + mid;
+
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(content);
+                    //getParticipantsParam.MeetingLabelItemDatas = JsonConvert.DeserializeObject<List<MeetingLabelItemData>>(content);
+                    getParticipantsParam.IsSuccessed = true;
+                }
+                else
+                {
+                    getParticipantsParam.HasError = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                getParticipantsParam.HasError = true;
+            }
+
+            return getParticipantsParam;
+        }
+
+
         //ユーザー情報系API
         //userIdからユーザー情報を取得するAPIコール
         public async Task<GetUserParam> GetUserDataAsync(string uri, string userId)

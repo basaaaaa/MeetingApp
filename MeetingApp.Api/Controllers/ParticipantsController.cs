@@ -19,10 +19,42 @@ namespace MeetingApp.Api.Controllers
         }
 
         // GET: api/Participants
+        //[HttpGet]
+        //public IEnumerable<Participant> GetParticipant()
+        //{
+        //    return _context.Participant;
+        //}
+
+
+        // GET: api/Participants
         [HttpGet]
-        public IEnumerable<Participant> GetParticipant()
+        public IEnumerable<Participant> GetParticipant([FromQuery]string uid, [FromQuery]string mid)
         {
-            return _context.Participant;
+            //会議関係なくすべての参加者情報を返す場合
+            if (uid == null && mid == null) { return _context.Participant; }
+
+            //ユーザーを指定して返す場合
+            else if (uid != null && mid == null)
+            {
+                var integerUid = int.Parse(uid);
+
+                var participant = _context.Participant.Where(p => p.Uid == integerUid).FirstOrDefault();
+                return new Participant[] { participant };
+            }
+            //会議IDを指定して指定会議の参加者を返す場合
+            else if (uid == null && mid != null)
+            {
+                var integerMid = int.Parse(mid);
+
+                var participants = _context.Participant.Where(p => p.Mid == integerMid);
+                return participants;
+            }
+            //例外
+            else
+            {
+                return null;
+            }
+            return null;
         }
 
         // GET: api/Participants/5
