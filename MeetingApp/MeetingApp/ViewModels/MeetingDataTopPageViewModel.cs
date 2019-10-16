@@ -140,7 +140,7 @@ namespace MeetingApp.ViewModels
                 };
 
                 //会議情報トップページに遷移する
-                await _navigationService.NavigateAsync("MeetingAttendPage", p);
+                await _navigationService.NavigateAsync("/MeetingAttendPage", p);
 
             });
 
