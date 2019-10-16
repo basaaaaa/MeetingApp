@@ -6,6 +6,9 @@
              x:Class="MeetingApp.Views.MeetingAttendPage"
              Title="会議入室画面"
              x:Name="Root">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
+    </ContentPage.Padding>
 
     <StackLayout>
         <Frame CornerRadius="10" Margin="5,30,5,5" Opacity="0.7" BackgroundColor="Azure" HeightRequest="150">
@@ -47,8 +50,8 @@
             </Grid>
             <Label Text="未入力のラベル項目があります" IsVisible="{Binding AttendMeetingParam.HasError}" TextColor="Red" />
 
-            <StackLayout>
-                <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  Margin="5,5,5,5"  SeparatorVisibility="None" SelectionMode="Single"  RowHeight="50">
+            <StackLayout VerticalOptions="CenterAndExpand">
+                <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  SeparatorVisibility="None" SelectionMode="Single">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior EventName="ItemSelected"
                                                           Command="{Binding NavigateMeetingLabelItemDataCreatePage}" 
@@ -57,18 +60,15 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Beige" >
+                                <Frame CornerRadius="10" Opacity="0.7" BackgroundColor="Beige" Margin="0,10,0,10">
                                     <StackLayout>
-                                        <Grid Margin="5,5,5,5">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="50" />
-                                            </Grid.RowDefinitions>
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="0.8*" />
                                                 <ColumnDefinition Width="0.2*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Text="{Binding LabelName}" FontSize="25"  HorizontalOptions="Start"/>
-                                            <Label Text="{Binding MeetingLabelItemDatasCountString}" Grid.Column="1" TextColor="Red"  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                                            <Label Text="{Binding LabelName}" FontSize="25" VerticalOptions="Center"/>
+                                            <Label Text="{Binding MeetingLabelItemDatasCountString}" Grid.Column="1" TextColor="Red"  HorizontalOptions="CenterAndExpand" VerticalOptions="Center"/>
                                         </Grid>
                                         <!--<StackLayout Orientation="Horizontal">
                                             --><!--<Label Text="{Binding LabelName}" FontSize="25"  HorizontalOptions="Start"/>
