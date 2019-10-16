@@ -1,5 +1,6 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
+using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Models.Validate;
@@ -30,6 +31,7 @@ namespace MeetingApp.ViewModels
         private GetMeetingLabelsParam _getMeetingLabelsParam;
         private AttendMeetingParam _attendMeetingParam;
         private DeleteMeetingLabelItemParam _deleteMeetingLabelItemParam;
+        private CreateParticipateParam _createParticipateParam;
 
 
         public MeetingData TargetMeetingData
@@ -89,6 +91,11 @@ namespace MeetingApp.ViewModels
             get { return _deleteMeetingLabelItemParam; }
             set { SetProperty(ref _deleteMeetingLabelItemParam, value); }
         }
+        public CreateParticipateParam CreateParticipateParam
+        {
+            get { return _createParticipateParam; }
+            set { SetProperty(ref _createParticipateParam, value); }
+        }
 
 
         public ICommand CreateMeetingLabelItemCommand { get; }
@@ -143,7 +150,17 @@ namespace MeetingApp.ViewModels
 
                 if (AttendMeetingParam.IsSuccessed == true)
                 {
-                    await _navigationService.NavigateAsync("/MeetingExecuteTopPage");
+                    GetUserParam = await _restService.GetUserDataAsync(UserConstants.OpenUserEndPoint, _applicationProperties.GetFromProperties<string>("userId"));
+
+                    var mid = GetMeetingParam.MeetingData.Id;
+                    var uid = GetUserParam.User.Id;
+
+                    CreateParticipateParam = await _restService.CreateParticipateDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid, mid);
+
+                    if (CreateParticipateParam.IsSuccessed == true)
+                    {
+                        await _navigationService.NavigateAsync("/MeetingExecuteTopPage");
+                    }
                 }
 
             });
