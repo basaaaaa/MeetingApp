@@ -478,7 +478,7 @@ namespace MeetingApp
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
-                    //getParticipantsParam.MeetingLabelItemDatas = JsonConvert.DeserializeObject<List<MeetingLabelItemData>>(content);
+                    getParticipantsParam.Participants = JsonConvert.DeserializeObject<List<ParticipantData>>(content);
                     getParticipantsParam.IsSuccessed = true;
                 }
                 else

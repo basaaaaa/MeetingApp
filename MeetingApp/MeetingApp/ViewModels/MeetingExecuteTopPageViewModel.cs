@@ -1,9 +1,11 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
 using MeetingApp.Models.Constants;
+using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Utils;
 using Prism.Navigation;
+using System.Collections.ObjectModel;
 
 namespace MeetingApp.ViewModels
 {
@@ -12,6 +14,7 @@ namespace MeetingApp.ViewModels
         //private
         //data
         private MeetingData _targetMeetingData;
+        private ObservableCollection<ParticipantData> _participants;
         //param
         private GetMeetingParam _getMeetingParam;
         private CheckParticipantParam _checkParticipantParam;
@@ -24,6 +27,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _targetMeetingData; }
             set { SetProperty(ref _targetMeetingData, value); }
+        }
+        public ObservableCollection<ParticipantData> Participants
+        {
+            get { return _participants; }
+            set { SetProperty(ref _participants, value); }
         }
 
         //param
@@ -79,6 +87,7 @@ namespace MeetingApp.ViewModels
             var mid = TargetMeetingData.Id;
             //participantsDBの全データ読み込み (midで指定して全件取得）
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
+            Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
 
 
 
