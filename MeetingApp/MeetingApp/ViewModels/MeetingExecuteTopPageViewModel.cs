@@ -15,6 +15,7 @@ namespace MeetingApp.ViewModels
         //data
         private MeetingData _targetMeetingData;
         private ObservableCollection<ParticipantData> _participants;
+
         //param
         private GetMeetingParam _getMeetingParam;
         private CheckParticipantParam _checkParticipantParam;
@@ -89,9 +90,7 @@ namespace MeetingApp.ViewModels
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
             Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
 
-
-
-
+            
 
 
 

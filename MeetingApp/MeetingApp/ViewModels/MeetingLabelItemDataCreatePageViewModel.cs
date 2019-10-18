@@ -145,9 +145,12 @@ namespace MeetingApp.ViewModels
 
             //MeetingAttendPageからのラベルのパラメータを取得
             TargetMeetingLabel = (MeetingLabelData)parameters["meetingLabelData"];
+            //user情報の取得
+            GetUserParam = await _restService.GetUserDataAsync(UserConstants.OpenUserEndPoint, _applicationProperties.GetFromProperties<string>("userId"));
+            var uid = GetUserParam.User.Id;
 
             var targetLid = TargetMeetingLabel.Id;
-            GetMeetingLabelItemsParam = await _restService.GetMeetingLabelItemsDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, targetLid);
+            GetMeetingLabelItemsParam = await _restService.GetMeetingLabelItemsDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, targetLid, uid);
             GetMeetingLabelItemDatas = new ObservableCollection<MeetingLabelItemData>(GetMeetingLabelItemsParam.MeetingLabelItemDatas);
             MeetingLabelItemDatas = new ObservableCollection<MeetingLabelItemData>(GetMeetingLabelItemDatas);
 

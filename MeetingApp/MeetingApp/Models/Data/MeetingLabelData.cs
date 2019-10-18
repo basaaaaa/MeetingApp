@@ -37,10 +37,12 @@ namespace MeetingApp.Models.Data
             this.LabelName = labelName;
             this.MeetingLabelItemDatas = new List<MeetingLabelItemData>();
         }
-        public async System.Threading.Tasks.Task GetMyItemsAsync()
+        public async System.Threading.Tasks.Task GetMyItemsAsync(int uid)
         {
             _restService = new RestService();
-            var getMeetingLabelItemsParam = await _restService.GetMeetingLabelItemsDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, this.Id);
+
+
+            var getMeetingLabelItemsParam = await _restService.GetMeetingLabelItemsDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, this.Id, uid);
             this.MeetingLabelItemDatas = getMeetingLabelItemsParam.MeetingLabelItemDatas;
             this.MeetingLabelItemDatasCount = this.MeetingLabelItemDatas.Count;
             this.MeetingLabelItemDatasCountString = (this.MeetingLabelItemDatas.Count).ToString();
