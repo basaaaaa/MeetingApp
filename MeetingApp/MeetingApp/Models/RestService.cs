@@ -230,7 +230,7 @@ namespace MeetingApp
         //MeetingLabel系API
 
         //指定midの会議ラベル情報を全件取得するAPIコール
-        public async Task<GetMeetingLabelsParam> GetMeetingLabelsDataAsync(string uri, int mid)
+        public async Task<GetMeetingLabelsParam> GetMeetingLabelsDataAsync(string uri, int mid, int uid)
         {
             GetMeetingLabelsParam getMeetingLabelsParam = new GetMeetingLabelsParam();
 
@@ -249,7 +249,7 @@ namespace MeetingApp
                     //取得したラベル群それぞれ自分の項目を取得する
                     foreach (MeetingLabelData l in getMeetingLabelsParam.MeetingLabelDatas)
                     {
-                        await l.GetMyItemsAsync();
+                        await l.GetMyItemsAsync(uid);
                     }
 
                     getMeetingLabelsParam.IsSuccessed = true;
@@ -340,13 +340,13 @@ namespace MeetingApp
 
         }
 
-        //指定lidの会議ラベルアイテム情報を全件取得するAPIコール
-        public async Task<GetMeetingLabelItemsParam> GetMeetingLabelItemsDataAsync(string uri, int lid)
+        //指定lid,uidの会議ラベルアイテム情報を全件取得するAPIコール
+        public async Task<GetMeetingLabelItemsParam> GetMeetingLabelItemsDataAsync(string uri, int lid, int uid)
         {
             GetMeetingLabelItemsParam getMeetingLabelItemsParam = new GetMeetingLabelItemsParam();
 
             //midをクエリストリングに加える
-            uri = uri + "?lid=" + lid;
+            uri = uri + "?lid=" + lid + "&uid=" + uid;
 
             try
             {
@@ -478,7 +478,16 @@ namespace MeetingApp
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
-                    //getParticipantsParam.MeetingLabelItemDatas = JsonConvert.DeserializeObject<List<MeetingLabelItemData>>(content);
+                    getParticipantsParam.Participants = JsonConvert.DeserializeObject<List<ParticipantData>>(content);
+
+                    //View用に自身のuserId、各ラベル項目を取得
+                    foreach (ParticipantData p in getParticipantsParam.Participants)
+                    {
+                        await p.GetMyUserId();
+                        await p.GetMyLabelItems();
+                    }
+
+
                     getParticipantsParam.IsSuccessed = true;
                 }
                 else
@@ -512,6 +521,37 @@ namespace MeetingApp
                     content = content.TrimStart('[');
                     content = content.TrimEnd(']');
                     Console.WriteLine(content);
+
+                    getUserParam.User = JsonConvert.DeserializeObject<UserData>(content);
+
+                    getUserParam.IsSuccessed = true;
+                    return getUserParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                getUserParam.HasError = true;
+            }
+
+            return getUserParam;
+        }
+
+        //userIdからユーザー情報を取得するAPIコール
+        public async Task<GetUserParam> GetUserDataAsync(string uri, int uid)
+        {
+            var getUserParam = new GetUserParam();
+
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri + uid);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(content);
+                    //content = content.TrimStart('[');
+                    //content = content.TrimEnd(']');
+                    //Console.WriteLine(content);
 
                     getUserParam.User = JsonConvert.DeserializeObject<UserData>(content);
 

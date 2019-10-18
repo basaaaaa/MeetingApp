@@ -18,17 +18,55 @@ namespace MeetingApp.Api.Controllers
             _context = context;
         }
 
+        //// GET: api/MeetingLabelItems
+        //[HttpGet]
+        //public IEnumerable<MeetingLabelItem> GetMeetingLabelItem([FromQuery]string lid)
+        //{
+        //    if (lid == null) { return _context.MeetingLabelItem; }
+
+        //    var integerLid = int.Parse(lid);
+
+        //    return _context.MeetingLabelItem.Where(i => i.Lid == integerLid);
+
+        //}
+
         // GET: api/MeetingLabelItems
         [HttpGet]
-        public IEnumerable<MeetingLabelItem> GetMeetingLabelItem([FromQuery]string lid)
+        public IEnumerable<MeetingLabelItem> GetMeetingLabelItem([FromQuery]string uid, [FromQuery]string lid)
         {
-            if (lid == null) { return _context.MeetingLabelItem; }
+            //すべてのラベル項目情報を返す場合
+            if (lid == null && uid == null) { return _context.MeetingLabelItem; }
 
-            var integerLid = int.Parse(lid);
+            //特定のユーザーが作成したラベル項目を全て返す場合
+            else if (uid != null && lid == null)
+            {
+                var integerUid = int.Parse(uid);
 
-            return _context.MeetingLabelItem.Where(i => i.Lid == integerLid);
+                var meetingLabelItems = _context.MeetingLabelItem.Where(i => i.Uid == integerUid);
+                return meetingLabelItems;
+            }
+            //指定ラベルに関する項目をユーザー関係なく返す場合
+            else if (uid == null && lid != null)
+            {
+                var integerLid = int.Parse(lid);
 
+                var meetingLabelItems = _context.MeetingLabelItem.Where(i => i.Lid == integerLid);
+                return meetingLabelItems;
+            }
+            //指定ラベルに関する項目を指定ユーザーが作成した分返す場合
+            else if (uid != null && lid != null)
+            {
+                var integerUid = int.Parse(uid);
+                var integerLid = int.Parse(lid);
+
+                var meetingLabelItems = _context.MeetingLabelItem.Where(i => i.Uid == integerUid && i.Lid == integerLid);
+                return meetingLabelItems;
+
+            }
+            return null;
         }
+
+
 
         // GET: api/MeetingLabelItems/5
         [HttpGet("{id}")]
