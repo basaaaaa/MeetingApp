@@ -4,6 +4,23 @@
              xmlns:prism="http://prismlibrary.com"
              x:Class="MeetingApp.Views.MeetingExecuteTopPage">
 
-    <StackLayout></StackLayout>
+    <StackLayout>
+        <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5">
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame BackgroundColor="Gray" CornerRadius="10" Margin="5,5,5,5">
+                            <StackLayout>
+
+                                <Label Text="{Binding UserId}" TextColor="White" FontSize="25"/>
+
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
   
 </ContentPage>
