@@ -38,6 +38,7 @@ namespace MeetingApp
             containerRegistry.RegisterForNavigation<MeetingAttendPage, MeetingAttendPageViewModel>();
             containerRegistry.RegisterForNavigation<MeetingExecuteTopPage, MeetingExecuteTopPageViewModel>();
             containerRegistry.RegisterForNavigation<MeetingLabelItemDataCreatePage, MeetingLabelItemDataCreatePageViewModel>();
+            containerRegistry.RegisterForNavigation<MeetingExecuteUserPage, MeetingExecuteUserPageViewModel>();
         }
     }
 }
