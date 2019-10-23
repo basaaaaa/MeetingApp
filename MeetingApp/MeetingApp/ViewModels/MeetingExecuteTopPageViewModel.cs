@@ -113,6 +113,13 @@ namespace MeetingApp.ViewModels
             {
                 var targetParticipantData = (ParticipantData)participant;
 
+                var p = new NavigationParameters
+                {
+                    { "participantData", targetParticipantData},
+                };
+
+                _navigationService.NavigateAsync("MeetingExecuteUserPage", p);
+
             });
 
 
