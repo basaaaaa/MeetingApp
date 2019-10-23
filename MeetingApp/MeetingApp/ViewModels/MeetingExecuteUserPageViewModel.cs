@@ -1,15 +1,23 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using MeetingApp.Models.Data;
+using Prism.Navigation;
 
 namespace MeetingApp.ViewModels
 {
-    public class MeetingExecuteUserPageViewModel : BindableBase
+    public class MeetingExecuteUserPageViewModel : ViewModelBase
     {
-        public MeetingExecuteUserPageViewModel()
+        public MeetingExecuteUserPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+
+        }
+
+        public override void OnNavigatingTo(INavigationParameters parameters)
+        {
+            base.OnNavigatingTo(parameters);
+
+            var participantData = (ParticipantData)parameters["participantData"];
+
+
+
 
         }
     }

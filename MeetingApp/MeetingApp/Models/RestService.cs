@@ -484,7 +484,7 @@ namespace MeetingApp
                     foreach (ParticipantData p in getParticipantsParam.Participants)
                     {
                         await p.GetMyUserId();
-                        await p.GetMyLabelItems();
+                        //await p.GetMyLabelItems();
                     }
 
 
