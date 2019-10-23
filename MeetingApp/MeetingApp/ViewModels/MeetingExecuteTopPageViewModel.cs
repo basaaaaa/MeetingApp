@@ -68,6 +68,8 @@ namespace MeetingApp.ViewModels
 
         //Command
         public ICommand MeetingExitCommand { get; }
+        public ICommand MeetingEndCommand { get; }
+        public ICommand NavigateMeetingExecuteUserPage { get; }
 
 
         RestService _restService;
@@ -92,7 +94,28 @@ namespace MeetingApp.ViewModels
                 {
                     await _navigationService.NavigateAsync("MeetingDataTopPage");
                 }
+
             });
+
+            MeetingEndCommand = new DelegateCommand(async () =>
+            {
+                var deleteParticipantParam = new DeleteParticipantParam();
+
+                while (deleteParticipantParam.HasError != true)
+                {
+                    deleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+                }
+                await _navigationService.NavigateAsync("MeetingDataTopPage");
+
+            });
+
+            NavigateMeetingExecuteUserPage = new DelegateCommand<object>((participant) =>
+            {
+                var targetParticipantData = (ParticipantData)participant;
+
+            });
+
+
 
         }
 
