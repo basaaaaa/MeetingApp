@@ -122,15 +122,19 @@ namespace MeetingApp.Api.Controllers
         }
 
         // DELETE: api/Participants/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteParticipant([FromRoute] int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteParticipant([FromQuery] string uid, string mid)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var participant = await _context.Participant.FindAsync(id);
+            var integerUid = int.Parse(uid);
+            var integerMid = int.Parse(mid);
+
+            var participant = _context.Participant.Where(p => p.Uid == integerUid && p.Mid == integerMid).FirstOrDefault();
+
             if (participant == null)
             {
                 return NotFound();
@@ -141,6 +145,8 @@ namespace MeetingApp.Api.Controllers
 
             return Ok(participant);
         }
+
+
 
         private bool ParticipantExists(int id)
         {

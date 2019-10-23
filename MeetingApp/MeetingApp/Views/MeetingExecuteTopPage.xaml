@@ -2,9 +2,17 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             x:Class="MeetingApp.Views.MeetingExecuteTopPage">
+             x:Class="MeetingApp.Views.MeetingExecuteTopPage"
+             Title="{Binding TargetMeetingData.Title}">
 
     <StackLayout>
+        <!--<Frame BackgroundColor="Silver" CornerRadius="10" Margin="5,5,5,5">
+            <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" HorizontalOptions="Center"/>
+        </Frame>-->
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="退出する" Command="{Binding MeetingExitCommand}"/>
+            <Button Text="会議の終了"/>
+        </StackLayout>
         <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5">
             
             <ListView.ItemTemplate>
