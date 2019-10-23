@@ -4,8 +4,10 @@ using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Utils;
+using Prism.Commands;
 using Prism.Navigation;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace MeetingApp.ViewModels
 {
@@ -21,6 +23,7 @@ namespace MeetingApp.ViewModels
         private CheckParticipantParam _checkParticipantParam;
         private GetUserParam _getUserParam;
         private GetParticipantsParam _getParticipantsParam;
+        private DeleteParticipantParam _deleteParticipantParam;
 
         //public
         //data
@@ -56,15 +59,40 @@ namespace MeetingApp.ViewModels
             get { return _getParticipantsParam; }
             set { SetProperty(ref _getParticipantsParam, value); }
         }
+        public DeleteParticipantParam DeleteParticipantParam
+        {
+            get { return _deleteParticipantParam; }
+            set { SetProperty(ref _deleteParticipantParam, value); }
+        }
 
+
+        //Command
+        public ICommand MeetingExitCommand { get; }
 
 
         RestService _restService;
         ApplicationProperties _applicationProperties;
+        INavigationService _navigationService;
 
 
         public MeetingExecuteTopPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+            _navigationService = navigationService;
+            _restService = new RestService();
+
+
+            //会議から退出するコマンド
+            MeetingExitCommand = new DelegateCommand(async () =>
+            {
+
+                //参加情報をparticipantDBから削除するAPIのコール
+                DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+
+                if (DeleteParticipantParam.IsSuccessed == true)
+                {
+                    await _navigationService.NavigateAsync("MeetingDataTopPage");
+                }
+            });
 
         }
 
@@ -90,7 +118,7 @@ namespace MeetingApp.ViewModels
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
             Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
 
-            
+
 
 
 

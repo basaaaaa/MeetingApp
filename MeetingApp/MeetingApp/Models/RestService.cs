@@ -504,6 +504,36 @@ namespace MeetingApp
             return getParticipantsParam;
         }
 
+        //ParticipantDBから1件削除するAPIコール
+        public async Task<DeleteParticipantParam> DeleteParticipantDataAsync(string uri, int uid, int mid)
+        {
+            uri = uri + "?uid=" + uid + "&mid=" + mid;
+            var deleteParticipantParam = new DeleteParticipantParam();
+
+            try
+            {
+                HttpResponseMessage response = await _client.DeleteAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    deleteParticipantParam.IsSuccessed = true;
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("DELETE SUCCESSED");
+                    return deleteParticipantParam;
+                }
+
+                deleteParticipantParam.HasError = true;
+                return deleteParticipantParam;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                deleteParticipantParam.HasError = true;
+                return deleteParticipantParam;
+
+            }
+        }
 
         //ユーザー情報系API
         //userIdからユーザー情報を取得するAPIコール
