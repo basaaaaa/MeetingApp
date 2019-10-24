@@ -9,7 +9,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Frame CornerRadius="5" BackgroundColor="LightGray" Margin="0,5,0,0" >
+                        <Frame CornerRadius="5" BackgroundColor="White" Margin="0,5,0,0" >
                             <Label Text="{Binding ItemName}"  TextColor="Red" />
                         </Frame>
                     </ViewCell>

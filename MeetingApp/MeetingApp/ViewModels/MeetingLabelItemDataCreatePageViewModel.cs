@@ -6,6 +6,7 @@ using MeetingApp.Models.Validate;
 using MeetingApp.Utils;
 using Prism.Commands;
 using Prism.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -156,17 +157,20 @@ namespace MeetingApp.ViewModels
 
         }
 
+        //戻るボタンを押してMeetingAttendPageに遷移するときの処理
         public override async void OnNavigatedFrom(INavigationParameters parameters)
         {
+            
             base.OnNavigatingTo(parameters);
 
-            parameters.Add("mid", TargetMeetingLabel.Mid);
+            parameters.Add("mid", TargetMeetingLabel.Mid);            
 
             //ラベルアイテムをDBにInsert
             foreach (MeetingLabelItemData i in AdditionalMeetingLabelItemDatas)
             {
                 CreateMeetingLabelItemParam = await _restService.CreateMeetingLabelItemDataAsync(MeetingConstants.OPENMeetingLabelItemEndPoint, i);
             }
+
 
 
         }

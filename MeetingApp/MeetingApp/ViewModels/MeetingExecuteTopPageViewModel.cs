@@ -148,9 +148,15 @@ namespace MeetingApp.ViewModels
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
             Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
 
+        }
 
+        //戻るボタンを押してMeetingAttendPageに遷移するときの処理
+        public override async void OnNavigatedFrom(INavigationParameters parameters)
+        {
 
+            base.OnNavigatingTo(parameters);
 
+            parameters.Add("mid", GetMeetingParam.MeetingData.Id);
 
         }
     }
