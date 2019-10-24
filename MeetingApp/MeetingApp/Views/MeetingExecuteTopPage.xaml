@@ -15,7 +15,7 @@
             <Button Text="退出する" Command="{Binding MeetingExitCommand}"/>
             <Button Text="会議の終了" Command="{Binding MeetingEndCommand}"/>
         </StackLayout>
-        <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5">
+        <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None">
             <ListView.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="ItemSelected"
                                                           Command="{Binding NavigateMeetingExecuteUserPage}" 
