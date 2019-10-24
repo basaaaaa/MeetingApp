@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  MeetingApp
 //
-//  Created by 松本 翼 on 2019/10/04.
+//  Created by 松本 翼 on 2019/10/24.
 //  Copyright © 2019 松本 翼. All rights reserved.
 //
 
