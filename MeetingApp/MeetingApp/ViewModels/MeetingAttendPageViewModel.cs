@@ -160,9 +160,9 @@ namespace MeetingApp.ViewModels
                     if (CreateParticipateParam.IsSuccessed == true)
                     {
                         var p = new NavigationParameters
-                {
-                    { "mid", GetMeetingParam.MeetingData.Id}
-                };
+                            {
+                                { "mid", GetMeetingParam.MeetingData.Id}
+                            };
                         await _navigationService.NavigateAsync("MeetingExecuteTopPage", p);
                     }
                 }
