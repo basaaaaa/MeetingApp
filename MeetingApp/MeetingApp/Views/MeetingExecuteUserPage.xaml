@@ -2,6 +2,39 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             x:Class="MeetingApp.Views.MeetingExecuteUserPage">
-  
+             xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             x:Class="MeetingApp.Views.MeetingExecuteUserPage"
+             Title="{Binding ParticipantData.UserId}">
+    <StackLayout>
+        <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  Margin="5,5,5,5"  SeparatorVisibility="None" SelectionMode="Single"  RowHeight="50">
+            <ListView.Behaviors>
+                <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                                                          Command="{Binding NavigateMeetingExecuteUserPageCommand}"
+                                                          EventArgsParameterPath="SelectedItem"/>
+            </ListView.Behaviors>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Beige" >
+                            <StackLayout>
+                                <Grid Margin="5,5,5,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="50" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.8*" />
+                                        <ColumnDefinition Width="0.2*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding LabelName}" FontSize="25"  HorizontalOptions="Start"/>
+                                    <Label Text="{Binding MeetingLabelItemDatasCountString}" Grid.Column="1" TextColor="Red"  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                                </Grid>
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+
 </ContentPage>
