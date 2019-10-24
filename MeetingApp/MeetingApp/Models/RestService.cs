@@ -408,6 +408,14 @@ namespace MeetingApp
             var participantData = new ParticipantData(uid, mid);
             var json = JsonConvert.SerializeObject(participantData);
 
+            var jobj = JObject.Parse(json);
+            //MeetingDataƒ‚ƒfƒ‹‚©‚çJSON‰»‚É•s—v‚È‘®«‚ğíœ
+            jobj.Remove("id");
+            jobj.Remove("UserId");
+            jobj.Remove("LabelItems");
+
+            json = JsonConvert.SerializeObject(jobj);
+
             var createParticipateParam = new CreateParticipateParam();
 
             try

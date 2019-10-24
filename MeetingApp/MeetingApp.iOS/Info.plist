@@ -52,7 +52,7 @@
 	<string>MeetingApp</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowArbitraryLoads</key>
+		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
 </dict>
