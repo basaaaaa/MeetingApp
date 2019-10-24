@@ -222,11 +222,12 @@ namespace MeetingApp.ViewModels
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            //項目追加から戻ってきたときの更新処理
-            _restService = new RestService();
-            _getMeetingLabelsParam = new GetMeetingLabelsParam();
-            _getMeetingParam = new GetMeetingParam();
 
+        _restService = new RestService();
+        _getMeetingLabelsParam = new GetMeetingLabelsParam();
+        _getMeetingParam = new GetMeetingParam();
+
+        //項目追加から戻ってきたときの更新処理
             //対象の会議データ取得
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, (int)parameters["mid"]);
             TargetMeetingData = GetMeetingParam.MeetingData;
@@ -239,8 +240,8 @@ namespace MeetingApp.ViewModels
             GetMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, (int)parameters["mid"], uid);
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
 
-
             Console.WriteLine(TargetMeetingLabels);
+
 
         }
 
