@@ -15,13 +15,13 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Azure">
+                        <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Gray" HasShadow="false">
                             <StackLayout >
-                                <Label Text="{Binding Title}" FontSize="30" />
+                                <Label Text="{Binding Title}" FontSize="30" TextColor="White" FontAttributes="Bold"/>
                                 <Grid Margin="0,20,0,20">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.2*" />
-                                        <ColumnDefinition Width="0.7*" />
+                                        <ColumnDefinition Width="0.4*" />
+                                        <ColumnDefinition Width="0.6*" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="30" />
@@ -29,22 +29,22 @@
                                         <RowDefinition Height="30" />
                                         <RowDefinition Height="30" />
                                     </Grid.RowDefinitions>
-                                    <Label Text="実施日" />
-                                    <Label Grid.Column="1" Text="{Binding Date}" />
-                                    <Label Grid.Row="1" Text="開始時間"/>
-                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding StartTime}"/>
-                                    <Label Grid.Row="2" Text="終了時間"/>
-                                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding EndTime}"/>
-                                    <Label Grid.Row="3" Text="場所"/>
-                                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding Location}"/>
+                                    <Label Text="実施日" TextColor="White"/>
+                                    <Label Grid.Column="1" Text="{Binding Date}" TextColor="White"/>
+                                    <Label Grid.Row="1" Text="開始時間" TextColor="White"/>
+                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding StartTime}" TextColor="White"/>
+                                    <Label Grid.Row="2" Text="終了時間" TextColor="White"/>
+                                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding EndTime}" TextColor="White"/>
+                                    <Label Grid.Row="3" Text="場所" TextColor="White"/>
+                                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding Location}" TextColor="White"/>
                                 </Grid>
                                 <Grid Margin="20,0,20,5">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="0.5*" />
                                         <ColumnDefinition Width="0.5*" />
                                     </Grid.ColumnDefinitions>
-                                    <Button Text="Attend" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}"/>
-                                    <Button Grid.Column="1" Text="Delete" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}"/>
+                                    <Button Text="Attend" TextColor="White" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}" BackgroundColor="Black" />
+                                    <Button Grid.Column="1" Text="Delete" TextColor="White" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}" BackgroundColor="Black"/>
                                 </Grid>
                             </StackLayout>
                         </Frame>
