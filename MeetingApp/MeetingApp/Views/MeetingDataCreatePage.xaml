@@ -6,10 +6,10 @@
              x:Class="MeetingApp.Views.MeetingDataCreatePage">
     <ScrollView>
         <StackLayout VerticalOptions="Center">
-            <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Azure" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+            <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HasShadow="false" WidthRequest="300">
                 <StackLayout>
 
-                    <Button Text="会議作成" Command="{Binding CreateMeetingDataCommand}" HorizontalOptions="Center"/>
+                    <Button Text=" 会議作成 " Command="{Binding CreateMeetingDataCommand}" HorizontalOptions="Center" TextColor="White" BackgroundColor="Black"/>
                     <Label IsVisible="{Binding CreateMeetingParam.BlankMeetingTitle}" TextColor="Red" Text="会議タイトルが入力されていません" />
                     <Label TextColor="Red" Text="会議の実施日が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingDate}"/>
                     <Label TextColor="Red" Text="会議の実施日が適切な入力形式ではありません" IsVisible="{Binding CreateMeetingParam.NotDateType}"/>
@@ -19,40 +19,43 @@
                     <Label TextColor="Red" Text="会議の実施場所が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingLocation}"/>
                     <Label TextColor="Red" Text="ラベルが追加されていません" IsVisible="{Binding CreateMeetingParam.NoExistLabel}"/>
 
-                    <Label Text="会議タイトル" />
+                    <Label Text="会議タイトル" TextColor="White"/>
                     <Entry Placeholder="朝会" Text="{Binding InputMeetingTitle}" />
 
-                    <Label Text="実施日" />
+                    <Label Text="実施日" TextColor="White"/>
                     <Entry Placeholder="2019-09-04" Text="{Binding InputMeetingDate}"/>
 
-                    <Label Text="開始時間" />
+                    <Label Text="開始時間" TextColor="White"/>
                     <Entry Placeholder="10:00" Text="{Binding InputMeetingStartTime}"/>
 
-                    <Label Text="終了時間" />
+                    <Label Text="終了時間" TextColor="White"/>
                     <Entry Placeholder="10:15" Text="{Binding InputMeetingEndTime}" />
 
-                    <Label Text="実施場所" />
+                    <Label Text="実施場所" TextColor="White"/>
                     <Entry Placeholder="第3MTGスペース" Text="{Binding InputMeetingLocation}"/>
                     
-                    <Label Text="カードラベル" VerticalOptions="Center"/>
+                    <Label Text="カードラベル" VerticalOptions="Center" TextColor="White"/>
                     <Entry Text="{Binding CreateLabelName}" Placeholder="共有事項"/>
                     <Button Text="追加" Command="{Binding CreateMeetingLabelCommand}"/>
                     <Label TextColor="Red" Text="ラベル名が入力されていません" IsVisible="{Binding CreateMeetingLabelParam.BlankLabelName}" />
-                    <ListView ItemsSource="{Binding Labels}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None" SelectionMode="None">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Frame  CornerRadius="5" BackgroundColor="Beige" Padding="0" Margin="0,5,0,0">
-                                        <StackLayout>
-                                            <Label Text="{Binding LabelName}" HorizontalOptions="Center" FontSize="25"/>
-                                        </StackLayout>
-                                    </Frame>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+               
                 </StackLayout>
             </Frame>
+            <StackLayout Margin="0,5,0,0">
+                <ListView ItemsSource="{Binding Labels}"  HasUnevenRows="True"  Margin="50,0,50,5"  SeparatorVisibility="None" SelectionMode="None" RowHeight="70">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame CornerRadius="5" BackgroundColor="WhiteSmoke" Margin="0,5,0,0" HasShadow="false">
+                                    <StackLayout>
+                                        <Label Text="{Binding LabelName}" HorizontalOptions="Center" FontSize="25"/>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
         </StackLayout>
     </ScrollView>
     

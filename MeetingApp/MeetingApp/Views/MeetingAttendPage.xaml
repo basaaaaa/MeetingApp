@@ -45,8 +45,8 @@
                     <ColumnDefinition Width="0.5*" />
                     <ColumnDefinition Width="0.5*" />
                 </Grid.ColumnDefinitions>
-                <Button Text="入室" Command="{Binding EnterMeetingCommand}"/>
-                <Button Grid.Column="1" Text="退室" Command="{Binding ExitMeetingCommand}"/>
+                <Button Text="入室" TextColor="White" Command="{Binding EnterMeetingCommand}" BackgroundColor="Black"/>
+                <Button Grid.Column="1" Text="退室" TextColor="White" Command="{Binding ExitMeetingCommand}" BackgroundColor="Black"/>
             </Grid>
             <Label Text="未入力のラベル項目があります" IsVisible="{Binding AttendMeetingParam.HasError}" TextColor="Red" />
 
@@ -60,7 +60,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame CornerRadius="10" Opacity="0.7" BackgroundColor="Beige" Margin="5,10,5,10" HasShadow="false">
+                                <Frame CornerRadius="10" Opacity="0.7" BackgroundColor="WhiteSmoke" Margin="5,5,5,5" HasShadow="false">
                                     <StackLayout>
                                         <Grid>
                                             <Grid.ColumnDefinitions>

@@ -44,7 +44,7 @@
                                         <ColumnDefinition Width="0.5*" />
                                     </Grid.ColumnDefinitions>
                                     <Button Text="Attend" TextColor="White" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}" BackgroundColor="Black" />
-                                    <Button Grid.Column="1" Text="Delete" TextColor="White" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}"/>
+                                    <Button Grid.Column="1" Text="Delete" TextColor="White" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}" BackgroundColor="Black"/>
                                 </Grid>
                             </StackLayout>
                         </Frame>
