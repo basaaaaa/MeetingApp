@@ -100,6 +100,10 @@ namespace MeetingApp.Api.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.LastUpdateTime)
+                    .HasColumnName("last_update_time")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Mid).HasColumnName("mid");
 
                 entity.Property(e => e.Uid).HasColumnName("uid");

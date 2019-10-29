@@ -5,6 +5,6 @@ namespace MeetingApp.Constants
         public const string OpenMeetingEndPoint = "https://meeting-app-api.azurewebsites.net/api/Meetings/";
         public const string OPENMeetingLabelEndPoint = "https://meeting-app-api.azurewebsites.net/api/MeetingLabels/";
         public const string OPENMeetingLabelItemEndPoint = "https://meeting-app-api.azurewebsites.net/api/MeetingLabelItems/";
-        public const string OPENMeetingParticipantEndPoint = "http://meeting-app-api.azurewebsites.net/api/Participants";
+        public const string OPENMeetingParticipantEndPoint = "https://meeting-app-api.azurewebsites.net/api/Participants";
     }
 }
