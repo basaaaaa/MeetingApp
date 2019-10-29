@@ -20,11 +20,25 @@ namespace MeetingApp
 
         public App(IPlatformInitializer initializer) : base(initializer) { }
 
+
+
         protected override async void OnInitialized()
         {
             InitializeComponent();
 
             await NavigationService.NavigateAsync("NavigationPage/LoginPage");
+        }
+
+        protected override void OnSleep()
+        {
+            base.OnSleep();
+            //(MainPage.BindingContext as IApplicationLifecycle)?.OnSleep();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            //(MainPage.BindingContext as IApplicationLifecycle)?.OnResume();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

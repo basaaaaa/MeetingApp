@@ -4,19 +4,22 @@ using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Utils;
+using Prism.AppModel;
 using Prism.Commands;
 using Prism.Navigation;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace MeetingApp.ViewModels
 {
-    public class MeetingExecuteTopPageViewModel : ViewModelBase
+    public class MeetingExecuteTopPageViewModel : ViewModelBase, IApplicationLifecycleAware
     {
         //private
         //data
         private MeetingData _targetMeetingData;
         private ObservableCollection<ParticipantData> _participants;
+        private int _targetMeetingId;
 
         //param
         private GetMeetingParam _getMeetingParam;
@@ -24,6 +27,7 @@ namespace MeetingApp.ViewModels
         private GetUserParam _getUserParam;
         private GetParticipantsParam _getParticipantsParam;
         private DeleteParticipantParam _deleteParticipantParam;
+        private CreateParticipateParam _createParticipateParam;
 
         //public
         //data
@@ -36,6 +40,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _participants; }
             set { SetProperty(ref _participants, value); }
+        }
+        public int TargetMeetingId
+        {
+            get { return _targetMeetingId; }
+            set { SetProperty(ref _targetMeetingId, value); }
         }
 
         //param
@@ -64,12 +73,18 @@ namespace MeetingApp.ViewModels
             get { return _deleteParticipantParam; }
             set { SetProperty(ref _deleteParticipantParam, value); }
         }
+        public CreateParticipateParam CreateParticipateParam
+        {
+            get { return _createParticipateParam; }
+            set { SetProperty(ref _createParticipateParam, value); }
+        }
 
 
         //Command
         public ICommand MeetingExitCommand { get; }
         public ICommand MeetingEndCommand { get; }
         public ICommand NavigateMeetingExecuteUserPage { get; }
+        public ICommand UpdateParticipantsCommand { get; }
 
 
         RestService _restService;
@@ -122,6 +137,11 @@ namespace MeetingApp.ViewModels
 
             });
 
+            UpdateParticipantsCommand = new DelegateCommand(() =>
+            {
+                Reload();
+            });
+
 
 
         }
@@ -140,12 +160,13 @@ namespace MeetingApp.ViewModels
             if (CheckParticipantParam.HasError == true) { return; }
 
             //対象の会議データ取得
-            GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, (int)parameters["mid"]);
+
+            TargetMeetingId = (int)parameters["mid"];
+            GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
 
-            var mid = TargetMeetingData.Id;
             //participantsDBの全データ読み込み (midで指定して全件取得）
-            GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
+            GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, TargetMeetingId);
             Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
 
         }
@@ -159,5 +180,42 @@ namespace MeetingApp.ViewModels
             parameters.Add("mid", GetMeetingParam.MeetingData.Id);
 
         }
+
+        public async void OnSleep()
+        {
+            _restService = new RestService();
+
+            Console.WriteLine("test");
+            //参加情報をparticipantDBから削除するAPIのコール
+            DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+
+            if (DeleteParticipantParam.IsSuccessed == true)
+            {
+                Console.WriteLine("Delete Successed");
+            }
+        }
+
+        public void OnResume()
+        {
+            Reload();
+        }
+
+        public async void Reload()
+        {
+            _restService = new RestService();
+
+            //対象の会議データ取得
+            GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
+            TargetMeetingData = GetMeetingParam.MeetingData;
+
+            //ParticipantDBに参加処理（更新）
+            CreateParticipateParam = await _restService.CreateParticipateDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingId);
+
+            var mid = TargetMeetingData.Id;
+            //participantsDBの全データ読み込み (midで指定して全件取得）
+            GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
+            Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
+        }
+
     }
 }

@@ -6,10 +6,15 @@
              x:Class="MeetingApp.Views.MeetingExecuteTopPage"
              Title="{Binding TargetMeetingData.Title}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="更新" Command="{Binding UpdateParticipantsCommand}" />
+    </ContentPage.ToolbarItems>
+
     <StackLayout>
         <!--<Frame BackgroundColor="Silver" CornerRadius="10" Margin="5,5,5,5">
             <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" HorizontalOptions="Center"/>
         </Frame>-->
+        
         
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5,5,5,5">
             <Button Text="退出する" TextColor="White" BackgroundColor="Black" Command="{Binding MeetingExitCommand}"/>
