@@ -96,17 +96,23 @@ namespace MeetingApp.Api.Models
 
             modelBuilder.Entity<Participant>(entity =>
             {
+                entity.HasKey(e => new { e.Uid, e.Mid });
+
                 entity.ToTable("participant");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Uid).HasColumnName("uid");
+
+                entity.Property(e => e.Mid).HasColumnName("mid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.LastUpdateTime)
                     .HasColumnName("last_update_time")
                     .HasColumnType("datetime");
-
-                entity.Property(e => e.Mid).HasColumnName("mid");
-
-                entity.Property(e => e.Uid).HasColumnName("uid");
             });
 
             modelBuilder.Entity<Token>(entity =>

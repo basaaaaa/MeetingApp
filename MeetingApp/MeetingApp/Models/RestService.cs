@@ -406,6 +406,7 @@ namespace MeetingApp
         public async Task<CreateParticipateParam> CreateParticipateDataAsync(string uri, int uid, int mid)
         {
             var participantData = new ParticipantData(uid, mid);
+            participantData.Active = true;
             var json = JsonConvert.SerializeObject(participantData);
 
             var jobj = JObject.Parse(json);
@@ -424,9 +425,10 @@ namespace MeetingApp
 
 
                 var response = await _client.PostAsync(uri, content);
+                string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    string responseContent = await response.Content.ReadAsStringAsync();
+                    //string responseContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(responseContent);
                     createParticipateParam.IsSuccessed = response.IsSuccessStatusCode;
                     return createParticipateParam;
@@ -448,6 +450,37 @@ namespace MeetingApp
             try
             {
                 HttpResponseMessage response = await _client.GetAsync(uri + "?uid=" + uid);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    if (content == "[null]")
+                    {
+                        checkParticipantParam.HasError = true;
+                        checkParticipantParam.NoExistUser = true;
+                        return checkParticipantParam;
+                    }
+                    //ユーザーが見つかった場合
+                    checkParticipantParam.IsSuccessed = true;
+                    checkParticipantParam.Participant = JsonConvert.DeserializeObject<ParticipantData>(content);
+                    return checkParticipantParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                checkParticipantParam.HasError = true;
+            }
+
+            return checkParticipantParam;
+        }
+
+        //ParticipantにUserDataが存在するかどうかチェックするAPIコール
+        public async Task<CheckParticipantParam> CheckParticipantDataAsync(string uri, int uid, int mid)
+        {
+            var checkParticipantParam = new CheckParticipantParam();
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(uri + "?uid=" + uid + "&mid=" + mid);
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();

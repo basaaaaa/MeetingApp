@@ -22,8 +22,14 @@ namespace MeetingApp.Models.Data
         [JsonProperty("LastUpdateTime")]
         public DateTime LastUpdateTime { get; set; }
 
+        [JsonProperty("active")]
+        public Boolean Active { get; set; }
+
+
         public string UserId { get; set; }
         public List<MeetingLabelData> LabelItems { get; set; }
+
+        public ParticipantData Participant { get; set; }
 
         public ParticipantData()
         {
@@ -35,6 +41,7 @@ namespace MeetingApp.Models.Data
             this.Uid = uid;
             this.Mid = mid;
             this.LastUpdateTime = DateTime.Now;
+            this.Active = false;
             LabelItems = new List<MeetingLabelData>();
         }
 

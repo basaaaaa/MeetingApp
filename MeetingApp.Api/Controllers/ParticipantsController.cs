@@ -49,6 +49,15 @@ namespace MeetingApp.Api.Controllers
                 var participants = _context.Participant.Where(p => p.Mid == integerMid);
                 return participants;
             }
+            //‰ï‹cID‚ğw’è‚µ‚Äw’è‰ï‹c‚ÌQ‰ÁÒ‚ğ•Ô‚·ê‡
+            else if (uid != null && mid != null)
+            {
+                var integerMid = int.Parse(mid);
+                var integerUid = int.Parse(uid);
+
+                var participants = _context.Participant.Where(p => p.Uid == integerUid && p.Mid == integerMid);
+                return participants;
+            }
             return null;
         }
 

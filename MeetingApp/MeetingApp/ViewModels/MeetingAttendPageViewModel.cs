@@ -32,6 +32,7 @@ namespace MeetingApp.ViewModels
         private AttendMeetingParam _attendMeetingParam;
         private DeleteMeetingLabelItemParam _deleteMeetingLabelItemParam;
         private CreateParticipateParam _createParticipateParam;
+        private CheckParticipantParam _checkParticipantParam;
 
 
         public MeetingData TargetMeetingData
@@ -96,6 +97,11 @@ namespace MeetingApp.ViewModels
             get { return _createParticipateParam; }
             set { SetProperty(ref _createParticipateParam, value); }
         }
+        public CheckParticipantParam CheckParticipantParam
+        {
+            get { return _checkParticipantParam; }
+            set { SetProperty(ref _checkParticipantParam, value); }
+        }
 
 
         public ICommand CreateMeetingLabelItemCommand { get; }
@@ -155,15 +161,41 @@ namespace MeetingApp.ViewModels
                     var mid = GetMeetingParam.MeetingData.Id;
                     var uid = GetUserParam.User.Id;
 
-                    CreateParticipateParam = await _restService.CreateParticipateDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid, mid);
+                    //ParticipantDBに既にユーザーが居ないかチェック
+                    CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid, mid);
 
-                    if (CreateParticipateParam.IsSuccessed == true)
+                    if (CheckParticipantParam.IsSuccessed == true)
                     {
-                        var p = new NavigationParameters
+                        //ユーザーが既にParticipantDBに存在していた場合
+                        if (CheckParticipantParam.Participant.Active == true)
+                        {
+                            var p = new NavigationParameters
                             {
                                 { "mid", GetMeetingParam.MeetingData.Id}
                             };
-                        await _navigationService.NavigateAsync("MeetingExecuteTopPage", p);
+                            await _navigationService.NavigateAsync("MeetingExecuteTopPage", p);
+
+                        }
+                        else
+                        {
+                            //Activeをfalse→trueにして参加（update)
+                        }
+
+                    }
+                    else
+                    {
+                        //ParticipantDBに該当者が居なければ追加
+                        CreateParticipateParam = await _restService.CreateParticipateDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid, mid);
+
+                        if (CreateParticipateParam.IsSuccessed == true)
+                        {
+                            var p = new NavigationParameters
+                            {
+                                { "mid", GetMeetingParam.MeetingData.Id}
+                            };
+                            await _navigationService.NavigateAsync("MeetingExecuteTopPage", p);
+                        }
+
                     }
                 }
 
@@ -223,11 +255,11 @@ namespace MeetingApp.ViewModels
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
 
-        _restService = new RestService();
-        _getMeetingLabelsParam = new GetMeetingLabelsParam();
-        _getMeetingParam = new GetMeetingParam();
+            _restService = new RestService();
+            _getMeetingLabelsParam = new GetMeetingLabelsParam();
+            _getMeetingParam = new GetMeetingParam();
 
-        //項目追加から戻ってきたときの更新処理
+            //項目追加から戻ってきたときの更新処理
             //対象の会議データ取得
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, (int)parameters["mid"]);
             TargetMeetingData = GetMeetingParam.MeetingData;

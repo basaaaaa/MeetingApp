@@ -9,5 +9,6 @@ namespace MeetingApp.Api.Models
         public int Uid { get; set; }
         public int Mid { get; set; }
         public DateTime LastUpdateTime { get; set; }
+        public bool Active { get; set; }
     }
 }

@@ -172,7 +172,7 @@ namespace MeetingApp.ViewModels
         }
 
         //戻るボタンを押してMeetingAttendPageに遷移するときの処理
-        public override async void OnNavigatedFrom(INavigationParameters parameters)
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
 
             base.OnNavigatingTo(parameters);

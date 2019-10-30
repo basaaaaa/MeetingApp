@@ -1,3 +1,5 @@
+using MeetingApp.Models.Data;
+
 namespace MeetingApp.Models.Param
 {
     public class CheckParticipantParam
@@ -7,12 +9,15 @@ namespace MeetingApp.Models.Param
         public bool HasError { get; set; }  //ログイン処理においてエラーが発生したかどうか
         public bool NoExistUser { get; set; }
 
+        public ParticipantData Participant { get; set; }
+
 
         public CheckParticipantParam()
         {
             this.IsSuccessed = false;
             this.HasError = false;
             this.NoExistUser = false;
+            this.Participant = new ParticipantData();
         }
     }
 }
