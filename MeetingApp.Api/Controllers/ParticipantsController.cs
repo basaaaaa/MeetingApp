@@ -106,6 +106,36 @@ namespace MeetingApp.Api.Controllers
             return NoContent();
         }
 
+
+        [HttpPut]
+        public async Task<IActionResult> PutParticipant([FromBody] Participant Participant)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.Entry(Participant).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ParticipantExists(Participant.Uid, Participant.Mid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // POST: api/Participants
         [HttpPost]
         public async Task<IActionResult> PostParticipant([FromBody] Participant participant)
@@ -151,6 +181,11 @@ namespace MeetingApp.Api.Controllers
         private bool ParticipantExists(int id)
         {
             return _context.Participant.Any(e => e.Id == id);
+        }
+
+        private bool ParticipantExists(int uid, int mid)
+        {
+            return _context.Participant.Any(e => e.Uid == uid && e.Mid == mid);
         }
     }
 }
