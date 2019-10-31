@@ -2,15 +2,18 @@ namespace MeetingApp.Models.Param
 {
     public class CreateParticipateParam
     {
-        public bool IsSuccessed { get; set; }   //ログイン処理が正常に成功したかどうか
+        public bool IsSuccessed { get; set; }
 
-        public bool HasError { get; set; }  //ログイン処理においてエラーが発生したかどうか
+        public bool HasError { get; set; }
+
+        public bool Entered { get; set; }   //既に入室済のユーザーであった場合
 
 
         public CreateParticipateParam()
         {
             this.IsSuccessed = false;
             this.HasError = false;
+            this.Entered = false;
         }
     }
 }

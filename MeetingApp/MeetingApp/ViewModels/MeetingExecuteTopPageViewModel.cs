@@ -156,7 +156,8 @@ namespace MeetingApp.ViewModels
             //participantsDBにuidが存在するかどうか読み込み
             GetUserParam = await _restService.GetUserDataAsync(UserConstants.OpenUserEndPoint, _applicationProperties.GetFromProperties<string>("userId"));
             var uid = GetUserParam.User.Id;
-            CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid);
+            var mid = (int)parameters["mid"];
+            CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid, mid);
             if (CheckParticipantParam.HasError == true) { return; }
 
             //対象の会議データ取得
@@ -172,7 +173,7 @@ namespace MeetingApp.ViewModels
         }
 
         //戻るボタンを押してMeetingAttendPageに遷移するときの処理
-        public override async void OnNavigatedFrom(INavigationParameters parameters)
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
 
             base.OnNavigatingTo(parameters);

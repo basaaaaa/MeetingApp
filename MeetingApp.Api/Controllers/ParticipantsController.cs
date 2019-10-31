@@ -49,6 +49,15 @@ namespace MeetingApp.Api.Controllers
                 var participants = _context.Participant.Where(p => p.Mid == integerMid);
                 return participants;
             }
+            //‰ï‹cID‚ðŽw’è‚µ‚ÄŽw’è‰ï‹c‚ÌŽQ‰ÁŽÒ‚ð•Ô‚·ê‡
+            else if (uid != null && mid != null)
+            {
+                var integerMid = int.Parse(mid);
+                var integerUid = int.Parse(uid);
+
+                var participants = _context.Participant.Where(p => p.Uid == integerUid && p.Mid == integerMid);
+                return participants;
+            }
             return null;
         }
 
@@ -71,18 +80,48 @@ namespace MeetingApp.Api.Controllers
             return Ok(participant);
         }
 
-        // PUT: api/Participants/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutParticipant([FromRoute] int id, [FromBody] Participant participant)
+        //// PUT: api/Participants/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutParticipant([FromRoute] int id, [FromBody] Participant participant)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    if (id != participant.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    _context.Entry(participant).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ParticipantExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
+
+
+        [HttpPut]
+        public async Task<IActionResult> PutParticipant([FromBody] Participant participant)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (id != participant.Id)
-            {
-                return BadRequest();
             }
 
             _context.Entry(participant).State = EntityState.Modified;
@@ -93,37 +132,7 @@ namespace MeetingApp.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ParticipantExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-
-        [HttpPut]
-        public async Task<IActionResult> PutParticipant([FromBody] Participant Participant)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.Entry(Participant).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParticipantExists(Participant.Uid, Participant.Mid))
+                if (!ParticipantExists(participant.Uid, participant.Mid))
                 {
                     return NotFound();
                 }
@@ -148,7 +157,7 @@ namespace MeetingApp.Api.Controllers
             _context.Participant.Add(participant);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetParticipant", new { id = participant.Id }, participant);
+            return CreatedAtAction("GetParticipant", new { uid = participant.Uid }, participant);
         }
 
         // DELETE: api/Participants/5
@@ -178,10 +187,10 @@ namespace MeetingApp.Api.Controllers
 
 
 
-        private bool ParticipantExists(int id)
-        {
-            return _context.Participant.Any(e => e.Id == id);
-        }
+        //private bool ParticipantExists(int id)
+        //{
+        //    return _context.Participant.Any(e => e.Id == id);
+        //}
 
         private bool ParticipantExists(int uid, int mid)
         {
