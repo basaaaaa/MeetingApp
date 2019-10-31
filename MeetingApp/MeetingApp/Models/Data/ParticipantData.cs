@@ -10,8 +10,6 @@ namespace MeetingApp.Models.Data
 {
     public class ParticipantData
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
 
         [JsonProperty("uid")]
         public int Uid { get; set; }

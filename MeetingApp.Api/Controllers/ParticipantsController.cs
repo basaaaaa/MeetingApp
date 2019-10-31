@@ -80,40 +80,40 @@ namespace MeetingApp.Api.Controllers
             return Ok(participant);
         }
 
-        // PUT: api/Participants/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutParticipant([FromRoute] int id, [FromBody] Participant participant)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //// PUT: api/Participants/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutParticipant([FromRoute] int id, [FromBody] Participant participant)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != participant.Id)
-            {
-                return BadRequest();
-            }
+        //    if (id != participant.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(participant).State = EntityState.Modified;
+        //    _context.Entry(participant).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParticipantExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ParticipantExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
 
         [HttpPut]
@@ -157,7 +157,7 @@ namespace MeetingApp.Api.Controllers
             _context.Participant.Add(participant);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetParticipant", new { id = participant.Id }, participant);
+            return CreatedAtAction("GetParticipant", new { uid = participant.Uid }, participant);
         }
 
         // DELETE: api/Participants/5
@@ -187,10 +187,10 @@ namespace MeetingApp.Api.Controllers
 
 
 
-        private bool ParticipantExists(int id)
-        {
-            return _context.Participant.Any(e => e.Id == id);
-        }
+        //private bool ParticipantExists(int id)
+        //{
+        //    return _context.Participant.Any(e => e.Id == id);
+        //}
 
         private bool ParticipantExists(int uid, int mid)
         {
