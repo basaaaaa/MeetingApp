@@ -117,14 +117,14 @@ namespace MeetingApp.Api.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> PutParticipant([FromBody] Participant Participant)
+        public async Task<IActionResult> PutParticipant([FromBody] Participant participant)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Entry(Participant).State = EntityState.Modified;
+            _context.Entry(participant).State = EntityState.Modified;
 
             try
             {
@@ -132,7 +132,7 @@ namespace MeetingApp.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ParticipantExists(Participant.Uid, Participant.Mid))
+                if (!ParticipantExists(participant.Uid, participant.Mid))
                 {
                     return NotFound();
                 }

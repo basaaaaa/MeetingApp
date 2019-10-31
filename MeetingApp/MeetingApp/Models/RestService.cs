@@ -484,14 +484,20 @@ namespace MeetingApp
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    if (content == "[null]")
+
+                    if (content == "[]")
                     {
                         checkParticipantParam.HasError = true;
                         checkParticipantParam.NoExistUser = true;
                         return checkParticipantParam;
                     }
                     //ユーザーが見つかった場合
+                    //list -> 要素の処理
+                    content = content.TrimStart('[');
+                    content = content.TrimEnd(']');
+
                     checkParticipantParam.IsSuccessed = true;
+                    checkParticipantParam.Participant = JsonConvert.DeserializeObject<ParticipantData>(content);
                     return checkParticipantParam;
                 }
             }
@@ -574,6 +580,44 @@ namespace MeetingApp
                 return deleteParticipantParam;
 
             }
+        }
+
+        //Participants情報を更新するAPIコール
+        public async Task<UpdateParticipantParam> UpdateParticipantDataAsync(string uri, ParticipantData participant)
+        {
+
+            var json = JsonConvert.SerializeObject(participant);
+            var updateParticipantParam = new UpdateParticipantParam();
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                HttpResponseMessage response = await _client.PutAsync(uri, content);
+
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    updateParticipantParam.HasError = true;
+                    return updateParticipantParam;
+                }
+
+
+                //成功した場合
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    //Paramを成功に
+                    updateParticipantParam.IsSuccessed = response.IsSuccessStatusCode;
+                    return updateParticipantParam;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\tERROR {0}", ex.Message);
+                updateParticipantParam.HasError = true;
+            }
+            return updateParticipantParam;
         }
 
         //ユーザー情報系API

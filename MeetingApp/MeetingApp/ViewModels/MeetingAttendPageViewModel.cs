@@ -164,9 +164,10 @@ namespace MeetingApp.ViewModels
                     //ParticipantDBに既にユーザーが居ないかチェック
                     CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid, mid);
 
+                    //ユーザーが既にParticipantDBに存在していた場合
                     if (CheckParticipantParam.IsSuccessed == true)
                     {
-                        //ユーザーが既にParticipantDBに存在していた場合
+                        //会議参加済みかつAtciveの場合はそのまま遷移する
                         if (CheckParticipantParam.Participant.Active == true)
                         {
                             var p = new NavigationParameters
@@ -177,14 +178,24 @@ namespace MeetingApp.ViewModels
 
                         }
                         else
+                        //参加済みかつ非Activeの場合はActiveにして遷移する
                         {
-                            //Activeをfalse→trueにして参加（update)
+                            CheckParticipantParam.Participant.Active = true;
+                            var updateParticipant = CheckParticipantParam.Participant;
+
+                            await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+
+                            var p = new NavigationParameters
+                            {
+                                { "mid", GetMeetingParam.MeetingData.Id}
+                            };
+                            await _navigationService.NavigateAsync("MeetingExecuteTopPage", p);
                         }
 
                     }
+                    //ParticipantDBに該当者が居なければ追加
                     else
                     {
-                        //ParticipantDBに該当者が居なければ追加
                         CreateParticipateParam = await _restService.CreateParticipateDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, uid, mid);
 
                         if (CreateParticipateParam.IsSuccessed == true)

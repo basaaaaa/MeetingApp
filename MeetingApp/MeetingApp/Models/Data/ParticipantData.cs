@@ -29,7 +29,6 @@ namespace MeetingApp.Models.Data
         public string UserId { get; set; }
         public List<MeetingLabelData> LabelItems { get; set; }
 
-        public ParticipantData Participant { get; set; }
 
         public ParticipantData()
         {
