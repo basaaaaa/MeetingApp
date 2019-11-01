@@ -9,7 +9,9 @@ using Prism.Commands;
 using Prism.Navigation;
 using System;
 using System.Collections.ObjectModel;
+using System.Timers;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MeetingApp.ViewModels
 {
@@ -28,6 +30,7 @@ namespace MeetingApp.ViewModels
         private GetParticipantsParam _getParticipantsParam;
         private DeleteParticipantParam _deleteParticipantParam;
         private CreateParticipateParam _createParticipateParam;
+        private UpdateParticipantParam _updateParticipantParam;
 
         //public
         //data
@@ -78,6 +81,11 @@ namespace MeetingApp.ViewModels
             get { return _createParticipateParam; }
             set { SetProperty(ref _createParticipateParam, value); }
         }
+        public UpdateParticipantParam UpdateParticipantParam
+        {
+            get { return _updateParticipantParam; }
+            set { SetProperty(ref _updateParticipantParam, value); }
+        }
 
 
         //Command
@@ -98,6 +106,17 @@ namespace MeetingApp.ViewModels
             _navigationService = navigationService;
             _restService = new RestService();
 
+
+            //一定時間間隔処理
+            Device.StartTimer(TimeSpan.FromMinutes(1), () =>
+             {
+                 var updateFlag = CheckParticipantParam.Participant.Active;
+                 //参加状態の判定処理
+                 Reload();
+
+                 return updateFlag;
+
+             });
 
             //会議から退出するコマンド
             MeetingExitCommand = new DelegateCommand(async () =>
@@ -140,7 +159,7 @@ namespace MeetingApp.ViewModels
 
             });
 
-            //更新処理
+            //更新処理のコマンド
             UpdateParticipantsCommand = new DelegateCommand(() =>
             {
                 Reload();
@@ -252,7 +271,26 @@ namespace MeetingApp.ViewModels
             //participantsDBの全データ読み込み (midで指定して全件取得）
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
             Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
+
         }
+
+        //public async void JudgeActive()
+        //{
+        //    _controllDateTime = new ControllDateTime();
+        //    CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+
+        //    var targetDateTime = CheckParticipantParam.Participant.LastUpdateTime;
+        //    var currentDateTime = _controllDateTime.GetCurrentDateTime();
+        //    var diffDateTime = currentDateTime - targetDateTime;
+
+        //    //最終更新時刻と現在時刻の誤差３分以上 -> Activeを非参加状態に切り替え
+        //    if (diffDateTime.Minutes > 3)
+        //    {
+        //        var updateParticipantData = CheckParticipantParam.Participant;
+        //        updateParticipantData.Active = false;
+        //        UpdateParticipantParam = await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint,updateParticipantData);
+        //    }
+        //}
 
     }
 }

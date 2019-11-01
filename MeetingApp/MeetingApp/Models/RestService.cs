@@ -525,7 +525,12 @@ namespace MeetingApp
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
-                    getParticipantsParam.Participants = JsonConvert.DeserializeObject<List<ParticipantData>>(content);
+
+                    var participants = JsonConvert.DeserializeObject<List<ParticipantData>>(content);
+                    //Active､ﾎ･讖`･ｶｩ`､ﾎ､ﾟﾗｷｼﾓ
+                    participants.RemoveAll(p => p.Active == false);
+
+                    getParticipantsParam.Participants = participants;
 
                     //View用に自身のuserId、各ラベル項目を取得
                     foreach (ParticipantData p in getParticipantsParam.Participants)
