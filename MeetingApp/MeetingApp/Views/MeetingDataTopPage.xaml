@@ -6,54 +6,66 @@
              x:Class="MeetingApp.Views.MeetingDataTopPage"
              Title="会議一覧"
              x:Name="Root">
+    <AbsoluteLayout>
+        <StackLayout Margin="0,20,0,20" AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>
 
-    <StackLayout Margin="0,20,0,20">
-
-        <Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>
-
-        <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None" SelectionMode="None">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Gray" HasShadow="false">
-                            <StackLayout >
-                                <Label Text="{Binding Title}" FontSize="30" TextColor="White" FontAttributes="Bold"/>
-                                <Grid Margin="0,20,0,20">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.4*" />
-                                        <ColumnDefinition Width="0.6*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30" />
-                                        <RowDefinition Height="30" />
-                                        <RowDefinition Height="30" />
-                                        <RowDefinition Height="30" />
-                                    </Grid.RowDefinitions>
-                                    <Label Text="実施日" TextColor="White"/>
-                                    <Label Grid.Column="1" Text="{Binding Date}" TextColor="White"/>
-                                    <Label Grid.Row="1" Text="開始時間" TextColor="White"/>
-                                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding StartTime}" TextColor="White"/>
-                                    <Label Grid.Row="2" Text="終了時間" TextColor="White"/>
-                                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding EndTime}" TextColor="White"/>
-                                    <Label Grid.Row="3" Text="場所" TextColor="White"/>
-                                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding Location}" TextColor="White"/>
-                                </Grid>
-                                <Grid Margin="20,0,20,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.5*" />
-                                        <ColumnDefinition Width="0.5*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Button Text="Attend" TextColor="White" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}" BackgroundColor="Black" />
-                                    <Button Grid.Column="1" Text="Delete" TextColor="White" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}" BackgroundColor="Black"/>
-                                </Grid>
-                            </StackLayout>
-                        </Frame>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
+            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None" SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Gray" HasShadow="false">
+                                <StackLayout >
+                                    <Label Text="{Binding Title}" FontSize="30" TextColor="White" FontAttributes="Bold"/>
+                                    <Grid Margin="0,20,0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.4*" />
+                                            <ColumnDefinition Width="0.6*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="30" />
+                                            <RowDefinition Height="30" />
+                                            <RowDefinition Height="30" />
+                                            <RowDefinition Height="30" />
+                                        </Grid.RowDefinitions>
+                                        <Label Text="実施日" TextColor="White"/>
+                                        <Label Grid.Column="1" Text="{Binding Date}" TextColor="White"/>
+                                        <Label Grid.Row="1" Text="開始時間" TextColor="White"/>
+                                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding StartTime}" TextColor="White"/>
+                                        <Label Grid.Row="2" Text="終了時間" TextColor="White"/>
+                                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding EndTime}" TextColor="White"/>
+                                        <Label Grid.Row="3" Text="場所" TextColor="White"/>
+                                        <Label Grid.Column="1" Grid.Row="3" Text="{Binding Location}" TextColor="White"/>
+                                    </Grid>
+                                    <Grid Margin="20,0,20,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.5*" />
+                                            <ColumnDefinition Width="0.5*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Button Text="Attend" TextColor="White" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}" BackgroundColor="Black" />
+                                        <Button Grid.Column="1" Text="Delete" TextColor="White" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}" BackgroundColor="Black"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
     </StackLayout>
+    <ContentView AbsoluteLayout.LayoutFlags="All"
+                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                 Opacity="0.4"
+                 BackgroundColor="Black"
+                 IsVisible="{Binding LoadingMeetingData}">
+       <Frame>
+                <Label Text="Test" />
+                <ActivityIndicator IsVisible="{Binding LoadingMeetingData}"
+                                   IsRunning="{Binding LoadingMeetingData}" />
+            </Frame>
+            
+    </ContentView>
+</AbsoluteLayout>
+        
 
 </ContentPage>
                         
