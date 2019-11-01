@@ -15,4 +15,7 @@
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\ParticipantService.cs" />
+  </ItemGroup>
 </Project>
