@@ -201,6 +201,7 @@ namespace MeetingApp.ViewModels
             Reload();
         }
 
+        //更新処理
         public async void Reload()
         {
             _restService = new RestService();
@@ -209,8 +210,38 @@ namespace MeetingApp.ViewModels
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
 
-            //ParticipantDBに参加処理（更新）
-            CreateParticipateParam = await _restService.CreateParticipateDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingId);
+            //ParticipantDBに対する最終更新時刻とActive状態の更新
+            //ParticipantDBに既にユーザーが居ないかチェック
+            CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+
+            //ユーザーが既にParticipantDBに存在していた場合
+            if (CheckParticipantParam.IsSuccessed == true)
+            {
+                //会議参加済みかつAtciveの場合は最終更新時刻のみ更新する
+                if (CheckParticipantParam.Participant.Active == true)
+                {
+                    CheckParticipantParam.Participant.LastUpdateTime = DateTime.Now;
+                    var updateParticipant = CheckParticipantParam.Participant;
+                    await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+
+                }
+                else
+                //参加済みかつ非Activeの場合はActive/最終更新時刻を両方更新する
+                {
+                    CheckParticipantParam.Participant.Active = true;
+                    CheckParticipantParam.Participant.LastUpdateTime = DateTime.Now;
+                    var updateParticipant = CheckParticipantParam.Participant;
+
+                    await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+                }
+
+            }
+            //既にユーザーが退室済の場合は更新エラーを出す
+            else
+            {
+
+            }
+
 
             var mid = TargetMeetingData.Id;
             //participantsDBの全データ読み込み (midで指定して全件取得）
