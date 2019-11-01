@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace MeetingApp.ViewModels
 {
-    public class MeetingExecuteTopPageViewModel : ViewModelBase, IApplicationLifecycleAware
+    public class MeetingExecuteTopPageViewModel : ViewModelBase
     {
         //private
         //data
@@ -90,6 +90,7 @@ namespace MeetingApp.ViewModels
         RestService _restService;
         ApplicationProperties _applicationProperties;
         INavigationService _navigationService;
+        ControllDateTime _controllDateTime;
 
 
         public MeetingExecuteTopPageViewModel(INavigationService navigationService) : base(navigationService)
@@ -112,6 +113,7 @@ namespace MeetingApp.ViewModels
 
             });
 
+            //会議終了コマンド
             MeetingEndCommand = new DelegateCommand(async () =>
             {
                 var deleteParticipantParam = new DeleteParticipantParam();
@@ -124,6 +126,7 @@ namespace MeetingApp.ViewModels
 
             });
 
+            //各ユーザーのカードを押してラベル一覧に遷移するコマンド
             NavigateMeetingExecuteUserPage = new DelegateCommand<object>((participant) =>
             {
                 var targetParticipantData = (ParticipantData)participant;
@@ -137,6 +140,7 @@ namespace MeetingApp.ViewModels
 
             });
 
+            //更新処理
             UpdateParticipantsCommand = new DelegateCommand(() =>
             {
                 Reload();
@@ -166,9 +170,10 @@ namespace MeetingApp.ViewModels
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
 
-            //participantsDBの全データ読み込み (midで指定して全件取得）
-            GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, TargetMeetingId);
-            Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
+            ////participantsDBの全データ読み込み (midで指定して全件取得）
+            //GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, TargetMeetingId);
+            //Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
+            Reload();
 
         }
 
@@ -182,29 +187,29 @@ namespace MeetingApp.ViewModels
 
         }
 
-        public async void OnSleep()
-        {
-            _restService = new RestService();
+        //public async void OnSleep()
+        //{
+        //    _restService = new RestService();
 
-            Console.WriteLine("test");
-            //参加情報をparticipantDBから削除するAPIのコール
-            DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+        //    //参加情報をparticipantDBから削除するAPIのコール
+        //    DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
 
-            if (DeleteParticipantParam.IsSuccessed == true)
-            {
-                Console.WriteLine("Delete Successed");
-            }
-        }
+        //    if (DeleteParticipantParam.IsSuccessed == true)
+        //    {
+        //        Console.WriteLine("Delete Successed");
+        //    }
+        //}
 
-        public void OnResume()
-        {
-            Reload();
-        }
+        //public void OnResume()
+        //{
+        //    Reload();
+        //}
 
         //更新処理
         public async void Reload()
         {
             _restService = new RestService();
+            _controllDateTime = new ControllDateTime();
 
             //対象の会議データ取得
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
@@ -220,7 +225,7 @@ namespace MeetingApp.ViewModels
                 //会議参加済みかつAtciveの場合は最終更新時刻のみ更新する
                 if (CheckParticipantParam.Participant.Active == true)
                 {
-                    CheckParticipantParam.Participant.LastUpdateTime = DateTime.Now;
+                    CheckParticipantParam.Participant.LastUpdateTime = _controllDateTime.GetCurrentDateTime();
                     var updateParticipant = CheckParticipantParam.Participant;
                     await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
 
@@ -236,10 +241,10 @@ namespace MeetingApp.ViewModels
                 }
 
             }
-            //既にユーザーが退室済の場合は更新エラーを出す
-            else
+            //既にユーザーが退室済の場合は会議情報トップページに遷移させる
+            else if(CheckParticipantParam.NoExistUser == true)
             {
-
+                await _navigationService.NavigateAsync("MeetingDataTopPage");
             }
 
 

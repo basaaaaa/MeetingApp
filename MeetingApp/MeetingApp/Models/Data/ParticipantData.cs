@@ -1,6 +1,7 @@
 using MeetingApp.Constants;
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Param;
+using MeetingApp.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace MeetingApp.Models.Data
         public string UserId { get; set; }
         public List<MeetingLabelData> LabelItems { get; set; }
 
+        ControllDateTime _controllDateTime;
 
         public ParticipantData()
         {
@@ -35,9 +37,10 @@ namespace MeetingApp.Models.Data
 
         public ParticipantData(int uid, int mid)
         {
+            _controllDateTime = new ControllDateTime();
             this.Uid = uid;
             this.Mid = mid;
-            this.LastUpdateTime = DateTime.Now;
+            this.LastUpdateTime = _controllDateTime.GetCurrentDateTime();
             this.Active = false;
             LabelItems = new List<MeetingLabelData>();
         }
