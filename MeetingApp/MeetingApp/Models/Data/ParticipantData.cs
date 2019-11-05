@@ -1,6 +1,7 @@
 using MeetingApp.Constants;
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Param;
+using MeetingApp.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,8 @@ namespace MeetingApp.Models.Data
         [JsonProperty("LastUpdateTime")]
         public DateTime LastUpdateTime { get; set; }
 
-        [JsonProperty("active")]
-        public Boolean Active { get; set; }
+        [JsonProperty("isdeleted")]
+        public Boolean isDeleted { get; set; }
 
 
         public string UserId { get; set; }
@@ -35,10 +36,11 @@ namespace MeetingApp.Models.Data
 
         public ParticipantData(int uid, int mid)
         {
+            var operateDateTime = new OperateDateTime();
             this.Uid = uid;
             this.Mid = mid;
-            this.LastUpdateTime = DateTime.Now;
-            this.Active = false;
+            this.LastUpdateTime = operateDateTime.CurrentDateTime;
+            this.isDeleted = false;
             LabelItems = new List<MeetingLabelData>();
         }
 

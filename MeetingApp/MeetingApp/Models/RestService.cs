@@ -406,7 +406,6 @@ namespace MeetingApp
         public async Task<CreateParticipateParam> CreateParticipateDataAsync(string uri, int uid, int mid)
         {
             var participantData = new ParticipantData(uid, mid);
-            participantData.Active = true;
             var json = JsonConvert.SerializeObject(participantData);
 
             var jobj = JObject.Parse(json);
