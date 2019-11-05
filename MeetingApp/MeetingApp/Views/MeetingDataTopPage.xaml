@@ -6,8 +6,7 @@
              x:Class="MeetingApp.Views.MeetingDataTopPage"
              Title="会議一覧"
              x:Name="Root">
-    <AbsoluteLayout>
-        <StackLayout Margin="0,20,0,20" AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+        <StackLayout Margin="0,20,0,20">
             <Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>
 
             <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None" SelectionMode="None">
@@ -52,19 +51,6 @@
                 </ListView.ItemTemplate>
             </ListView>
     </StackLayout>
-    <ContentView AbsoluteLayout.LayoutFlags="All"
-                 AbsoluteLayout.LayoutBounds="0,0,1,1"
-                 Opacity="0.4"
-                 BackgroundColor="Black"
-                 IsVisible="{Binding LoadingMeetingData}">
-       <Frame>
-                <Label Text="Test" />
-                <ActivityIndicator IsVisible="{Binding LoadingMeetingData}"
-                                   IsRunning="{Binding LoadingMeetingData}" />
-            </Frame>
-            
-    </ContentView>
-</AbsoluteLayout>
         
 
 </ContentPage>
