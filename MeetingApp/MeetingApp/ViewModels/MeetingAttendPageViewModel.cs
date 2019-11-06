@@ -168,7 +168,7 @@ namespace MeetingApp.ViewModels
                     if (CheckParticipantParam.IsSuccessed == true)
                     {
                         //会議参加済みかつAtciveの場合はそのまま遷移する
-                        if (CheckParticipantParam.Participant.Active == true)
+                        if (CheckParticipantParam.Participant.isDeleted == false)
                         {
                             var p = new NavigationParameters
                             {
@@ -178,9 +178,11 @@ namespace MeetingApp.ViewModels
 
                         }
                         else
-                        //参加済みかつ非Activeの場合はActiveにして遷移する
+                        //参加済みかつ論理削除済みの場合はisDeletedをtrue→falseにして再入室
                         {
-                            CheckParticipantParam.Participant.Active = true;
+                            var operateDateTime = new OperateDateTime();
+                            CheckParticipantParam.Participant.isDeleted = false;
+                            CheckParticipantParam.Participant.LastUpdateTime = operateDateTime.CurrentDateTime;
                             var updateParticipant = CheckParticipantParam.Participant;
 
                             await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);

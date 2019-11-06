@@ -104,7 +104,7 @@ namespace MeetingApp.Api.Models
 
                 entity.Property(e => e.Mid).HasColumnName("mid");
 
-                entity.Property(e => e.Active).HasColumnName("active");
+                entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
 
                 entity.Property(e => e.LastUpdateTime)
                     .HasColumnName("last_update_time")
