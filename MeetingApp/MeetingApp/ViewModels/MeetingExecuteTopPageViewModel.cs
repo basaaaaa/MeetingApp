@@ -9,13 +9,12 @@ using Prism.Commands;
 using Prism.Navigation;
 using System;
 using System.Collections.ObjectModel;
-using System.Timers;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace MeetingApp.ViewModels
 {
-    public class MeetingExecuteTopPageViewModel : ViewModelBase
+    public class MeetingExecuteTopPageViewModel : ViewModelBase, IApplicationLifecycleAware
     {
         //private
         //data
@@ -95,10 +94,10 @@ namespace MeetingApp.ViewModels
         public ICommand UpdateParticipantsCommand { get; }
 
 
+
         RestService _restService;
         ApplicationProperties _applicationProperties;
         INavigationService _navigationService;
-        ControllDateTime _controllDateTime;
 
 
         public MeetingExecuteTopPageViewModel(INavigationService navigationService) : base(navigationService)
@@ -107,32 +106,24 @@ namespace MeetingApp.ViewModels
             _restService = new RestService();
 
 
-            //一定時間間隔処理
-            Device.StartTimer(TimeSpan.FromMinutes(1), () =>
-             {
-                 var updateFlag = CheckParticipantParam.Participant.Active;
-                 //参加状態の判定処理
-                 Reload();
-
-                 return updateFlag;
-
-             });
-
             //会議から退出するコマンド
             MeetingExitCommand = new DelegateCommand(async () =>
             {
 
                 //参加情報をparticipantDBから削除するAPIのコール
-                DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+                CheckParticipantParam.Participant.isDeleted = true;
+                var updateParticipant = CheckParticipantParam.Participant;
 
-                if (DeleteParticipantParam.IsSuccessed == true)
+                UpdateParticipantParam = await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+
+                if (UpdateParticipantParam.IsSuccessed == true)
                 {
-                    await _navigationService.NavigateAsync("MeetingDataTopPage");
+                    _navigationService.NavigateAsync("MeetingDataTopPage");
                 }
+
 
             });
 
-            //会議終了コマンド
             MeetingEndCommand = new DelegateCommand(async () =>
             {
                 var deleteParticipantParam = new DeleteParticipantParam();
@@ -145,7 +136,6 @@ namespace MeetingApp.ViewModels
 
             });
 
-            //各ユーザーのカードを押してラベル一覧に遷移するコマンド
             NavigateMeetingExecuteUserPage = new DelegateCommand<object>((participant) =>
             {
                 var targetParticipantData = (ParticipantData)participant;
@@ -159,10 +149,11 @@ namespace MeetingApp.ViewModels
 
             });
 
-            //更新処理のコマンド
-            UpdateParticipantsCommand = new DelegateCommand(() =>
+            UpdateParticipantsCommand = new DelegateCommand(async () =>
             {
+                //更新処理
                 Reload();
+                Participants = await GetParticipants();
             });
 
 
@@ -189,10 +180,10 @@ namespace MeetingApp.ViewModels
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
 
-            ////participantsDBの全データ読み込み (midで指定して全件取得）
-            //GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, TargetMeetingId);
-            //Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
             Reload();
+
+            //Participants全件取得
+            Participants = await GetParticipants();
 
         }
 
@@ -206,91 +197,91 @@ namespace MeetingApp.ViewModels
 
         }
 
-        //public async void OnSleep()
-        //{
-        //    _restService = new RestService();
+        public async void OnSleep()
+        {
+            _restService = new RestService();
 
-        //    //参加情報をparticipantDBから削除するAPIのコール
-        //    DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+            Console.WriteLine("test");
+            //参加情報をparticipantDBから削除するAPIのコール
+            DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
 
-        //    if (DeleteParticipantParam.IsSuccessed == true)
-        //    {
-        //        Console.WriteLine("Delete Successed");
-        //    }
-        //}
+            if (DeleteParticipantParam.IsSuccessed == true)
+            {
+                Console.WriteLine("Delete Successed");
+            }
+        }
 
-        //public void OnResume()
-        //{
-        //    Reload();
-        //}
+        public void OnResume()
+        {
+            Reload();
+        }
 
         //更新処理
         public async void Reload()
         {
             _restService = new RestService();
-            _controllDateTime = new ControllDateTime();
 
             //対象の会議データ取得
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
 
-            //ParticipantDBに対する最終更新時刻とActive状態の更新
+            //ParticipantDBに対する最終更新時刻とIsDeleted状態の更新
             //ParticipantDBに既にユーザーが居ないかチェック
             CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
 
             //ユーザーが既にParticipantDBに存在していた場合
             if (CheckParticipantParam.IsSuccessed == true)
             {
-                //会議参加済みかつAtciveの場合は最終更新時刻のみ更新する
-                if (CheckParticipantParam.Participant.Active == true)
+                //ParticipantsDBに存在するが、論理削除済の場合
+                if (CheckParticipantParam.Participant.isDeleted == true)
                 {
-                    CheckParticipantParam.Participant.LastUpdateTime = _controllDateTime.GetCurrentDateTime();
-                    var updateParticipant = CheckParticipantParam.Participant;
-                    await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+                    CheckParticipantParam.NoExistUser = true;
+
+                    await _navigationService.NavigateAsync("MeetingDataTopPage");
 
                 }
                 else
-                //参加済みかつ非Activeの場合はActive/最終更新時刻を両方更新する
+                //ParticipantsDBに存在するが、論理削除がされていない場合
                 {
-                    CheckParticipantParam.Participant.Active = true;
-                    CheckParticipantParam.Participant.LastUpdateTime = DateTime.Now;
+                    var operateDateTime = new OperateDateTime();
+                    CheckParticipantParam.Participant.LastUpdateTime = operateDateTime.CurrentDateTime;
                     var updateParticipant = CheckParticipantParam.Participant;
 
-                    await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+                    UpdateParticipantParam = await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
                 }
 
             }
-            //既にユーザーが退室済の場合は会議情報トップページに遷移させる
-            else if(CheckParticipantParam.NoExistUser == true)
+            //既にユーザーが退室済の場合は更新エラーを出す
+            else
             {
+                CheckParticipantParam.NoExistUser = true;
                 await _navigationService.NavigateAsync("MeetingDataTopPage");
             }
 
 
+        }
+
+        public async Task<ObservableCollection<ParticipantData>> GetParticipants()
+        {
             var mid = TargetMeetingData.Id;
             //participantsDBの全データ読み込み (midで指定して全件取得）
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
-            Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
+
+            var getParticipants = new ObservableCollection<ParticipantData>();
+            var operateDateTime = new OperateDateTime();
+
+            foreach (ParticipantData p in GetParticipantsParam.Participants)
+            {
+                var diffTime = operateDateTime.CurrentDateTime - p.LastUpdateTime;
+                if (p.isDeleted == false && diffTime.TotalMinutes < 3)
+                {
+                    getParticipants.Add(p);
+                }
+            }
+
+            return getParticipants;
 
         }
-
-        //public async void JudgeActive()
-        //{
-        //    _controllDateTime = new ControllDateTime();
-        //    CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
-
-        //    var targetDateTime = CheckParticipantParam.Participant.LastUpdateTime;
-        //    var currentDateTime = _controllDateTime.GetCurrentDateTime();
-        //    var diffDateTime = currentDateTime - targetDateTime;
-
-        //    //最終更新時刻と現在時刻の誤差３分以上 -> Activeを非参加状態に切り替え
-        //    if (diffDateTime.Minutes > 3)
-        //    {
-        //        var updateParticipantData = CheckParticipantParam.Participant;
-        //        updateParticipantData.Active = false;
-        //        UpdateParticipantParam = await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint,updateParticipantData);
-        //    }
-        //}
 
     }
 }
