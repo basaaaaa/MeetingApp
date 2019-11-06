@@ -1,7 +1,6 @@
 using MeetingApp.Constants;
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Param;
-using MeetingApp.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,7 +27,6 @@ namespace MeetingApp.Models.Data
         public string UserId { get; set; }
         public List<MeetingLabelData> LabelItems { get; set; }
 
-        ControllDateTime _controllDateTime;
 
         public ParticipantData()
         {
@@ -37,15 +35,15 @@ namespace MeetingApp.Models.Data
 
         public ParticipantData(int uid, int mid)
         {
-            _controllDateTime = new ControllDateTime();
+            var operateDateTime = new OperateDateTime();
             this.Uid = uid;
             this.Mid = mid;
-            this.LastUpdateTime = _controllDateTime.GetCurrentDateTime();
+            this.LastUpdateTime = operateDateTime.CurrentDateTime;
             this.isDeleted = false;
             LabelItems = new List<MeetingLabelData>();
         }
 
-        //participant自身のuserIdを取得
+
         public async Task GetMyUserId()
         {
             RestService _restService = new RestService();
@@ -53,13 +51,12 @@ namespace MeetingApp.Models.Data
             this.UserId = getUserParam.User.UserId;
 
         }
-        //participant自身が持つラベルに対するItemsを取得
-        //participant自身が持つラベルに対するItemsを取得
+
         public async Task GetMyLabelItems()
         {
             RestService _restService = new RestService();
 
-            //midからLabels取得
+
             GetMeetingLabelsParam getMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, this.Mid, this.Uid);
             this.LabelItems = getMeetingLabelsParam.MeetingLabelDatas;
 
