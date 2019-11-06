@@ -22,6 +22,7 @@ namespace MeetingApp.ViewModels
         private List<MeetingData> _meetings;
         private Boolean _isOwner;
         private TokenCheckParam _tokenCheckParam;
+        private Boolean _loadingMeetingData;
 
 
         public List<MeetingData> Meetings
@@ -68,6 +69,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _tokenCheckParam; }
             set { SetProperty(ref _tokenCheckParam, value); }
+        }
+        public bool LoadingMeetingData
+        {
+            get { return _loadingMeetingData; }
+            set { SetProperty(ref _loadingMeetingData, value); }
         }
 
         public ICommand NavigateMeetingCreatePage { get; }
@@ -152,6 +158,8 @@ namespace MeetingApp.ViewModels
 
             base.OnNavigatingTo(parameters);
 
+            LoadingMeetingData = true;
+
             TokenCheckValidation tokenCheckValidation = new TokenCheckValidation();
             TokenCheckParam = await tokenCheckValidation.Validate();
 
@@ -167,6 +175,8 @@ namespace MeetingApp.ViewModels
 
             //‰ï‹cî•ñ‘SŒæ“¾API‚ÌƒR[ƒ‹
             Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+
+            LoadingMeetingData = false;
 
         }
     }

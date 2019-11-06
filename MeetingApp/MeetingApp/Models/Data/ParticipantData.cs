@@ -44,7 +44,7 @@ namespace MeetingApp.Models.Data
             LabelItems = new List<MeetingLabelData>();
         }
 
-        //participant自身のuserIdを取得
+
         public async Task GetMyUserId()
         {
             RestService _restService = new RestService();
@@ -52,13 +52,12 @@ namespace MeetingApp.Models.Data
             this.UserId = getUserParam.User.UserId;
 
         }
-        //participant自身が持つラベルに対するItemsを取得
-        //participant自身が持つラベルに対するItemsを取得
+
         public async Task GetMyLabelItems()
         {
             RestService _restService = new RestService();
 
-            //midからLabels取得
+
             GetMeetingLabelsParam getMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, this.Mid, this.Uid);
             this.LabelItems = getMeetingLabelsParam.MeetingLabelDatas;
 
