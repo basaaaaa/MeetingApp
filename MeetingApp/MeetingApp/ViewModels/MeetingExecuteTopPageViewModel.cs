@@ -4,17 +4,15 @@ using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Utils;
-using Prism.AppModel;
 using Prism.Commands;
 using Prism.Navigation;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MeetingApp.ViewModels
 {
-    public class MeetingExecuteTopPageViewModel : ViewModelBase, IApplicationLifecycleAware
+    public class MeetingExecuteTopPageViewModel : ViewModelBase
     {
         //private
         //data
@@ -118,7 +116,7 @@ namespace MeetingApp.ViewModels
 
                 if (UpdateParticipantParam.IsSuccessed == true)
                 {
-                    _navigationService.NavigateAsync("MeetingDataTopPage");
+                    await _navigationService.NavigateAsync("MeetingDataTopPage");
                 }
 
 
@@ -197,24 +195,6 @@ namespace MeetingApp.ViewModels
 
         }
 
-        public async void OnSleep()
-        {
-            _restService = new RestService();
-
-            Console.WriteLine("test");
-            //参加情報をparticipantDBから削除するAPIのコール
-            DeleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
-
-            if (DeleteParticipantParam.IsSuccessed == true)
-            {
-                Console.WriteLine("Delete Successed");
-            }
-        }
-
-        public void OnResume()
-        {
-            Reload();
-        }
 
         //更新処理
         public async void Reload()
