@@ -6,10 +6,15 @@
              x:Class="MeetingApp.Views.MeetingDataTopPage"
              Title="会議一覧"
              x:Name="Root">
-        <StackLayout Margin="0,20,0,20">
+    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Frame  AbsoluteLayout.LayoutBounds="1, 1, 1, 1" AbsoluteLayout.LayoutFlags="All" IsVisible="{Binding LoadingMeetingData}">
+            <ActivityIndicator IsRunning="{Binding LoadingMeetingData}" />
+        </Frame>
+
+        <StackLayout Margin="0,20,0,5">
             <Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>
 
-            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True"  Margin="0,20,0,20"  SeparatorVisibility="None" SelectionMode="None">
+            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True"  Margin="0,20,0,0"  SeparatorVisibility="None" SelectionMode="None" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -50,8 +55,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-    </StackLayout>
-        
+        </StackLayout>
+    </AbsoluteLayout>
 
 </ContentPage>
                         
