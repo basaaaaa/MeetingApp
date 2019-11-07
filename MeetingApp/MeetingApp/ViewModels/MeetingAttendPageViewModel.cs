@@ -20,6 +20,7 @@ namespace MeetingApp.ViewModels
         private ObservableCollection<MeetingLabelData> _targetMeetingLabels;
         private string _inputLabelItemName;
         private int _labelItemCount;
+        private bool _loadingData;
 
         private CreateMeetingLabelItemValidation _createMeetingLabelItemValidation;
         private AttendMeetingValidation _attendMeetingValidation;
@@ -44,6 +45,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _inputLabelItemName; }
             set { SetProperty(ref _inputLabelItemName, value); }
+        }
+        public bool LoadingData
+        {
+            get { return _loadingData; }
+            set { SetProperty(ref _loadingData, value); }
         }
         public ObservableCollection<MeetingLabelData> TargetMeetingLabels
         {
@@ -268,6 +274,8 @@ namespace MeetingApp.ViewModels
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
 
+            LoadingData = true;
+
             _restService = new RestService();
             _getMeetingLabelsParam = new GetMeetingLabelsParam();
             _getMeetingParam = new GetMeetingParam();
@@ -285,7 +293,7 @@ namespace MeetingApp.ViewModels
             GetMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, (int)parameters["mid"], uid);
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
 
-            Console.WriteLine(TargetMeetingLabels);
+            LoadingData = false;
 
 
         }
