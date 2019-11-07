@@ -6,15 +6,19 @@
              x:Class="MeetingApp.Views.MeetingDataTopPage"
              Title="会議一覧"
              x:Name="Root">
-    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-        <Frame  AbsoluteLayout.LayoutBounds="1, 1, 1, 1" AbsoluteLayout.LayoutFlags="All" IsVisible="{Binding LoadingMeetingData}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="＋" Command="{Binding NavigateMeetingCreatePage}" />
+    </ContentPage.ToolbarItems>
+
+    <AbsoluteLayout x:Name="Absolute" VerticalOptions="FillAndExpand">
+        <Frame  AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" IsVisible="{Binding LoadingMeetingData}">
             <ActivityIndicator IsRunning="{Binding LoadingMeetingData}" />
         </Frame>
 
-        <StackLayout Margin="0,20,0,5">
-            <Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>
+        <StackLayout>
 
-            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True"  Margin="0,20,0,0"  SeparatorVisibility="None" SelectionMode="None" VerticalOptions="FillAndExpand">
+            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="None" HeightRequest="{Binding Path=Height,Source={x:Reference Absolute}}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -55,6 +59,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--<Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>-->
         </StackLayout>
     </AbsoluteLayout>
 
