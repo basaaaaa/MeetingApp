@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\MeetingFinishTopPage.xaml.cs">
+      <DependentUpon>MeetingFinishTopPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Views\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -34,7 +40,10 @@
     <EmbeddedResource Update="Views\MeetingExecuteUserPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\MeetingFinishPage.xaml">
+    <EmbeddedResource Update="Views\MeetingFinishTopPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MeetingFinishUserPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MeetingLabelItemDataCreatePage.xaml">

@@ -144,7 +144,13 @@ namespace MeetingApp.ViewModels
 
                 if (select)
                 {
-                    await _navigationService.NavigateAsync("MeetingFinishPage");
+
+                    //退室済も含めすべてのParticipants情報を取得
+                    var p = new NavigationParameters
+                {
+                    { "mid", TargetMeetingId}
+                };
+                    await _navigationService.NavigateAsync("MeetingFinishTopPage", p);
                 }
                 else
                 {
@@ -276,6 +282,9 @@ namespace MeetingApp.ViewModels
             var mid = TargetMeetingData.Id;
             //participantsDBの全データ読み込み (midで指定して全件取得）
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
+
+            //退室済みのユーザーを表示させない
+            GetParticipantsParam.Participants.RemoveAll(p => p.isDeleted == true);
 
             var getParticipants = new ObservableCollection<ParticipantData>();
             var operateDateTime = new OperateDateTime();

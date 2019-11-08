@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             x:Class="MeetingApp.Views.MeetingFinishPage"
-             Title="会議終了管理画面">
+             x:Class="MeetingApp.Views.MeetingFinishUserPage"
+             Title="test">
   
 </ContentPage>

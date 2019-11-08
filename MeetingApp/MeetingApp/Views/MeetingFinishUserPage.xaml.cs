@@ -2,9 +2,9 @@
 
 namespace MeetingApp.Views
 {
-    public partial class MeetingFinishPage : ContentPage
+    public partial class MeetingFinishUserPage : ContentPage
     {
-        public MeetingFinishPage()
+        public MeetingFinishUserPage()
         {
             InitializeComponent();
         }
