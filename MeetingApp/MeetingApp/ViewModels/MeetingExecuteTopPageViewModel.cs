@@ -9,6 +9,7 @@ using Prism.Navigation;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MeetingApp.ViewModels
 {
@@ -19,6 +20,8 @@ namespace MeetingApp.ViewModels
         private MeetingData _targetMeetingData;
         private ObservableCollection<ParticipantData> _participants;
         private int _targetMeetingId;
+        private bool _isOwner;
+        private bool _isGeneral;
 
         //param
         private GetMeetingParam _getMeetingParam;
@@ -46,7 +49,16 @@ namespace MeetingApp.ViewModels
             get { return _targetMeetingId; }
             set { SetProperty(ref _targetMeetingId, value); }
         }
-
+        public bool IsOwner
+        {
+            get { return _isOwner; }
+            set { SetProperty(ref _isOwner, value); }
+        }
+        public bool IsGeneral
+        {
+            get { return _isGeneral; }
+            set { SetProperty(ref _isGeneral, value); }
+        }
         //param
         public GetMeetingParam GetMeetingParam
         {
@@ -103,6 +115,9 @@ namespace MeetingApp.ViewModels
             _navigationService = navigationService;
             _restService = new RestService();
 
+            IsOwner = false;
+            IsGeneral = false;
+
 
             //会議から退出するコマンド
             MeetingExitCommand = new DelegateCommand(async () =>
@@ -124,13 +139,24 @@ namespace MeetingApp.ViewModels
 
             MeetingEndCommand = new DelegateCommand(async () =>
             {
-                var deleteParticipantParam = new DeleteParticipantParam();
+                //管理者が操作する会議終了処理
+                var select = await Application.Current.MainPage.DisplayAlert("警告", "本当に会議を終了してもよろしいでしょうか？", "OK", "キャンセル");
 
-                while (deleteParticipantParam.HasError != true)
+                if (select)
                 {
-                    deleteParticipantParam = await _restService.DeleteParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
+
+                    //退室済も含めすべてのParticipants情報を取得
+                    var p = new NavigationParameters
+                {
+                    { "mid", TargetMeetingId}
+                };
+                    await _navigationService.NavigateAsync("/MeetingFinishTopPage", p);
                 }
-                await _navigationService.NavigateAsync("MeetingDataTopPage");
+                else
+                {
+                    return;
+                }
+
 
             });
 
@@ -177,6 +203,16 @@ namespace MeetingApp.ViewModels
             TargetMeetingId = (int)parameters["mid"];
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
+
+            //会議管理者かどうか取得
+            if (TargetMeetingData.Owner == GetUserParam.User.Id)
+            {
+                IsOwner = true;
+            }
+            else
+            {
+                IsGeneral = true;
+            }
 
             Reload();
 
@@ -246,6 +282,9 @@ namespace MeetingApp.ViewModels
             var mid = TargetMeetingData.Id;
             //participantsDBの全データ読み込み (midで指定して全件取得）
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);
+
+            //退室済みのユーザーを表示させない
+            GetParticipantsParam.Participants.RemoveAll(p => p.isDeleted == true);
 
             var getParticipants = new ObservableCollection<ParticipantData>();
             var operateDateTime = new OperateDateTime();

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             x:Class="MeetingApp.Views.MeetingFinishDetailPage"
+             Title="{Binding DetailPageTitle}">
+    <StackLayout>
+        <ListView ItemsSource="{Binding MeetingLabelItemDatas}"  SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="True"  Margin="0,10,0,10">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame CornerRadius="5" BackgroundColor="Gray" Margin="5,5,5,0" HasShadow="false">
+                            <Label Text="{Binding ItemName}"  TextColor="White" />
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button HorizontalOptions="Center" Text="戻る" Command="{Binding GoBackCommand}" />
+    </StackLayout>
+</ContentPage>
