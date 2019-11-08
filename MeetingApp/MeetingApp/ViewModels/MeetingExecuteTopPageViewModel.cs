@@ -31,6 +31,7 @@ namespace MeetingApp.ViewModels
         private DeleteParticipantParam _deleteParticipantParam;
         private CreateParticipateParam _createParticipateParam;
         private UpdateParticipantParam _updateParticipantParam;
+        private UpdateMeetingParam _updateMeetingParam;
 
         //public
         //data
@@ -95,6 +96,11 @@ namespace MeetingApp.ViewModels
             get { return _updateParticipantParam; }
             set { SetProperty(ref _updateParticipantParam, value); }
         }
+        public UpdateMeetingParam UpdateMeetingParam
+        {
+            get { return _updateMeetingParam; }
+            set { SetProperty(ref _updateMeetingParam, value); }
+        }
 
 
         //Command
@@ -144,6 +150,13 @@ namespace MeetingApp.ViewModels
 
                 if (select)
                 {
+                    //会議情報を取得
+                    GetMeetingParam getMeetingParam = new GetMeetingParam();
+                    getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
+                    var updateMeetingData = getMeetingParam.MeetingData;
+                    //会議の状態を終了状態に変更
+                    updateMeetingData.IsVisible = false;
+                    UpdateMeetingParam = await _restService.UpdateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, updateMeetingData);
 
                     //退室済も含めすべてのParticipants情報を取得
                     var p = new NavigationParameters
@@ -203,6 +216,17 @@ namespace MeetingApp.ViewModels
             TargetMeetingId = (int)parameters["mid"];
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
+
+            //会議が終了状態でないかどうか判定
+            if (GetMeetingParam.MeetingData.IsVisible == false)
+            {
+                var p = new NavigationParameters
+                {
+                    {"ErrorPageType",ErrorPageType.FinishedMeeting }
+                };
+                //終了している会議なのでエラー画面に飛ばす
+                await _navigationService.NavigateAsync("/ErrorTemplatePage", p);
+            }
 
             //会議管理者かどうか取得
             if (TargetMeetingData.Owner == GetUserParam.User.Id)
