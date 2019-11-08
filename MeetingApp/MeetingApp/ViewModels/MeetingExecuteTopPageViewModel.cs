@@ -265,6 +265,17 @@ namespace MeetingApp.ViewModels
             GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, TargetMeetingId);
             TargetMeetingData = GetMeetingParam.MeetingData;
 
+            //会議が終了状態でないかどうか判定
+            if (GetMeetingParam.MeetingData.IsVisible == false)
+            {
+                var p = new NavigationParameters
+                {
+                    {"ErrorPageType",ErrorPageType.FinishedMeeting }
+                };
+                //終了している会議なのでエラー画面に飛ばす
+                await _navigationService.NavigateAsync("/ErrorTemplatePage", p);
+            }
+
             //ParticipantDBに対する最終更新時刻とIsDeleted状態の更新
             //ParticipantDBに既にユーザーが居ないかチェック
             CheckParticipantParam = await _restService.CheckParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, GetUserParam.User.Id, TargetMeetingData.Id);
