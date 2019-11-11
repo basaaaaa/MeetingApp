@@ -5,6 +5,7 @@
              x:Class="MeetingApp.Views.MeetingFinishDetailPage"
              Title="{Binding DetailPageTitle}">
     <StackLayout>
+        <Label Text="{Binding FinishDetailPageTitle}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold" />
         <ListView ItemsSource="{Binding MeetingLabelItemDatas}"  SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="True"  Margin="0,10,0,10">
             <ListView.ItemTemplate>
                 <DataTemplate>
