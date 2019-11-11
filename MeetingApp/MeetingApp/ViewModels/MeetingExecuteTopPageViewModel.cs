@@ -163,7 +163,7 @@ namespace MeetingApp.ViewModels
                 {
                     { "mid", TargetMeetingId}
                 };
-                    await _navigationService.NavigateAsync("/MeetingFinishTopPage", p);
+                    await _navigationService.NavigateAsync("/NavigationPage/MeetingFinishTopPage", p);
                 }
                 else
                 {

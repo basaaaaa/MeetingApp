@@ -43,8 +43,8 @@
                 <ColumnDefinition Width="0.5*" />
                 <ColumnDefinition Width="0.5*" />
             </Grid.ColumnDefinitions>
-            <Button Text="情報出力" TextColor="White" Command="" BackgroundColor="Black"/>
-            <Button Grid.Column="1" Text="会議終了" TextColor="White" Command="" BackgroundColor="Black"/>
+            <Button Text="情報出力" TextColor="White" Command="{Binding OutputParticipantsDataCommand}" BackgroundColor="Black"/>
+            <Button Grid.Column="1" Text="会議終了" TextColor="White" Command="{Binding NavigateMeetingDataTopPageCommand}" BackgroundColor="Black"/>
         </Grid>
 
         <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None">
@@ -57,7 +57,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Frame BackgroundColor="Gray" CornerRadius="10" Margin="0,0,0,0" HasShadow="false">
+                        <Frame BackgroundColor="Gray" CornerRadius="10" Margin="0,5,0,0" HasShadow="false">
                             <StackLayout>
 
                                 <Label Text="{Binding UserId}" TextColor="White" FontSize="25"/>
