@@ -13,6 +13,7 @@ namespace MeetingApp.ViewModels
         //private Data
         private ParticipantData _targetParticipantData;
         private ObservableCollection<MeetingLabelData> _targetMeetingLabels;
+        private string _finishUserPageTitle;
         //private Param
         private GetMeetingLabelsParam _getMeetingLabelsParam;
 
@@ -26,6 +27,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _targetMeetingLabels; }
             set { SetProperty(ref _targetMeetingLabels, value); }
+        }
+        public string FinishUserPageTitle
+        {
+            get { return _finishUserPageTitle; }
+            set { SetProperty(ref _finishUserPageTitle, value); }
         }
 
         //public Param
@@ -85,7 +91,7 @@ namespace MeetingApp.ViewModels
             //View用のLabelsデータを取得
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
 
-
+            FinishUserPageTitle = TargetParticipantData.UserId + "さんのカードラベル";
 
         }
     }

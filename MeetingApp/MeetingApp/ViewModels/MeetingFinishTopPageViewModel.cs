@@ -1,4 +1,5 @@
 using MeetingApp.Constants;
+using MeetingApp.Data;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using Prism.Commands;
@@ -12,19 +13,32 @@ namespace MeetingApp.ViewModels
     {
         //private Data
         private ObservableCollection<ParticipantData> _participants;
+        private MeetingData _targetMeetingData;
+
         //private Param
         private GetParticipantsParam _getParticipantsParam;
+        private GetMeetingParam _getMeetingParam;
         //public Data
         public ObservableCollection<ParticipantData> Participants
         {
             get { return _participants; }
             set { SetProperty(ref _participants, value); }
         }
+        public MeetingData TargetMeetingData
+        {
+            get { return _targetMeetingData; }
+            set { SetProperty(ref _targetMeetingData, value); }
+        }
         //public Param
         public GetParticipantsParam GetParticipantsParam
         {
             get { return _getParticipantsParam; }
             set { SetProperty(ref _getParticipantsParam, value); }
+        }
+        public GetMeetingParam GetMeetingParam
+        {
+            get { return _getMeetingParam; }
+            set { SetProperty(ref _getMeetingParam, value); }
         }
         //Command
         public ICommand NavigateMeetingFinishUserPage { get; }
@@ -60,6 +74,10 @@ namespace MeetingApp.ViewModels
 
             //会議idの取得
             var mid = (int)parameters["mid"];
+
+            //対象の会議データ取得
+            GetMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+            TargetMeetingData = GetMeetingParam.MeetingData;
 
             //退室済含むすべての会議参加者データの取得
             GetParticipantsParam = await _restService.GetParticipantsDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, mid);

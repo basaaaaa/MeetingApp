@@ -10,6 +10,7 @@
         <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
     </ContentPage.Padding>
     <StackLayout>
+        <Label Text="{Binding FinishUserPageTitle}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold"/>
         <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="Single"  RowHeight="100">
             <ListView.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="ItemSelected"

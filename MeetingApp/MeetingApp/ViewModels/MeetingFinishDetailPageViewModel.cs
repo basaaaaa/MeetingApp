@@ -14,9 +14,10 @@ namespace MeetingApp.ViewModels
         private MeetingLabelData _targetMeetingLabelData;
         private ObservableCollection<MeetingLabelItemData> _meetingLabelItemDatas;
         private ParticipantData _targetParticipantData;
+        private string _finishDetailPageTitle;
 
         //public data
-        public string DetailPageTitle
+        public string FinishDetailPageTitle
         {
             get { return _detailPageTitle; }
             set { SetProperty(ref _detailPageTitle, value); }
@@ -59,7 +60,7 @@ namespace MeetingApp.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
-            DetailPageTitle = (string)parameters["detailPageTitle"];
+            FinishDetailPageTitle = (string)parameters["detailPageTitle"];
             TargetMeetingLabelData = (MeetingLabelData)parameters["meetingLabelData"];
             TargetParticipantData = (ParticipantData)parameters["targetParticipantData"];
 
