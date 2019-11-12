@@ -87,12 +87,12 @@ namespace MeetingApp.ViewModels
             OutputParticipantsDataCommand = new DelegateCommand(async () =>
             {
                 OutputText = "[会議名]:" + TargetMeetingData.Title + Environment.NewLine;
-                OutputText += "[日時]:" + TargetMeetingData.Date + TargetMeetingData.StartTime + Environment.NewLine;
+                OutputText += "[日時]:" + TargetMeetingData.Date + " " + TargetMeetingData.StartTime + Environment.NewLine;
                 OutputText += "[Location]:" + TargetMeetingData.Location + Environment.NewLine;
 
                 foreach (ParticipantData p in Participants)
                 {
-                    OutputText += "[ユーザー名]:" + p.UserId + Environment.NewLine;
+                    OutputText += "■" + p.UserId + Environment.NewLine;
                     await p.GetMyLabelItems();
 
                     foreach (MeetingLabelData l in p.LabelItems)
@@ -101,12 +101,19 @@ namespace MeetingApp.ViewModels
                         OutputText += "【" + l.LabelName + "】" + Environment.NewLine;
                         foreach (MeetingLabelItemData i in l.MeetingLabelItemDatas)
                         {
-                            OutputText += "・" + i.ItemName + Environment.NewLine;
+                            OutputText += "　・" + i.ItemName + Environment.NewLine;
                         }
                     }
                 }
 
                 //何かしらのツールでOutput
+
+                var outputParameter = new NavigationParameters
+                {
+                    {"outputText",OutputText },
+                };
+
+                await _navigationService.NavigateAsync("/MeetingFinishOutputPage", outputParameter);
 
             });
 
