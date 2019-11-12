@@ -173,9 +173,12 @@ namespace MeetingApp.ViewModels
                     //ユーザーが既にParticipantDBに存在していた場合
                     if (CheckParticipantParam.IsSuccessed == true)
                     {
-                        //会議参加済みかつAtciveの場合はそのまま遷移する
+                        //会議参加済みかつisDeletedがfalseの場合は最終更新時刻のみ更新し遷移する
                         if (CheckParticipantParam.Participant.isDeleted == false)
                         {
+                            var operateDateTime = new OperateDateTime();
+                            CheckParticipantParam.Participant.LastUpdateTime = operateDateTime.CurrentDateTime;
+                            var updateParticipant = CheckParticipantParam.Participant;
                             var p = new NavigationParameters
                             {
                                 { "mid", GetMeetingParam.MeetingData.Id}

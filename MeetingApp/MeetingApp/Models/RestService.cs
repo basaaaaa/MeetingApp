@@ -526,8 +526,6 @@ namespace MeetingApp
                     Console.WriteLine(content);
 
                     var participants = JsonConvert.DeserializeObject<List<ParticipantData>>(content);
-                    //Active及交奈扒奈及心袚樓
-                    participants.RemoveAll(p => p.isDeleted == true);
 
                     getParticipantsParam.Participants = participants;
 
