@@ -58,6 +58,7 @@ namespace MeetingApp
             containerRegistry.RegisterForNavigation<MeetingFinishUserPage, MeetingFinishUserPageViewModel>();
             containerRegistry.RegisterForNavigation<MeetingFinishDetailPage, MeetingFinishDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<ErrorTemplatePage, ErrorTemplatePageViewModel>();
+            containerRegistry.RegisterForNavigation<MeetingFinishOutputPage, MeetingFinishOutputPageViewModel>();
         }
     }
 }
