@@ -17,16 +17,28 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _outputText, value); }
         }
         public ICommand CopyToClipboardCommand { get; }
+        public ICommand NavigateMeetingDataTopPageCommand { get; }
+
+        INavigationService _navigationService;
+
         public MeetingFinishOutputPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+            _navigationService = navigationService;
+
+
             CopyToClipboardCommand = new DelegateCommand(() => { });
+
+            NavigateMeetingDataTopPageCommand = new DelegateCommand(() =>
+            {
+                _navigationService.NavigateAsync("MeetingDataTopPage");
+            });
         }
 
-        public override async void OnNavigatingTo(INavigationParameters parameters)
+        public override void OnNavigatingTo(INavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
 
-            //会議idの取得
+            //出力テキスト情報の取得
             OutputText = (string)parameters["outputText"];
 
 

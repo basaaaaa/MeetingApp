@@ -39,7 +39,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button HorizontalOptions="Center" Text="戻る" Command="{Binding GoBackCommand}" />
+        <Button HorizontalOptions="Center" Text="戻る" Command="{Binding GoBackCommand}" TextColor="White" BackgroundColor="Black"/>
     </StackLayout>
 
 </ContentPage>

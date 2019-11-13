@@ -113,7 +113,7 @@ namespace MeetingApp.ViewModels
                     {"outputText",OutputText },
                 };
 
-                await _navigationService.NavigateAsync("/MeetingFinishOutputPage", outputParameter);
+                await _navigationService.NavigateAsync("/NavigationPage/MeetingFinishOutputPage", outputParameter);
 
             });
 

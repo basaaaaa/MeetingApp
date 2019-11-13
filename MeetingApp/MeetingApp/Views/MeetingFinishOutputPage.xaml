@@ -2,10 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             x:Class="MeetingApp.Views.MeetingFinishOutputPage">
+             x:Class="MeetingApp.Views.MeetingFinishOutputPage"
+             Title="">
 
-    <StackLayout>
-        <Button Text="Copy" Command="{Binding CopyToClipboardCommand}" />
+    <StackLayout Margin="5,5,5,5">
+        <Button Text="TOPに戻る" Command="{Binding NavigateMeetingDataTopPageCommand}" TextColor="White" BackgroundColor="Black" />
+        <!--<Button Text="Copy" Command="{Binding CopyToClipboardCommand}" />-->
         <Editor Text="{Binding OutputText}" />
     </StackLayout>
 
