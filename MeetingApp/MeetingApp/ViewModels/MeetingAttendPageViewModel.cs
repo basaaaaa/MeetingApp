@@ -179,6 +179,8 @@ namespace MeetingApp.ViewModels
                             var operateDateTime = new OperateDateTime();
                             CheckParticipantParam.Participant.LastUpdateTime = operateDateTime.CurrentDateTime;
                             var updateParticipant = CheckParticipantParam.Participant;
+                            await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+
                             var p = new NavigationParameters
                             {
                                 { "mid", GetMeetingParam.MeetingData.Id}
