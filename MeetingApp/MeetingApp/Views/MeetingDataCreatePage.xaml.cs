@@ -1,4 +1,4 @@
-﻿using Xamarin.Forms;
+using Xamarin.Forms;
 
 namespace MeetingApp.Views
 {
@@ -8,5 +8,10 @@ namespace MeetingApp.Views
         {
             InitializeComponent();
         }
+
+
+
+
     }
+
 }

@@ -26,6 +26,7 @@ namespace MeetingApp.ViewModels
         private string _inputMeetingLocation;
         private CreateMeetingParam _createMeetingParam;
         private CreateMeetingLabelParam _createMeetingLabelParam;
+        private int _labelListViewHeight;
 
 
 
@@ -69,6 +70,12 @@ namespace MeetingApp.ViewModels
         {
             get { return _inputMeetingLocation; }
             set { SetProperty(ref _inputMeetingLocation, value); }
+        }
+
+        public int LabelListViewHeight
+        {
+            get { return _labelListViewHeight; }
+            set { SetProperty(ref _labelListViewHeight, value); }
         }
         public CreateMeetingParam CreateMeetingParam
         {
@@ -158,6 +165,8 @@ namespace MeetingApp.ViewModels
                 Labels.Add(label);
                 CreateLabelName = "";
 
+                LabelListViewHeight += 85;
+
             });
         }
 
@@ -166,6 +175,7 @@ namespace MeetingApp.ViewModels
 
             base.OnNavigatingTo(parameters);
 
+            LabelListViewHeight = 20;
 
         }
 
