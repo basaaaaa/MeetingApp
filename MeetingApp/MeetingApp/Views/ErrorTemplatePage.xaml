@@ -2,11 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             x:Class="MeetingApp.Views.ErrorTemplatePage">
+             x:Class="MeetingApp.Views.ErrorTemplatePage"
+             Title="{Binding ErrorMessageTitle}">
 
-    <StackLayout>
-        <Label TextColor="Red" Text="{Binding ErrorMessage}" />
+    <StackLayout Margin="5,5,5,5">
+        <Label TextColor="Red" Text="{Binding ErrorMessage}" FontSize="30" FontAttributes="Bold"/>
         <Label Text="{Binding ErrorMessageDespription}" />
+        <Button HorizontalOptions="Center" VerticalOptions="Center" Text="戻る" Command="{Binding NavigateLoginPageCommand}" BackgroundColor="Black" TextColor="White"/>
     </StackLayout>
   
 </ContentPage>

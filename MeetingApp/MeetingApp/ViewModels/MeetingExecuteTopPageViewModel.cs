@@ -225,7 +225,7 @@ namespace MeetingApp.ViewModels
                     {"ErrorPageType",ErrorPageType.FinishedMeeting }
                 };
                 //終了している会議なのでエラー画面に飛ばす
-                await _navigationService.NavigateAsync("/ErrorTemplatePage", p);
+                await _navigationService.NavigateAsync("/NavigationPage/ErrorTemplatePage", p);
             }
 
             //会議管理者かどうか取得
