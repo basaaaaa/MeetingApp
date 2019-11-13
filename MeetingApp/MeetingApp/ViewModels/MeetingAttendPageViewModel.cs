@@ -249,6 +249,8 @@ namespace MeetingApp.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
+            LoadingData = true;
+
             _restService = new RestService();
             _getMeetingLabelsParam = new GetMeetingLabelsParam();
             _getMeetingParam = new GetMeetingParam();
@@ -266,6 +268,8 @@ namespace MeetingApp.ViewModels
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
 
             Console.WriteLine(TargetMeetingLabels);
+
+            LoadingData = false;
 
 
 
