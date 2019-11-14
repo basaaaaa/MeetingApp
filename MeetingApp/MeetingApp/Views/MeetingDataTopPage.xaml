@@ -11,14 +11,11 @@
         <ToolbarItem Text="＋" Command="{Binding NavigateMeetingCreatePage}" />
     </ContentPage.ToolbarItems>
 
-    <AbsoluteLayout x:Name="Absolute" VerticalOptions="FillAndExpand">
-        <Frame  AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" IsVisible="{Binding LoadingMeetingData}">
-            <ActivityIndicator IsRunning="{Binding LoadingMeetingData}" />
-        </Frame>
-
-        <StackLayout>
-
-            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="None" HeightRequest="{Binding Path=Height,Source={x:Reference Absolute}}">
+    <AbsoluteLayout>
+        
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+<!--            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="None" HeightRequest="{Binding Path=Height,Source={x:Reference Absolute}}">-->
+            <ListView ItemsSource="{Binding Meetings}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -61,6 +58,24 @@
             </ListView>
             <!--<Button HorizontalOptions="Center" Command="{Binding NavigateMeetingCreatePage}" Text="会議作成"/>-->
         </StackLayout>
+        
+        
+        
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding LoadingMeetingData}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
+        
+        <Frame IsVisible="{Binding LoadingMeetingData}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding LoadingMeetingData}" Color="Black" />
+                <Label Text="会議情報取得中…" />
+            </StackLayout>
+        </Frame>
+       
     </AbsoluteLayout>
 
 </ContentPage>
