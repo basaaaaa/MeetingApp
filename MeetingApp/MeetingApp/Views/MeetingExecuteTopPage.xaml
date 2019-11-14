@@ -10,37 +10,55 @@
         <ToolbarItem Text="更新" Command="{Binding UpdateParticipantsCommand}" />
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
-        <!--<Frame BackgroundColor="Silver" CornerRadius="10" Margin="5,5,5,5">
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <!--<Frame BackgroundColor="Silver" CornerRadius="10" Margin="5,5,5,5">
             <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" HorizontalOptions="Center"/>
         </Frame>-->
-        
-        
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5,5,5,0">
-            <Button Text="退出する" TextColor="White" BackgroundColor="Black" Command="{Binding MeetingExitCommand}" IsVisible="{Binding IsGeneral}"/>
-            <Button Text="終了する" TextColor="White" BackgroundColor="Black" Command="{Binding MeetingEndCommand}" IsVisible="{Binding IsOwner}"/>
-        </StackLayout>
-        <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None">
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior EventName="ItemSelected"
+
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="5,5,5,0">
+                <Button Text="退出する" TextColor="White" BackgroundColor="Black" Command="{Binding MeetingExitCommand}" IsVisible="{Binding IsGeneral}"/>
+                <Button Text="終了する" TextColor="White" BackgroundColor="Black" Command="{Binding MeetingEndCommand}" IsVisible="{Binding IsOwner}"/>
+            </StackLayout>
+            <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="ItemSelected"
                                                           Command="{Binding NavigateMeetingExecuteUserPage}" 
                                                           EventArgsParameterPath="SelectedItem"/>
-            </ListView.Behaviors>
-            
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Frame BackgroundColor="Gray" CornerRadius="10" Margin="5,5,5,5" HasShadow="false">
-                            <StackLayout>
+                </ListView.Behaviors>
 
-                                <Label Text="{Binding UserId}" TextColor="White" FontSize="25"/>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame BackgroundColor="Gray" CornerRadius="10" Margin="5,5,5,5" HasShadow="false">
+                                <StackLayout>
 
-                            </StackLayout>
-                        </Frame>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
-  
+                                    <Label Text="{Binding UserId}" TextColor="White" FontSize="25"/>
+
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding LoadingData}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
+
+        <Frame IsVisible="{Binding LoadingData}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding LoadingData}" Color="Black" />
+                <Label Text="参加者情報取得中…" />
+            </StackLayout>
+        </Frame>
+        
+    </AbsoluteLayout>
+
 </ContentPage>

@@ -5,69 +5,100 @@
              xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              x:Class="MeetingApp.Views.MeetingFinishTopPage"
              Title="会議終了管理画面">
-    
-    
 
-    <StackLayout>
-        <Frame CornerRadius="10" Margin="5,30,5,5" Opacity="0.7" BackgroundColor="Gray" HeightRequest="150" HasShadow="false">
-            <StackLayout >
-                <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" TextColor="White"/>
-                <Grid Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.2*" />
-                        <ColumnDefinition Width="0.7*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20" />
-                        <RowDefinition Height="20" />
-                        <RowDefinition Height="20" />
-                        <RowDefinition Height="20" />
-                    </Grid.RowDefinitions>
-                    <Label Text="実施日" TextColor="White"/>
-                    <Label Grid.Column="1" Text="{Binding TargetMeetingData.Date}" TextColor="White"/>
-                    <Label Grid.Row="1" Text="開始時間" TextColor="White"/>
-                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding TargetMeetingData.StartTime}" TextColor="White"/>
-                    <Label Grid.Row="2" Text="終了時間" TextColor="White"/>
-                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding TargetMeetingData.EndTime}" TextColor="White"/>
-                    <Label Grid.Row="3" Text="場所" TextColor="White"/>
-                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding TargetMeetingData.Location}" TextColor="White"/>
-                </Grid>
+
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <Frame CornerRadius="10" Margin="5,30,5,5" Opacity="0.7" BackgroundColor="Gray" HeightRequest="150" HasShadow="false">
+                <StackLayout >
+                    <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" TextColor="White"/>
+                    <Grid Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="0.7*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <Label Text="実施日" TextColor="White"/>
+                        <Label Grid.Column="1" Text="{Binding TargetMeetingData.Date}" TextColor="White"/>
+                        <Label Grid.Row="1" Text="開始時間" TextColor="White"/>
+                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding TargetMeetingData.StartTime}" TextColor="White"/>
+                        <Label Grid.Row="2" Text="終了時間" TextColor="White"/>
+                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding TargetMeetingData.EndTime}" TextColor="White"/>
+                        <Label Grid.Row="3" Text="場所" TextColor="White"/>
+                        <Label Grid.Column="1" Grid.Row="3" Text="{Binding TargetMeetingData.Location}" TextColor="White"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <Grid Margin="5,5,5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Button Text="情報出力" TextColor="White" Command="{Binding OutputParticipantsDataCommand}" BackgroundColor="Black"/>
+                <Button Grid.Column="1" Text="会議終了" TextColor="White" Command="{Binding NavigateMeetingDataTopPageCommand}" BackgroundColor="Black"/>
+            </Grid>
+
+            <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                                                          Command="{Binding NavigateMeetingFinishUserPage}" 
+                                                          EventArgsParameterPath="SelectedItem"/>
+                </ListView.Behaviors>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame BackgroundColor="Gray" CornerRadius="10" Margin="0,5,0,0" HasShadow="false">
+                                <StackLayout>
+
+                                    <Label Text="{Binding UserId}" TextColor="White" FontSize="25"/>
+
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding LoadingData}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
+
+        <Frame IsVisible="{Binding LoadingData}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding LoadingData}" Color="Black" />
+                <Label Text="参加者情報取得中…" />
             </StackLayout>
         </Frame>
 
-        <Grid Margin="5,5,5,5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*" />
-                <ColumnDefinition Width="0.5*" />
-            </Grid.ColumnDefinitions>
-            <Button Text="情報出力" TextColor="White" Command="{Binding OutputParticipantsDataCommand}" BackgroundColor="Black"/>
-            <Button Grid.Column="1" Text="会議終了" TextColor="White" Command="{Binding NavigateMeetingDataTopPageCommand}" BackgroundColor="Black"/>
-        </Grid>
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding LoadingOutputData}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
 
-        <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None">
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior EventName="ItemSelected"
-                                                          Command="{Binding NavigateMeetingFinishUserPage}" 
-                                                          EventArgsParameterPath="SelectedItem"/>
-            </ListView.Behaviors>
+        <Frame IsVisible="{Binding LoadingOutputData}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding LoadingOutputData}" Color="Black" />
+                <Label Text="会議情報出力中…" />
+            </StackLayout>
+        </Frame>
+    </AbsoluteLayout>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Frame BackgroundColor="Gray" CornerRadius="10" Margin="0,5,0,0" HasShadow="false">
-                            <StackLayout>
-
-                                <Label Text="{Binding UserId}" TextColor="White" FontSize="25"/>
-
-                            </StackLayout>
-                        </Frame>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
-  
 </ContentPage>

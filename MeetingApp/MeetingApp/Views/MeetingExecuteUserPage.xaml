@@ -8,36 +8,57 @@
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
     </ContentPage.Padding>
-    <StackLayout>
-        <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="Single"  RowHeight="100">
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior EventName="ItemSelected"
-                                                          Command="{Binding NavigateMeetingExecuteUserPageCommand}"
-                                                          EventArgsParameterPath="SelectedItem"/>
-            </ListView.Behaviors>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Frame CornerRadius="10" Opacity="0.7" BackgroundColor="WhiteSmoke" Margin="0,5,0,5" HasShadow="false">
-                            <StackLayout>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.8*" />
-                                        <ColumnDefinition Width="0.2*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding LabelName}" FontSize="25"  HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
-                                    <Label Text="{Binding MeetingLabelItemDatasCountString}" Grid.Column="1" TextColor="Red"  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                                </Grid>
-                            </StackLayout>
-                        </Frame>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+
+
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="Single"  RowHeight="100">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                                                              Command="{Binding NavigateMeetingExecuteUserPageCommand}"
+                                                              EventArgsParameterPath="SelectedItem"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame CornerRadius="10" Opacity="0.7" BackgroundColor="WhiteSmoke" Margin="0,5,0,5" HasShadow="false">
+                                <StackLayout>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.8*" />
+                                            <ColumnDefinition Width="0.2*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding LabelName}" FontSize="25"  HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
+                                        <Label Text="{Binding MeetingLabelItemDatasCountString}" Grid.Column="1" TextColor="Red"  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding LoadingData}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
+
+        <Frame IsVisible="{Binding LoadingData}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding LoadingData}" Color="Black" />
+                <Label Text="ラベル情報取得中…" />
+            </StackLayout>
+        </Frame>
+
+
+    </AbsoluteLayout>
 
 
 </ContentPage>

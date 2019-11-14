@@ -4,19 +4,35 @@
              xmlns:prism="http://prismlibrary.com"
              x:Class="MeetingApp.Views.MeetingFinishDetailPage"
              Title="{Binding FinishDetailPageTitle}">
-    <StackLayout>
-        <!--<Label Text="{Binding FinishDetailPageTitle}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold" />-->
-        <ListView ItemsSource="{Binding MeetingLabelItemDatas}"  SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="True"  Margin="0,10,0,10">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Frame CornerRadius="5" BackgroundColor="Gray" Margin="5,5,5,0" HasShadow="false">
-                            <Label Text="{Binding ItemName}"  TextColor="White" />
-                        </Frame>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <!--<Button HorizontalOptions="Center" Text="戻る" Command="{Binding GoBackCommand}" TextColor="White" BackgroundColor="Black"/>-->
-    </StackLayout>
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <!--<Label Text="{Binding FinishDetailPageTitle}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold" />-->
+            <ListView ItemsSource="{Binding MeetingLabelItemDatas}"  SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="True"  Margin="0,10,0,10">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame CornerRadius="5" BackgroundColor="Gray" Margin="5,5,5,0" HasShadow="false">
+                                <Label Text="{Binding ItemName}"  TextColor="White" />
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!--<Button HorizontalOptions="Center" Text="戻る" Command="{Binding GoBackCommand}" TextColor="White" BackgroundColor="Black"/>-->
+        </StackLayout>
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding LoadingData}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
+
+        <Frame IsVisible="{Binding LoadingData}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding LoadingData}" Color="Black" />
+                <Label Text="項目情報取得中…" />
+            </StackLayout>
+        </Frame>
+    </AbsoluteLayout>
 </ContentPage>

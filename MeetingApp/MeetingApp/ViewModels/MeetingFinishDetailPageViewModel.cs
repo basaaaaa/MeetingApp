@@ -14,6 +14,7 @@ namespace MeetingApp.ViewModels
         private MeetingLabelData _targetMeetingLabelData;
         private ObservableCollection<MeetingLabelItemData> _meetingLabelItemDatas;
         private ParticipantData _targetParticipantData;
+        private bool _loadingData;
 
         //public data
         public string FinishDetailPageTitle
@@ -35,6 +36,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _targetParticipantData; }
             set { SetProperty(ref _targetParticipantData, value); }
+        }
+        public bool LoadingData
+        {
+            get { return _loadingData; }
+            set { SetProperty(ref _loadingData, value); }
         }
 
         INavigationService _navigationService;
@@ -60,13 +66,15 @@ namespace MeetingApp.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
+            LoadingData = true;
+
             FinishDetailPageTitle = (string)parameters["detailPageTitle"];
             TargetMeetingLabelData = (MeetingLabelData)parameters["meetingLabelData"];
             TargetParticipantData = (ParticipantData)parameters["targetParticipantData"];
 
             MeetingLabelItemDatas = new ObservableCollection<MeetingLabelItemData>(TargetMeetingLabelData.MeetingLabelItemDatas);
 
-
+            LoadingData = false;
         }
     }
 }
