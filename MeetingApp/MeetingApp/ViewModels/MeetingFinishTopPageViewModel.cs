@@ -133,6 +133,7 @@ namespace MeetingApp.ViewModels
 
             });
 
+            //TOP画面に遷移するコマンド
             NavigateMeetingDataTopPageCommand = new DelegateCommand(async () =>
             {
                 await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");

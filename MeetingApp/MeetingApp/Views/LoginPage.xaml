@@ -5,33 +5,52 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MeetingApp.Views.LoginPage"
              Title="ログイン">
-    <StackLayout VerticalOptions="Center">
-        <Frame CornerRadius="10" Margin="50,20,50,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="false">
-            <StackLayout>
-                <Label Text="Login"  HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" Margin="0,0,0,5"/>
-                <Entry Placeholder="Enter your userId" Text="{Binding LoginUserId}" />
-                <Entry Placeholder="Enter your password" Text="{Binding LoginPassword}" IsPassword="True"/>
-                <StackLayout Margin="0,5,0,0">
-                <Button Text="ログイン" Command="{Binding LoginCommand}" BackgroundColor="Black" TextColor="White"/>
-                    <Label IsVisible="{Binding LoginParam.NotFoundUser}" Text="Error:User is not found" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding LoginParam.BlankUserId}" Text="Error:UserId is Blank" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding LoginParam.BlankPassword}" Text="Error:Password is Blank" TextColor="Red" HorizontalOptions="Center"/>
+    <AbsoluteLayout>
+        <StackLayout VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <Frame CornerRadius="10" Margin="50,20,50,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="false">
+                <StackLayout>
+                    <Label Text="Login"  HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" Margin="0,0,0,5"/>
+                    <Entry Placeholder="Enter your userId" Text="{Binding LoginUserId}" />
+                    <Entry Placeholder="Enter your password" Text="{Binding LoginPassword}" IsPassword="True"/>
+                    <StackLayout Margin="0,5,0,0">
+                        <Button Text="ログイン" Command="{Binding LoginCommand}" BackgroundColor="Black" TextColor="White"/>
+                        <Label IsVisible="{Binding LoginParam.NotFoundUser}" Text="Error:User is not found" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding LoginParam.BlankUserId}" Text="Error:UserId is Blank" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding LoginParam.BlankPassword}" Text="Error:Password is Blank" TextColor="Red" HorizontalOptions="Center"/>
 
-                    <Label HorizontalOptions="Center">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="新規登録" TextColor="White" FontFamily="UnderLine">
-                                    <Span.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding NavigationSignUpPageCommand}"/>
-                                    </Span.GestureRecognizers>
-                                </Span>
-                            </FormattedString>
+                        <Label HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="新規登録" TextColor="White" FontFamily="UnderLine">
+                                        <Span.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding NavigationSignUpPageCommand}"/>
+                                        </Span.GestureRecognizers>
+                                    </Span>
+                                </FormattedString>
 
-                        </Label.FormattedText>
-                    </Label>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
                 </StackLayout>
+            </Frame>
+        </StackLayout>
+
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding LoadingLogin}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
+
+        <Frame IsVisible="{Binding LoadingLogin}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding LoadingLogin}" Color="Black" />
+                <Label Text="ログイン中…" />
             </StackLayout>
         </Frame>
-    </StackLayout>
+
+    </AbsoluteLayout>
+    
 
 </ContentPage>
