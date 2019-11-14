@@ -102,7 +102,7 @@ namespace MeetingApp.ViewModels
                 LoadingOutputData = true;
                 OutputText = "[会議名]:" + TargetMeetingData.Title + Environment.NewLine;
                 OutputText += "[日時]:" + TargetMeetingData.Date + " " + TargetMeetingData.StartTime + Environment.NewLine;
-                OutputText += "[Location]:" + TargetMeetingData.Location + Environment.NewLine;
+                OutputText += "[実施場所]:" + TargetMeetingData.Location + Environment.NewLine;
 
                 foreach (ParticipantData p in Participants)
                 {

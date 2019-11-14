@@ -137,7 +137,7 @@ namespace MeetingApp.ViewModels
             NavigateMeetingCreatePage = new DelegateCommand(async () =>
             {
                 //会議情報トップページに遷移する
-                await _navigationService.NavigateAsync("MeetingDataCreatePage");
+                await _navigationService.NavigateAsync("/NavigationPage/MeetingDataCreatePage");
 
             });
 
