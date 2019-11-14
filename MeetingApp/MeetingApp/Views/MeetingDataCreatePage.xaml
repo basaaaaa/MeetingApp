@@ -4,10 +4,14 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="MeetingApp.Views.MeetingDataCreatePage">
+             x:Class="MeetingApp.Views.MeetingDataCreatePage"
+             Title="会議新規作成">
     <ScrollView>
         <StackLayout VerticalOptions="Center" Margin="10,10,10,10">
-            <Button Text=" 会議作成 " Command="{Binding CreateMeetingDataCommand}" HorizontalOptions="Center" TextColor="White" BackgroundColor="Black"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Button Text=" 会議作成 " Command="{Binding CreateMeetingDataCommand}" TextColor="White" BackgroundColor="Black"/>
+                <Button Text="TOPに戻る" Command="{Binding NavigateMeetingDataTopPage}" TextColor="White" BackgroundColor="Black"/>
+            </StackLayout>
             <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HasShadow="false" WidthRequest="300">
                 <StackLayout>
                     <Label IsVisible="{Binding CreateMeetingParam.BlankMeetingTitle}" TextColor="Red" Text="会議タイトルが入力されていません" />
@@ -36,7 +40,11 @@
 
                     <Label Text="カードラベル" VerticalOptions="Center" TextColor="White"/>
                     <Entry Text="{Binding CreateLabelName}" Placeholder="共有事項">
-                        <Entry.Behaviors>                            <behaviors:EventToCommandBehavior                                EventName="Unfocused"                                Command="{Binding CreateMeetingLabelCommand}" />                        </Entry.Behaviors>
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+                                EventName="Unfocused"
+                                Command="{Binding CreateMeetingLabelCommand}" />
+                        </Entry.Behaviors>
                     </Entry>
                 <Label TextColor="Red" Text="ラベル名が入力されていません" IsVisible="{Binding CreateMeetingLabelParam.BlankLabelName}" />
                 </StackLayout>

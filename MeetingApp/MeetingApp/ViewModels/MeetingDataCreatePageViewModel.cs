@@ -90,6 +90,9 @@ namespace MeetingApp.ViewModels
 
         public ICommand CreateMeetingDataCommand { get; }
         public ICommand CreateMeetingLabelCommand { get; }
+        public ICommand NavigateMeetingDataTopPage { get; }
+
+
         public MeetingData CreateMeetingData;
 
         RestService _restService;
@@ -110,11 +113,11 @@ namespace MeetingApp.ViewModels
             _createMeetingLabelValidation = new CreateMeetingLabelValidation();
 
             ////仮入力データ
-            InputMeetingTitle = "テスト会議";
-            InputMeetingDate = "2019-09-07";
-            InputMeetingStartTime = "10:00";
-            InputMeetingEndTime = "10:15";
-            InputMeetingLocation = "どこか";
+            //InputMeetingTitle = "テスト会議";
+            //InputMeetingDate = "2019-09-07";
+            //InputMeetingStartTime = "10:00";
+            //InputMeetingEndTime = "10:15";
+            //InputMeetingLocation = "どこか";
 
             CreateMeetingDataCommand = new DelegateCommand(async () =>
 
@@ -150,7 +153,7 @@ namespace MeetingApp.ViewModels
                 if (CreateMeetingParam.IsSuccessed == true)
                 {
                     //会議情報トップページに遷移する
-                    await _navigationService.NavigateAsync("MeetingDataTopPage");
+                    await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
                 }
 
             });
@@ -167,6 +170,12 @@ namespace MeetingApp.ViewModels
 
                 LabelListViewHeight += 85;
 
+            });
+
+            NavigateMeetingDataTopPage = new DelegateCommand(() =>
+            {
+                //会議情報TOPページへ遷移
+                _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
             });
         }
 

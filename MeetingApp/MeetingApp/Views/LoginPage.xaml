@@ -7,16 +7,16 @@
              Title="ログイン">
     <AbsoluteLayout>
         <StackLayout VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-            <Frame CornerRadius="10" Margin="50,20,50,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="false">
+            <Frame CornerRadius="10" Margin="50,20,50,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="false" WidthRequest="200">
                 <StackLayout>
                     <Label Text="Login"  HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" Margin="0,0,0,5"/>
-                    <Entry Placeholder="Enter your userId" Text="{Binding LoginUserId}" />
-                    <Entry Placeholder="Enter your password" Text="{Binding LoginPassword}" IsPassword="True"/>
+                    <Entry Placeholder="userId" Text="{Binding LoginUserId}" />
+                    <Entry Placeholder="password" Text="{Binding LoginPassword}" IsPassword="True"/>
                     <StackLayout Margin="0,5,0,0">
                         <Button Text="ログイン" Command="{Binding LoginCommand}" BackgroundColor="Black" TextColor="White"/>
-                        <Label IsVisible="{Binding LoginParam.NotFoundUser}" Text="Error:User is not found" TextColor="Red" HorizontalOptions="Center"/>
-                        <Label IsVisible="{Binding LoginParam.BlankUserId}" Text="Error:UserId is Blank" TextColor="Red" HorizontalOptions="Center"/>
-                        <Label IsVisible="{Binding LoginParam.BlankPassword}" Text="Error:Password is Blank" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding LoginParam.NotFoundUser}" Text="ユーザーが見つかりません！" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding LoginParam.BlankUserId}" Text="ユーザーIDが入力されていません！" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding LoginParam.BlankPassword}" Text="passwordが入力されていません！" TextColor="Red" HorizontalOptions="Center"/>
 
                         <Label HorizontalOptions="Center">
                             <Label.FormattedText>
