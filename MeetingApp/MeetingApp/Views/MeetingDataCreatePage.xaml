@@ -43,11 +43,11 @@
             </Frame>
 
 
-            <ListView ItemsSource="{Binding Labels}"  HasUnevenRows="True"  Margin="5,0,5,5"  SeparatorVisibility="None" SelectionMode="None" RowHeight="30" HeightRequest="{Binding LabelListViewHeight}">
+            <ListView ItemsSource="{Binding Labels}"  HasUnevenRows="True"   SeparatorVisibility="None" SelectionMode="None"  HeightRequest="{Binding LabelListViewHeight}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame CornerRadius="5" BackgroundColor="WhiteSmoke" Margin="0,5,0,0" HasShadow="false">
+                            <Frame CornerRadius="5" BackgroundColor="WhiteSmoke" Margin="0,5,0,0"  HasShadow="false">
                                 <StackLayout>
                                     <Label Text="{Binding LabelName}" HorizontalOptions="Center" FontSize="25"/>
                                 </StackLayout>
