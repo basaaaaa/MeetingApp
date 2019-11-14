@@ -179,6 +179,8 @@ namespace MeetingApp.ViewModels
                             var operateDateTime = new OperateDateTime();
                             CheckParticipantParam.Participant.LastUpdateTime = operateDateTime.CurrentDateTime;
                             var updateParticipant = CheckParticipantParam.Participant;
+                            await _restService.UpdateParticipantDataAsync(MeetingConstants.OPENMeetingParticipantEndPoint, updateParticipant);
+
                             var p = new NavigationParameters
                             {
                                 { "mid", GetMeetingParam.MeetingData.Id}
@@ -247,6 +249,8 @@ namespace MeetingApp.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
+            LoadingData = true;
+
             _restService = new RestService();
             _getMeetingLabelsParam = new GetMeetingLabelsParam();
             _getMeetingParam = new GetMeetingParam();
@@ -264,6 +268,8 @@ namespace MeetingApp.ViewModels
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
 
             Console.WriteLine(TargetMeetingLabels);
+
+            LoadingData = false;
 
 
 

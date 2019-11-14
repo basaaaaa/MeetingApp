@@ -4,13 +4,13 @@
              xmlns:prism="http://prismlibrary.com"
              xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              x:Class="MeetingApp.Views.MeetingFinishUserPage"
-             Title="test">
+             Title="{Binding TargetParticipantData.UserId}">
 
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
     </ContentPage.Padding>
     <StackLayout>
-        <Label Text="{Binding FinishUserPageTitle}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold"/>
+        <Label Text="{Binding Test}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold"/>
         <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="Single"  RowHeight="100">
             <ListView.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="ItemSelected"
@@ -39,7 +39,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button HorizontalOptions="Center" Text="戻る" Command="{Binding GoBackCommand}" />
     </StackLayout>
 
 </ContentPage>
