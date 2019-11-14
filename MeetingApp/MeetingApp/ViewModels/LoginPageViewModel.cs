@@ -14,6 +14,8 @@ namespace MeetingApp.ViewModels
 
         private string _loginUserId;
         private string _loginPassword;
+        private bool _loadingLogin;
+
         private LoginParam _loginParam;
 
 
@@ -30,6 +32,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _loginPassword; }
             set { SetProperty(ref _loginPassword, value); }
+        }
+        public bool LoadingLogin
+        {
+            get { return _loadingLogin; }
+            set { SetProperty(ref _loadingLogin, value); }
         }
 
         public LoginParam LoginParam
@@ -61,6 +68,8 @@ namespace MeetingApp.ViewModels
             LoginCommand = new DelegateCommand(async () =>
             {
 
+                LoadingLogin = true;
+
                 LoginParam = await _restService.LoginUserDataAsync(UserConstants.OpenUserLoginEndPoint, LoginUserId, LoginPassword);
                 //ログイン処理にエラーが無く追加が実行されていれば
                 if (LoginParam.HasError == false)
@@ -71,8 +80,10 @@ namespace MeetingApp.ViewModels
                     //ローカルにuserId情報を保持する
                     _applicationProperties.SaveToProperties<string>("userId", LoginUserId);
 
+                    LoadingLogin = false;
+
                     //会議情報トップページに遷移する
-                    await _navigationService.NavigateAsync("MeetingDataTopPage");
+                    await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
                 }
             });
         }

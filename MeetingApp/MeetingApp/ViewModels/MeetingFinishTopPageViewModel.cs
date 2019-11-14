@@ -16,6 +16,8 @@ namespace MeetingApp.ViewModels
         private ObservableCollection<ParticipantData> _participants;
         private MeetingData _targetMeetingData;
         private string _outputText;
+        private bool _loadingData;
+        private bool _loadingOutputData;
 
         //private Param
         private GetParticipantsParam _getParticipantsParam;
@@ -37,6 +39,16 @@ namespace MeetingApp.ViewModels
         {
             get { return _outputText; }
             set { SetProperty(ref _outputText, value); }
+        }
+        public bool LoadingData
+        {
+            get { return _loadingData; }
+            set { SetProperty(ref _loadingData, value); }
+        }
+        public bool LoadingOutputData
+        {
+            get { return _loadingOutputData; }
+            set { SetProperty(ref _loadingOutputData, value); }
         }
         //public Param
         public GetParticipantsParam GetParticipantsParam
@@ -86,6 +98,8 @@ namespace MeetingApp.ViewModels
             //参加者情報をText形式にOutPutするコマンド
             OutputParticipantsDataCommand = new DelegateCommand(async () =>
             {
+
+                LoadingOutputData = true;
                 OutputText = "[会議名]:" + TargetMeetingData.Title + Environment.NewLine;
                 OutputText += "[日時]:" + TargetMeetingData.Date + " " + TargetMeetingData.StartTime + Environment.NewLine;
                 OutputText += "[Location]:" + TargetMeetingData.Location + Environment.NewLine;
@@ -113,10 +127,13 @@ namespace MeetingApp.ViewModels
                     {"outputText",OutputText },
                 };
 
+                LoadingOutputData = false;
+
                 await _navigationService.NavigateAsync("/NavigationPage/MeetingFinishOutputPage", outputParameter);
 
             });
 
+            //TOP画面に遷移するコマンド
             NavigateMeetingDataTopPageCommand = new DelegateCommand(async () =>
             {
                 await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
@@ -127,6 +144,8 @@ namespace MeetingApp.ViewModels
         public override async void OnNavigatingTo(INavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
+
+            LoadingData = true;
 
             //会議idの取得
             var mid = (int)parameters["mid"];
@@ -140,7 +159,7 @@ namespace MeetingApp.ViewModels
             //View用のObservableCollection型リストを取得
             Participants = new ObservableCollection<ParticipantData>(GetParticipantsParam.Participants);
 
-
+            LoadingData = false;
         }
 
     }

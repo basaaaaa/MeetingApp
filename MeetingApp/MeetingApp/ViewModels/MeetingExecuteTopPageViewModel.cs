@@ -22,6 +22,7 @@ namespace MeetingApp.ViewModels
         private int _targetMeetingId;
         private bool _isOwner;
         private bool _isGeneral;
+        private bool _loadingData;
 
         //param
         private GetMeetingParam _getMeetingParam;
@@ -59,6 +60,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _isGeneral; }
             set { SetProperty(ref _isGeneral, value); }
+        }
+        public bool LoadingData
+        {
+            get { return _loadingData; }
+            set { SetProperty(ref _loadingData, value); }
         }
         //param
         public GetMeetingParam GetMeetingParam
@@ -201,6 +207,8 @@ namespace MeetingApp.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
+            LoadingData = true;
+
             _restService = new RestService();
             _applicationProperties = new ApplicationProperties();
 
@@ -238,6 +246,8 @@ namespace MeetingApp.ViewModels
                 IsGeneral = true;
             }
 
+            LoadingData = false;
+
             Reload();
 
             //Participants全件取得
@@ -259,6 +269,8 @@ namespace MeetingApp.ViewModels
         //更新処理
         public async void Reload()
         {
+
+            LoadingData = true;
             _restService = new RestService();
 
             //対象の会議データ取得
@@ -309,6 +321,7 @@ namespace MeetingApp.ViewModels
                 await _navigationService.NavigateAsync("MeetingDataTopPage");
             }
 
+            LoadingData = false;
 
         }
 

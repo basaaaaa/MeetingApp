@@ -13,6 +13,7 @@ namespace MeetingApp.ViewModels
         //privateData
         private ParticipantData _participantData;
         private List<MeetingLabelData> _targetMeetingLabels;
+        private bool _loadingData;
 
         //privateParam
         private GetMeetingLabelsParam _getMeetingLabelsParam;
@@ -27,6 +28,12 @@ namespace MeetingApp.ViewModels
         {
             get { return _targetMeetingLabels; }
             set { SetProperty(ref _targetMeetingLabels, value); }
+        }
+
+        public bool LoadingData
+        {
+            get { return _loadingData; }
+            set { SetProperty(ref _loadingData, value); }
         }
 
 
@@ -71,6 +78,8 @@ namespace MeetingApp.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
+            LoadingData = true;
+
             _restService = new RestService();
 
             //‘JˆÚƒpƒ‰ƒ[ƒ^‚©‚ç‚ÌparticipantData‚Ìæ“¾
@@ -80,7 +89,7 @@ namespace MeetingApp.ViewModels
             GetMeetingLabelsParam = await _restService.GetMeetingLabelsDataAsync(MeetingConstants.OPENMeetingLabelEndPoint, ParticipantData.Mid, ParticipantData.Uid);
             TargetMeetingLabels = GetMeetingLabelsParam.MeetingLabelDatas;
 
-
+            LoadingData = false;
 
         }
     }

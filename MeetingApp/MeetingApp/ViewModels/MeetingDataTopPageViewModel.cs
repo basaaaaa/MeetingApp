@@ -8,6 +8,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace MeetingApp.ViewModels
 {
@@ -101,24 +102,34 @@ namespace MeetingApp.ViewModels
             DeleteMeetingCommand = new DelegateCommand<object>(async id =>
             {
 
-                var mid = Convert.ToInt32(id);
+                //管理者が操作する会議終了処理
+                var select = await Application.Current.MainPage.DisplayAlert("警告", "会議を削除してもよろしいでしょうか？", "OK", "キャンセル");
 
-                ////物理削除
-                //_restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+                if (select)
+                {
+                    var mid = Convert.ToInt32(id);
 
-                //論理削除
+                    ////物理削除
+                    //_restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
 
-                //対象となる会議情報を1件取得
-                GetMeetingParam getMeetingParam = new GetMeetingParam();
-                getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
-                var updateMeetingData = getMeetingParam.MeetingData;
-                //フラグをfalseに変更
-                updateMeetingData.IsVisible = false;
-                await _restService.UpdateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, updateMeetingData);
+                    //論理削除
 
-                //会議情報再取得
-                //会議情報全件取得APIのコール
-                Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+                    //対象となる会議情報を1件取得
+                    GetMeetingParam getMeetingParam = new GetMeetingParam();
+                    getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
+                    var updateMeetingData = getMeetingParam.MeetingData;
+                    //フラグをfalseに変更
+                    updateMeetingData.IsVisible = false;
+                    await _restService.UpdateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, updateMeetingData);
+
+                    //会議情報再取得
+                    //会議情報全件取得APIのコール
+                    Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+                }
+                else
+                {
+                    return;
+                }
 
             });
 

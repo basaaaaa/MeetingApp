@@ -13,6 +13,7 @@ namespace MeetingApp.ViewModels
         //private Data
         private ParticipantData _targetParticipantData;
         private ObservableCollection<MeetingLabelData> _targetMeetingLabels;
+        private bool _loadingData;
 
         //private Param
         private GetMeetingLabelsParam _getMeetingLabelsParam;
@@ -27,6 +28,11 @@ namespace MeetingApp.ViewModels
         {
             get { return _targetMeetingLabels; }
             set { SetProperty(ref _targetMeetingLabels, value); }
+        }
+        public bool LoadingData
+        {
+            get { return _loadingData; }
+            set { SetProperty(ref _loadingData, value); }
         }
 
         //public Param
@@ -78,6 +84,8 @@ namespace MeetingApp.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
+            LoadingData = true;
+
             //遷移パラメータからのparticipantDataの取得
             TargetParticipantData = (ParticipantData)parameters["participant"];
 
@@ -86,6 +94,7 @@ namespace MeetingApp.ViewModels
             //View用のLabelsデータを取得
             TargetMeetingLabels = new ObservableCollection<MeetingLabelData>(GetMeetingLabelsParam.MeetingLabelDatas);
 
+            LoadingData = false;
 
         }
     }
