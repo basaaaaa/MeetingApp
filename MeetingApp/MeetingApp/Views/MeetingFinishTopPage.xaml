@@ -47,11 +47,11 @@
                 <Button Grid.Column="1" Text="会議終了" TextColor="White" Command="{Binding NavigateMeetingDataTopPageCommand}" BackgroundColor="Black"/>
             </Grid>
 
-            <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None">
+            <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,5,5,5" SeparatorVisibility="None" SelectionMode="None">
                 <ListView.Behaviors>
-                    <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                    <behaviors:EventToCommandBehavior EventName="ItemTapped"
                                                           Command="{Binding NavigateMeetingFinishUserPage}" 
-                                                          EventArgsParameterPath="SelectedItem"/>
+                                                          EventArgsParameterPath="Item"/>
                 </ListView.Behaviors>
 
                 <ListView.ItemTemplate>

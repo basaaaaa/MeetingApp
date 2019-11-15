@@ -12,11 +12,11 @@
 
     <AbsoluteLayout>
         <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-            <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="Single"  RowHeight="100">
+            <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="None"  RowHeight="100">
                 <ListView.Behaviors>
-                    <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                    <behaviors:EventToCommandBehavior EventName="ItemTapped"
                                                               Command="{Binding NavigateMeetingExecuteUserPageCommand}"
-                                                              EventArgsParameterPath="SelectedItem"/>
+                                                              EventArgsParameterPath="Item"/>
                 </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
