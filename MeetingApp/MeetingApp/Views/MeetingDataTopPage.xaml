@@ -42,14 +42,17 @@
                                         <Label Grid.Row="3" Text="場所" TextColor="White"/>
                                         <Label Grid.Column="1" Grid.Row="3" Text="{Binding Location}" TextColor="White"/>
                                     </Grid>
-                                    <Grid Margin="20,0,20,5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="0.5*" />
-                                            <ColumnDefinition Width="0.5*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Button Text="入室" TextColor="White" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}" BackgroundColor="Black" />
-                                        <Button Grid.Column="1" Text="削除" TextColor="White" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}" BackgroundColor="Black"/>
-                                    </Grid>
+                                    <StackLayout>
+                                        <Grid Margin="20,0,20,5" IsVisible="{Binding IsOwner}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.5*" />
+                                                <ColumnDefinition Width="0.5*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Button Text="入室" TextColor="White" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}" BackgroundColor="Black" />
+                                            <Button Grid.Column="1" Text="削除" TextColor="White" IsVisible="{Binding IsOwner}" Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteMeetingCommand}" CommandParameter="{Binding Id}" BackgroundColor="Black"/>
+                                        </Grid>
+                                        <Button Text="入室" TextColor="White" Command="{Binding Source={x:Reference Root}, Path=BindingContext.NavigateMeetingAttendPage}" CommandParameter="{Binding Id}" BackgroundColor="Black" IsVisible="{Binding IsGeneral}" />
+                                    </StackLayout>
                                 </StackLayout>
                             </Frame>
                         </ViewCell>
