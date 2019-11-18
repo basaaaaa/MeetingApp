@@ -54,11 +54,11 @@
 
 
 
-                    <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  SeparatorVisibility="None" SelectionMode="Single">
+                    <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True"  SeparatorVisibility="None" SelectionMode="None">
                         <ListView.Behaviors>
-                            <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                            <behaviors:EventToCommandBehavior EventName="ItemTapped"
                                                               Command="{Binding NavigateMeetingLabelItemDataCreatePage}" 
-                                                              EventArgsParameterPath="SelectedItem"/>
+                                                              EventArgsParameterPath="Item"/>
                         </ListView.Behaviors>
                         <ListView.ItemTemplate>
                             <DataTemplate>

@@ -31,6 +31,7 @@ namespace MeetingApp.Data
         public Boolean IsVisible { get; set; }
 
         public Boolean IsOwner { get; set; }
+        public Boolean IsGeneral { get; set; }
 
         public string StartTime { get; set; }
 

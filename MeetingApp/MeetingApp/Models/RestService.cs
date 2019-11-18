@@ -95,11 +95,13 @@ namespace MeetingApp
                         if (meeting.Owner == getUserParam.User.Id)
                         {
                             meeting.IsOwner = true;
+                            meeting.IsGeneral = false;
 
                         }
                         else
                         {
                             meeting.IsOwner = false;
+                            meeting.IsGeneral = true;
                         }
                     }
                 }
@@ -123,6 +125,7 @@ namespace MeetingApp
             jobj.Remove("EndTime");
             jobj.Remove("Date");
             jobj.Remove("IsOwner");
+            jobj.Remove("IsGeneral");
 
             json = JsonConvert.SerializeObject(jobj);
 

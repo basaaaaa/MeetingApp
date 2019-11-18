@@ -21,11 +21,11 @@
                 <Button Text="退出する" TextColor="White" BackgroundColor="Black" Command="{Binding MeetingExitCommand}" IsVisible="{Binding IsGeneral}"/>
                 <Button Text="終了する" TextColor="White" BackgroundColor="Black" Command="{Binding MeetingEndCommand}" IsVisible="{Binding IsOwner}"/>
             </StackLayout>
-            <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,0,5,5" SeparatorVisibility="None">
+            <ListView  ItemsSource="{Binding Participants}"  HasUnevenRows="True" Margin="5,0,5,5" SeparatorVisibility="None" SelectionMode="None">
                 <ListView.Behaviors>
-                    <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                    <behaviors:EventToCommandBehavior EventName="ItemTapped"
                                                           Command="{Binding NavigateMeetingExecuteUserPage}" 
-                                                          EventArgsParameterPath="SelectedItem"/>
+                                                          EventArgsParameterPath="Item"/>
                 </ListView.Behaviors>
 
                 <ListView.ItemTemplate>
