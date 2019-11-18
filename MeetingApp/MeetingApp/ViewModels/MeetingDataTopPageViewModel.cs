@@ -94,36 +94,36 @@ namespace MeetingApp.ViewModels
             _navigationService = navigationService;
 
 
-            //myUserId‚Ìæ“¾
+            //myUserIdã®å–å¾—
             MyUserId = _applicationProperties.GetFromProperties<string>("userId");
 
 
-            //‰ï‹c‚Ìíœƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚ÌƒRƒ}ƒ“ƒh
+            //ä¼šè­°ã®å‰Šé™¤ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã¨ãã®ã‚³ãƒãƒ³ãƒ‰
             DeleteMeetingCommand = new DelegateCommand<object>(async id =>
             {
 
-                //ŠÇ—Ò‚ª‘€ì‚·‚é‰ï‹cI—¹ˆ—
-                var select = await Application.Current.MainPage.DisplayAlert("Œx", "‰ï‹c‚ğíœ‚µ‚Ä‚à‚æ‚ë‚µ‚¢‚Å‚µ‚å‚¤‚©H", "OK", "ƒLƒƒƒ“ƒZƒ‹");
+                //ç®¡ç†è€…ãŒæ“ä½œã™ã‚‹ä¼šè­°çµ‚äº†å‡¦ç†
+                var select = await Application.Current.MainPage.DisplayAlert("è­¦å‘Š", "ä¼šè­°ã‚’å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã—ã‚‡ã†ã‹ï¼Ÿ", "OK", "ã‚­ãƒ£ãƒ³ã‚»ãƒ«");
 
                 if (select)
                 {
                     var mid = Convert.ToInt32(id);
 
-                    ////•¨—íœ
+                    ////ç‰©ç†å‰Šé™¤
                     //_restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
 
-                    //˜_—íœ
+                    //è«–ç†å‰Šé™¤
 
-                    //‘ÎÛ‚Æ‚È‚é‰ï‹cî•ñ‚ğ1Œæ“¾
+                    //å¯¾è±¡ã¨ãªã‚‹ä¼šè­°æƒ…å ±ã‚’1ä»¶å–å¾—
                     GetMeetingParam getMeetingParam = new GetMeetingParam();
                     getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
                     var updateMeetingData = getMeetingParam.MeetingData;
-                    //ƒtƒ‰ƒO‚ğfalse‚É•ÏX
+                    //ãƒ•ãƒ©ã‚°ã‚’falseã«å¤‰æ›´
                     updateMeetingData.IsVisible = false;
                     await _restService.UpdateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, updateMeetingData);
 
-                    //‰ï‹cî•ñÄæ“¾
-                    //‰ï‹cî•ñ‘SŒæ“¾API‚ÌƒR[ƒ‹
+                    //ä¼šè­°æƒ…å ±å†å–å¾—
+                    //ä¼šè­°æƒ…å ±å…¨ä»¶å–å¾—APIã®ã‚³ãƒ¼ãƒ«
                     Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
                 }
                 else
@@ -133,21 +133,21 @@ namespace MeetingApp.ViewModels
 
             });
 
-            //‰ï‹cV‹Kì¬ƒy[ƒW‚É‘JˆÚ‚·‚éƒRƒ}ƒ“ƒh
+            //ä¼šè­°æ–°è¦ä½œæˆãƒšãƒ¼ã‚¸ã«é·ç§»ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
             NavigateMeetingCreatePage = new DelegateCommand(async () =>
             {
-                //‰ï‹cî•ñƒgƒbƒvƒy[ƒW‚É‘JˆÚ‚·‚é
+                //ä¼šè­°æƒ…å ±ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã«é·ç§»ã™ã‚‹
                 await _navigationService.NavigateAsync("/NavigationPage/MeetingDataCreatePage");
 
             });
 
-            //‰ï‹coÈƒy[ƒW‚É‘JˆÚ‚·‚éƒRƒ}ƒ“ƒh
+            //ä¼šè­°å‡ºå¸­ãƒšãƒ¼ã‚¸ã«é·ç§»ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
             NavigateMeetingAttendPage = new DelegateCommand<object>(async id =>
             {
 
                 var mid = Convert.ToInt32(id);
 
-                //w’è‚Ì‰ï‹c‚Ìî•ñ‚ğCommandParameter‚Åó‚¯æ‚èA‰ï‹cid(mid)‚ğæ“¾‚·‚é
+                //æŒ‡å®šã®ä¼šè­°ã®æƒ…å ±ã‚’CommandParameterã§å—ã‘å–ã‚Šã€ä¼šè­°id(mid)ã‚’å–å¾—ã™ã‚‹
                 GetMeetingParam getMeetingParam = new GetMeetingParam();
                 getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
 
@@ -156,7 +156,7 @@ namespace MeetingApp.ViewModels
                     { "mid", getMeetingParam.MeetingData.Id}
                 };
 
-                //‰ï‹cî•ñƒgƒbƒvƒy[ƒW‚É‘JˆÚ‚·‚é
+                //ä¼šè­°æƒ…å ±ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã«é·ç§»ã™ã‚‹
                 await _navigationService.NavigateAsync("MeetingAttendPage", p);
 
             });
@@ -176,15 +176,15 @@ namespace MeetingApp.ViewModels
 
             if (_tokenCheckParam.HasError == true)
             {
-                //tokenÆ‡‚ÌÛ‚ÉƒGƒ‰[‚ª”­¶‚µ‚½Û‚Ìˆ—
-                Console.WriteLine("ƒƒOƒCƒ“‚É¸”s‚µ‚Ü‚µ‚½");
+                //tokenç…§åˆã®éš›ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸéš›ã®å‡¦ç†
+                Console.WriteLine("ãƒ­ã‚°ã‚¤ãƒ³ã«å¤±æ•—ã—ã¾ã—ãŸ");
                 await _navigationService.NavigateAsync("LoginPage");
             }
 
-            //myUserId‚Ìæ“¾
+            //myUserIdã®å–å¾—
             MyUserId = _applicationProperties.GetFromProperties<string>("userId");
 
-            //‰ï‹cî•ñ‘SŒæ“¾API‚ÌƒR[ƒ‹
+            //ä¼šè­°æƒ…å ±å…¨ä»¶å–å¾—APIã®ã‚³ãƒ¼ãƒ«
             Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
 
             LoadingMeetingData = false;
