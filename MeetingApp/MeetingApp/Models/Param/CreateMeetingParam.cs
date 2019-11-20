@@ -15,6 +15,8 @@ namespace MeetingApp.Models.Param
         public bool NotTimeType { get; set; }
         public bool ApiCallError { get; set; }
 
+        public bool TimeError { get; set; }
+
 
         public CreateMeetingParam()
         {
@@ -29,6 +31,7 @@ namespace MeetingApp.Models.Param
             this.NotDateType = false;
             this.NotTimeType = false;
             this.ApiCallError = false;
+            this.TimeError = false;
         }
     }
 }

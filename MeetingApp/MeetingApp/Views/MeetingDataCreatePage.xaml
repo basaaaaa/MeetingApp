@@ -15,13 +15,9 @@
             <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HasShadow="false" WidthRequest="300">
                 <StackLayout>
                     <Label IsVisible="{Binding CreateMeetingParam.BlankMeetingTitle}" TextColor="Red" Text="会議タイトルが入力されていません" />
-                    <Label TextColor="Red" Text="会議の実施日が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingDate}"/>
-                    <Label TextColor="Red" Text="会議の実施日が適切な入力形式ではありません" IsVisible="{Binding CreateMeetingParam.NotDateType}"/>
-                    <Label TextColor="Red" Text="会議の開始時間が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingStartTime}"/>
-                    <Label TextColor="Red" Text="会議の終了時間が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingEndTime}"/>
-                    <Label TextColor="Red" Text="会議時刻が適切な入力形式ではありません" IsVisible="{Binding CreateMeetingParam.NotTimeType}"/>
                     <Label TextColor="Red" Text="会議の実施場所が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingLocation}"/>
                     <Label TextColor="Red" Text="ラベルが追加されていません" IsVisible="{Binding CreateMeetingParam.NoExistLabel}"/>
+                    <Label TextColor="Red" Text="会議時刻の適切な入力がされていません" IsVisible="{Binding CreateMeetingParam.TimeError}" />
 
                     <Label Text="会議タイトル" TextColor="White"/>
                     <Entry Placeholder="朝会" Text="{Binding InputMeetingTitle}" />

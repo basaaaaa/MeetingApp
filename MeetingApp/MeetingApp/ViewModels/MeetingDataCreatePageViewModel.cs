@@ -139,7 +139,7 @@ namespace MeetingApp.ViewModels
 
             {
                 //入力値のバリデーション
-                //CreateMeetingParam = _createMeetingValidation.InputValidate(InputMeetingTitle, InputMeetingDate, InputMeetingStartTime, InputMeetingEndTime, InputMeetingLocation, Labels);
+                CreateMeetingParam = _createMeetingValidation.InputValidate(InputMeetingTitle, InputMeetingDate, InputMeetingStartTime, InputMeetingEndTime, InputMeetingLocation, Labels);
                 //バリデーションエラーが存在すれば失敗で返す
                 if (CreateMeetingParam.HasError == true) { return; }
 
