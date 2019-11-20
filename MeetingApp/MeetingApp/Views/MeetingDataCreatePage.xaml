@@ -27,13 +27,16 @@
                     <Entry Placeholder="朝会" Text="{Binding InputMeetingTitle}" />
 
                     <Label Text="実施日" TextColor="White"/>
-                    <Entry Placeholder="2019-09-04" Text="{Binding InputMeetingDate}"/>
+                    <!--<Entry Placeholder="2019-09-04" Text="{Binding InputMeetingDate}"/>-->
+                    <DatePicker Date="{Binding InputMeetingDate}" />
 
                     <Label Text="開始時間" TextColor="White"/>
-                    <Entry Placeholder="10:00" Text="{Binding InputMeetingStartTime}"/>
+                    <!--<Entry Placeholder="10:00" Text="{Binding InputMeetingStartTime}"/>-->
+                    <TimePicker Time="{Binding InputMeetingStartTime}" />
 
                     <Label Text="終了時間" TextColor="White"/>
-                    <Entry Placeholder="10:15" Text="{Binding InputMeetingEndTime}" />
+                    <!--<Entry Placeholder="10:15" Text="{Binding InputMeetingEndTime}" />-->
+                    <TimePicker Time="{Binding InputMeetingEndTime}" />
 
                     <Label Text="実施場所" TextColor="White"/>
                     <Entry Placeholder="第3MTGスペース" Text="{Binding InputMeetingLocation}"/>
