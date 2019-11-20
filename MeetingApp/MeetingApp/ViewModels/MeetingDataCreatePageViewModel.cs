@@ -20,13 +20,16 @@ namespace MeetingApp.ViewModels
         private string _createLabelName;
 
         private string _inputMeetingTitle;
-        private string _inputMeetingDate;
-        private string _inputMeetingStartTime;
-        private string _inputMeetingEndTime;
+        private DateTime _inputMeetingDate;
+        private TimeSpan _inputMeetingStartTime;
+        private TimeSpan _inputMeetingEndTime;
         private string _inputMeetingLocation;
         private CreateMeetingParam _createMeetingParam;
         private CreateMeetingLabelParam _createMeetingLabelParam;
         private int _labelListViewHeight;
+
+        private DateTime _selectedDate;
+        private TimeSpan _selectedTime;
 
 
 
@@ -48,19 +51,29 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _inputMeetingTitle, value); }
         }
 
-        public string InputMeetingDate
+        public DateTime InputMeetingDate
         {
             get { return _inputMeetingDate; }
             set { SetProperty(ref _inputMeetingDate, value); }
         }
+        public DateTime SelectedDate
+        {
+            get { return _selectedDate; }
+            set { SetProperty(ref _selectedDate, value); }
+        }
+        public TimeSpan SelectedTime
+        {
+            get { return _selectedTime; }
+            set { SetProperty(ref _selectedTime, value); }
+        }
 
-        public string InputMeetingStartTime
+        public TimeSpan InputMeetingStartTime
         {
             get { return _inputMeetingStartTime; }
             set { SetProperty(ref _inputMeetingStartTime, value); }
         }
 
-        public string InputMeetingEndTime
+        public TimeSpan InputMeetingEndTime
         {
             get { return _inputMeetingEndTime; }
             set { SetProperty(ref _inputMeetingEndTime, value); }
@@ -119,17 +132,32 @@ namespace MeetingApp.ViewModels
             //InputMeetingEndTime = "10:15";
             //InputMeetingLocation = "どこか";
 
+            //入力初期値
+            InputMeetingDate = DateTime.UtcNow;
+
             CreateMeetingDataCommand = new DelegateCommand(async () =>
 
             {
                 //入力値のバリデーション
-                CreateMeetingParam = _createMeetingValidation.InputValidate(InputMeetingTitle, InputMeetingDate, InputMeetingStartTime, InputMeetingEndTime, InputMeetingLocation, Labels);
+                //CreateMeetingParam = _createMeetingValidation.InputValidate(InputMeetingTitle, InputMeetingDate, InputMeetingStartTime, InputMeetingEndTime, InputMeetingLocation, Labels);
                 //バリデーションエラーが存在すれば失敗で返す
                 if (CreateMeetingParam.HasError == true) { return; }
 
+                //テスト用DateTime結合
+
+
+
                 //会議開始時間と終了時間をDateTime型に変換
-                var InputMeetingStartDateTime = DateTime.Parse(InputMeetingDate + " " + InputMeetingStartTime);
-                var InputMeetingEndDateTime = DateTime.Parse(InputMeetingDate + " " + InputMeetingEndTime);
+                //var testDateTime = SelectedDate;
+                //var testDateTime2 = SelectedTime;
+
+                //DateTimeとTimeSpanを結合
+                var InputMeetingStartDateTime = InputMeetingDate + InputMeetingStartTime;
+                var InputMeetingEndDateTime = InputMeetingDate + InputMeetingEndTime;
+
+
+                //var InputMeetingStartDateTime = DateTime.Parse(InputMeetingDate + " " + InputMeetingStartTime);
+                //var InputMeetingEndDateTime = DateTime.Parse(InputMeetingDate + " " + InputMeetingEndTime);
 
                 //userIdに対するidを取得
                 //ローカルにid情報を保持する

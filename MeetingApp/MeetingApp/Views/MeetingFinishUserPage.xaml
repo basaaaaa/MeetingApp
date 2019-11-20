@@ -6,12 +6,12 @@
              x:Class="MeetingApp.Views.MeetingFinishUserPage"
              Title="{Binding TargetParticipantData.UserId}">
 
-    <ContentPage.Padding>
+    <!--<ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
-    </ContentPage.Padding>
+    </ContentPage.Padding>-->
 
-    <AbsoluteLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-        <StackLayout>
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
             <Label Text="{Binding Test}" FontSize="30" HorizontalOptions="Center" FontAttributes="Bold"/>
             <ListView ItemsSource="{Binding TargetMeetingLabels}"  HasUnevenRows="True" SeparatorVisibility="None" SelectionMode="None"  RowHeight="100">
                 <ListView.Behaviors>
@@ -26,7 +26,7 @@
                                 <StackLayout>
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="30" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="0.8*" />

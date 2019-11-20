@@ -5,9 +5,9 @@
              xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              x:Class="MeetingApp.Views.MeetingExecuteUserPage"
              Title="{Binding ParticipantData.UserId}">
-    <ContentPage.Padding>
+    <!--<ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
-    </ContentPage.Padding>
+    </ContentPage.Padding>-->
 
 
     <AbsoluteLayout>
@@ -25,7 +25,7 @@
                                 <StackLayout>
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="30" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="0.8*" />
