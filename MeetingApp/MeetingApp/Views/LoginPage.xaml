@@ -5,6 +5,7 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MeetingApp.Views.LoginPage"
              Title="ログイン">
+
     <AbsoluteLayout>
         <StackLayout VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
             <Frame CornerRadius="10" Margin="50,20,50,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="false" WidthRequest="200">
