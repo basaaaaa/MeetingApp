@@ -237,7 +237,7 @@ namespace MeetingApp.ViewModels
                     }
                 }
 
-                await _navigationService.NavigateAsync("MeetingDataTopPage");
+                await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
 
 
             });
