@@ -85,6 +85,10 @@ namespace MeetingApp.ViewModels
                     //会議情報トップページに遷移する
                     await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
                 }
+                else
+                {
+                    LoadingLogin = false;
+                }
             });
         }
 
