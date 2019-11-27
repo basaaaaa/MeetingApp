@@ -30,8 +30,8 @@ namespace MeetingApp.Test.Models.Validate
 
             var attendMeetingValidation = new AttendMeetingValidation();
             var result = attendMeetingValidation.ButtonPushedValidate(testMeetingLabels);
-            Assert.AreEqual(result.IsSuccessed, true);
-            Assert.AreEqual(result.HasError, false);
+            Assert.IsTrue(result.IsSuccessed);
+            Assert.IsFalse(result.HasError);
 
 
         }
@@ -54,9 +54,9 @@ namespace MeetingApp.Test.Models.Validate
             var attendMeetingValidation = new AttendMeetingValidation();
             var result = attendMeetingValidation.ButtonPushedValidate(testMeetingLabels);
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.NoExistLabelItems, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.NoExistLabelItems);
 
 
 

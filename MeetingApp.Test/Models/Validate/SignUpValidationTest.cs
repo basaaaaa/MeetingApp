@@ -18,8 +18,8 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "password");
 
-            Assert.AreEqual(result.IsSuccessed, true);
-            Assert.AreEqual(result.HasError, false);
+            Assert.IsTrue(result.IsSuccessed);
+            Assert.IsFalse(result.HasError);
 
         }
         /// <summary>
@@ -31,9 +31,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("", "password");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.BlankUserId, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.BlankUserId);
 
         }
         [Test]
@@ -42,9 +42,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.BlankPassword, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.BlankPassword);
 
         }
 
@@ -54,9 +54,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "pass");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.ShortPassword, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.ShortPassword);
 
         }
 
@@ -66,9 +66,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("あかさたなはま", "password");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedUserId, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedUserId);
 
         }
 
@@ -78,9 +78,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("_______", "password");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedUserId, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedUserId);
 
         }
 
@@ -90,9 +90,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("1237832", "password");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedUserId, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedUserId);
 
         }
 
@@ -102,9 +102,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("1234あじゃさあ", "password");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedUserId, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedUserId);
 
         }
 
@@ -114,9 +114,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate(";;;;;", "password");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedUserId, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedUserId);
 
         }
 
@@ -126,9 +126,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "あかさたなはま");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedPassword, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedPassword);
 
         }
 
@@ -138,9 +138,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "______");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedPassword, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedPassword);
 
         }
 
@@ -150,9 +150,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "123456");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedPassword, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedPassword);
 
         }
 
@@ -162,9 +162,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "1234あじゃさあ");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedPassword, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedPassword);
 
         }
 
@@ -174,9 +174,9 @@ namespace MeetingApp.Test.Models.Validate
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", ";;;;;;");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.UnSpecifiedPassword, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.UnSpecifiedPassword);
 
         }
 

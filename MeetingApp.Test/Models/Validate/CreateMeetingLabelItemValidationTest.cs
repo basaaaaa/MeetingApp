@@ -21,8 +21,8 @@ namespace MeetingApp.Test.Models.Validate
             var createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
             var result = createMeetingLabelItemValidation.InputValidate("test");
 
-            Assert.AreEqual(result.IsSuccessed, true);
-            Assert.AreEqual(result.HasError, false);
+            Assert.IsTrue(result.IsSuccessed);
+            Assert.IsFalse(result.HasError);
         }
 
         [Test]
@@ -37,8 +37,8 @@ namespace MeetingApp.Test.Models.Validate
 
             var result = createMeetingLabelItemValidation.AddValidate(testMeetingLabelItemDatas);
 
-            Assert.AreEqual(result.IsSuccessed, true);
-            Assert.AreEqual(result.HasError, false);
+            Assert.IsTrue(result.IsSuccessed);
+            Assert.IsFalse(result.HasError);
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace MeetingApp.Test.Models.Validate
             var createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
             var result = createMeetingLabelItemValidation.InputValidate("");
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.BlankItemName, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.BlankItemName);
         }
 
         [Test]
@@ -64,9 +64,9 @@ namespace MeetingApp.Test.Models.Validate
 
             var result = createMeetingLabelItemValidation.AddValidate(testMeetingLabelItemDatas);
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.NoExistItem, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.NoExistItem);
         }
     }
 }

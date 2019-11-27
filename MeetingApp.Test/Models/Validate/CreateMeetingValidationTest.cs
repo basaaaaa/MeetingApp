@@ -30,8 +30,8 @@ namespace MeetingApp.Test.Models.Validate
 
             var result = createMeetingValidation.InputValidate("testMeeting", testMeetingDate, testMeetingStartTime, testMeetingEndTime, "MeetingSpace", testMeetingLabels);
 
-            Assert.AreEqual(result.IsSuccessed, true);
-            Assert.AreEqual(result.HasError, false);
+            Assert.IsTrue(result.IsSuccessed);
+            Assert.IsFalse(result.HasError);
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace MeetingApp.Test.Models.Validate
 
             var result = createMeetingValidation.InputValidate("", testMeetingDate, testMeetingStartTime, testMeetingEndTime, "MeetingSpace", testMeetingLabels);
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.BlankMeetingTitle, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.BlankMeetingTitle);
         }
 
         [Test]
@@ -70,9 +70,9 @@ namespace MeetingApp.Test.Models.Validate
 
             var result = createMeetingValidation.InputValidate("testMeeting", testMeetingDate, testMeetingStartTime, testMeetingEndTime, "", testMeetingLabels);
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.BlankMeetingLocation, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.BlankMeetingLocation);
         }
 
         [Test]
@@ -89,9 +89,9 @@ namespace MeetingApp.Test.Models.Validate
 
             var result = createMeetingValidation.InputValidate("testMeeting", testMeetingDate, testMeetingStartTime, testMeetingEndTime, "", testMeetingLabels);
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.TimeError, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.TimeError);
         }
 
         [Test]
@@ -106,9 +106,9 @@ namespace MeetingApp.Test.Models.Validate
 
             var result = createMeetingValidation.InputValidate("testMeeting", testMeetingDate, testMeetingStartTime, testMeetingEndTime, "", testMeetingLabels);
 
-            Assert.AreEqual(result.IsSuccessed, false);
-            Assert.AreEqual(result.HasError, true);
-            Assert.AreEqual(result.NoExistLabel, true);
+            Assert.IsFalse(result.IsSuccessed);
+            Assert.IsTrue(result.HasError);
+            Assert.IsTrue(result.NoExistLabel);
         }
 
 
