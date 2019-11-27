@@ -16,8 +16,10 @@ namespace MeetingApp.Models.Validate
                 //存在していた場合作成を失敗で終了
                 createMeetingLabelItemParam.HasError = true;
                 createMeetingLabelItemParam.BlankItemName = true;
+                return createMeetingLabelItemParam;
             }
 
+            createMeetingLabelItemParam.IsSuccessed = true;
             return createMeetingLabelItemParam;
         }
 
@@ -31,7 +33,10 @@ namespace MeetingApp.Models.Validate
                 //存在していた場合作成を失敗で終了
                 createMeetingLabelItemParam.HasError = true;
                 createMeetingLabelItemParam.NoExistItem = true;
+                return createMeetingLabelItemParam;
             }
+
+            createMeetingLabelItemParam.IsSuccessed = true;
 
             return createMeetingLabelItemParam;
         }

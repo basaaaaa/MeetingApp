@@ -66,7 +66,7 @@ namespace MeetingApp
 
             return getMeetingParam;
         }
-
+        ///
         //‰ï‹cî•ñ‚ğ‘SŒæ“¾‚·‚éAPIƒR[ƒ‹
         public async Task<List<MeetingData>> GetMeetingsDataAsync(string uri, string userId)
         {

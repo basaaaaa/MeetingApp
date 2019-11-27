@@ -3,7 +3,7 @@ using MeetingApp.Utils;
 
 namespace MeetingApp.Models.Validate
 {
-    class SignUpValidation
+    public class SignUpValidation
     {
         CheckString _checkString = new CheckString();
         public SignUpParam InputValidate(string userId, string password)
@@ -53,6 +53,8 @@ namespace MeetingApp.Models.Validate
                 signUpParam.UnSpecifiedPassword = true;
                 return signUpParam;
             }
+
+            signUpParam.IsSuccessed = true;
 
             return signUpParam;
         }

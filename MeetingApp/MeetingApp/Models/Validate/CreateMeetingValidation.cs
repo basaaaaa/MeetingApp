@@ -40,6 +40,11 @@ namespace MeetingApp.Models.Validate
                 createMeetingParam.NoExistLabel = true;
             }
 
+            if (createMeetingParam.HasError == false)
+            {
+                createMeetingParam.IsSuccessed = true;
+            }
+
             return createMeetingParam;
         }
 

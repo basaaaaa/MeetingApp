@@ -85,7 +85,10 @@ namespace MeetingApp.ViewModels
         ApplicationProperties _applicationProperties;
         INavigationService _navigationService;
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="navigationService"></param>
         public MeetingDataTopPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _restService = new RestService();
