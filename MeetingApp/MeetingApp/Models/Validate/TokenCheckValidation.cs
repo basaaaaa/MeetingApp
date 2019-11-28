@@ -1,25 +1,22 @@
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
-using MeetingApp.Utils;
 using System.Threading.Tasks;
 
 namespace MeetingApp.Models.Validate
 {
-    class TokenCheckValidation
+    public class TokenCheckValidation
     {
-        ApplicationProperties _applicationProperties;
         RestService _restService;
 
-        public async Task<TokenCheckParam> Validate()
+        public async Task<TokenCheckParam> Validate(TokenData token)
         {
             TokenCheckParam tokenCheckParam = new TokenCheckParam();
-            _applicationProperties = new ApplicationProperties();
             _restService = new RestService();
 
 
             //Localのtoken情報参照
-            if (_applicationProperties.GetFromProperties<TokenData>("token") == null)
+            if (token == null)
             {
                 tokenCheckParam.HasError = true;
                 tokenCheckParam.NoExistMyToken = true;
@@ -27,7 +24,7 @@ namespace MeetingApp.Models.Validate
             }
             else
             {
-                var tokenData = _applicationProperties.GetFromProperties<TokenData>("token");
+                var tokenData = token;
                 //DBのtokenと照合するAPIのコール
                 tokenCheckParam = await _restService.CheckTokenDataAsync(TokenConstants.OpenTokenEndPoint, tokenData);
             }

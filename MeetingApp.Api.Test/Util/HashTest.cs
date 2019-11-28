@@ -14,9 +14,16 @@ namespace MeetingApp.Api.Test.Util
         public void Encrypt_TextIsChanged()
         {
             var text = "aiueo";
-            Hash hash = new Hash();
-            var returnText = hash.Encrypt(text);
-            Assert.AreNotEqual(text, returnText);
+            var encrypter = new Hash();
+            var result = encrypter.Encrypt(text);
+            Assert.AreNotEqual(text, result);
+        }
+        public void Encrypt_Null()
+        {
+            var encrypter = new Hash();
+            var text = null as string;
+            var result = encrypter.Encrypt(text);
+            Assert.IsNull(result);
         }
     }
 }

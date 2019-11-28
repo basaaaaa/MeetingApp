@@ -3,7 +3,7 @@ using MeetingApp.Utils;
 
 namespace MeetingApp.Models.Validate
 {
-    class SignUpValidation
+    public class SignUpValidation
     {
         CheckString _checkString = new CheckString();
         public SignUpParam InputValidate(string userId, string password)
@@ -39,7 +39,7 @@ namespace MeetingApp.Models.Validate
             }
 
             //入力されたuserIdが半角英数字のみで構成されているかチェック
-            if (_checkString.isAlphaNumericPlusAlphaOnly(userId))
+            if (!_checkString.isAlphaNumericPlusAlphaOnly(userId))
             {
                 signUpParam.HasError = true;
                 signUpParam.UnSpecifiedUserId = true;
@@ -47,12 +47,14 @@ namespace MeetingApp.Models.Validate
             }
 
             //passwordポリシーに適しているかどうかチェック
-            if (_checkString.isAlphaNumericPlusAlphaOnly(password))
+            if (!_checkString.isAlphaNumericPlusAlphaOnly(password))
             {
                 signUpParam.HasError = true;
                 signUpParam.UnSpecifiedPassword = true;
                 return signUpParam;
             }
+
+            signUpParam.IsSuccessed = true;
 
             return signUpParam;
         }

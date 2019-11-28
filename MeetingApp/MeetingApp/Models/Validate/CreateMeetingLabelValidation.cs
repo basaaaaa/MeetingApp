@@ -14,7 +14,10 @@ namespace MeetingApp.Models.Validate
                 //存在していた場合POSTを失敗で終了
                 createMeetingLabelParam.HasError = true;
                 createMeetingLabelParam.BlankLabelName = true;
+                return createMeetingLabelParam;
             }
+
+            createMeetingLabelParam.IsSuccessed = true;
 
             return createMeetingLabelParam;
         }

@@ -130,7 +130,6 @@ namespace MeetingApp.ViewModels
             _deleteMeetingLabelItemParam = new DeleteMeetingLabelItemParam();
 
             _createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
-            _attendMeetingValidation = new AttendMeetingValidation();
 
             _navigationService = navigationService;
             _tokenCheckValidation = new TokenCheckValidation();
