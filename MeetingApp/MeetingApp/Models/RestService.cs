@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace MeetingApp
 {
-    class RestService
+    public class RestService
     {
         HttpClient _client;
         CheckString _checkString;

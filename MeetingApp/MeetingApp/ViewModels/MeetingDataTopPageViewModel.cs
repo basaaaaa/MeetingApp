@@ -1,5 +1,6 @@
 using MeetingApp.Constants;
 using MeetingApp.Data;
+using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
 using MeetingApp.Models.Validate;
 using MeetingApp.Utils;
@@ -175,7 +176,7 @@ namespace MeetingApp.ViewModels
             LoadingMeetingData = true;
 
             TokenCheckValidation tokenCheckValidation = new TokenCheckValidation();
-            TokenCheckParam = await tokenCheckValidation.Validate();
+            TokenCheckParam = await tokenCheckValidation.Validate(_applicationProperties.GetFromProperties<TokenData>("token"));
 
             if (_tokenCheckParam.HasError == true)
             {
