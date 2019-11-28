@@ -20,6 +20,7 @@ namespace MeetingApp
     {
         HttpClient _client;
         CheckString _checkString;
+        JsonProcessing _jsonProcessing;
 
         public RestService()
         {
@@ -37,6 +38,7 @@ namespace MeetingApp
         /// <returns>GetMeetingParam</returns>
         public async Task<GetMeetingParam> GetMeetingDataAsync(string uri, int mid)
         {
+            _jsonProcessing = new JsonProcessing();
             var getMeetingParam = new GetMeetingParam();
             uri = uri + "?mid=" + mid;
             try
@@ -45,9 +47,11 @@ namespace MeetingApp
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(content);
-                    content = content.TrimStart('[');
-                    content = content.TrimEnd(']');
+
+                    //[]を除去する処理
+                    content = _jsonProcessing.RemoveOuterBrackets(content);
+
+                    //jsonからオブジェクト化
                     getMeetingParam.MeetingData = JsonConvert.DeserializeObject<MeetingData>(content);
 
                     getMeetingParam.MeetingData.StartTime = getMeetingParam.MeetingData.StartDatetime.ToShortTimeString();
@@ -138,6 +142,7 @@ namespace MeetingApp
 
             var json = JsonConvert.SerializeObject(meetingData);
             var jobj = JObject.Parse(json);
+
             //MeetingDataモデルからJSON化に不要な属性を削除
             jobj.Remove("StartTime");
             jobj.Remove("EndTime");
@@ -559,6 +564,7 @@ namespace MeetingApp
         /// <returns>CheckParticipantParam</returns>
         public async Task<CheckParticipantParam> CheckParticipantDataAsync(string uri, int uid, int mid)
         {
+            _jsonProcessing = new JsonProcessing();
             var checkParticipantParam = new CheckParticipantParam();
             try
             {
@@ -575,8 +581,8 @@ namespace MeetingApp
                     }
                     //ユーザーが見つかった場合
                     //list -> 要素の処理
-                    content = content.TrimStart('[');
-                    content = content.TrimEnd(']');
+                    //[]を除去する処理
+                    content = _jsonProcessing.RemoveOuterBrackets(content);
 
                     checkParticipantParam.IsSuccessed = true;
                     checkParticipantParam.Participant = JsonConvert.DeserializeObject<ParticipantData>(content);
@@ -661,7 +667,6 @@ namespace MeetingApp
                 {
                     deleteParticipantParam.IsSuccessed = true;
                     string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("DELETE SUCCESSED");
                     return deleteParticipantParam;
                 }
 
@@ -733,6 +738,8 @@ namespace MeetingApp
         /// <returns>GetUserParam</returns>
         public async Task<GetUserParam> GetUserDataAsync(string uri, string userId)
         {
+
+            _jsonProcessing = new JsonProcessing();
             var getUserParam = new GetUserParam();
 
             try
@@ -741,10 +748,8 @@ namespace MeetingApp
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(content);
-                    content = content.TrimStart('[');
-                    content = content.TrimEnd(']');
-                    Console.WriteLine(content);
+                    //[]を除去する処理
+                    content = _jsonProcessing.RemoveOuterBrackets(content);
 
                     getUserParam.User = JsonConvert.DeserializeObject<UserData>(content);
 
@@ -778,9 +783,6 @@ namespace MeetingApp
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
-                    //content = content.TrimStart('[');
-                    //content = content.TrimEnd(']');
-                    //Console.WriteLine(content);
 
                     getUserParam.User = JsonConvert.DeserializeObject<UserData>(content);
 
