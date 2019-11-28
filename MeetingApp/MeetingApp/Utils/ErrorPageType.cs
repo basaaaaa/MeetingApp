@@ -2,7 +2,9 @@ namespace MeetingApp.Utils
 {
     public enum ErrorPageType
     {
-        //会議終了済みのエラー
+        /// <summary>
+        /// 会議が既に終了している際のエラー
+        /// </summary>
         FinishedMeeting
 
     }
