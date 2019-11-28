@@ -13,10 +13,30 @@ namespace MeetingApp.Test.Models.Validate
         /// 正常系
         /// </summary>
         [Test]
-        public void SignUp_InputValidate_Success()
+        public void SignUp_InputValidate_Success_Normal()
         {
             var signUpValidation = new SignUpValidation();
             var result = signUpValidation.InputValidate("test", "password");
+
+            Assert.IsTrue(result.IsSuccessed);
+            Assert.IsFalse(result.HasError);
+
+        }
+        [Test]
+        public void SignUp_InputValidate_Success_ContainsNumber()
+        {
+            var signUpValidation = new SignUpValidation();
+            var result = signUpValidation.InputValidate("test0000", "password0000");
+
+            Assert.IsTrue(result.IsSuccessed);
+            Assert.IsFalse(result.HasError);
+
+        }
+        [Test]
+        public void SignUp_InputValidate_Success_ConintasUnderLine()
+        {
+            var signUpValidation = new SignUpValidation();
+            var result = signUpValidation.InputValidate("test_0000", "password_0000");
 
             Assert.IsTrue(result.IsSuccessed);
             Assert.IsFalse(result.HasError);
@@ -85,18 +105,6 @@ namespace MeetingApp.Test.Models.Validate
         }
 
         [Test]
-        public void SignUp_InputValidate_Failure_UnSpecifiedUserId_AllNumber()
-        {
-            var signUpValidation = new SignUpValidation();
-            var result = signUpValidation.InputValidate("1237832", "password");
-
-            Assert.IsFalse(result.IsSuccessed);
-            Assert.IsTrue(result.HasError);
-            Assert.IsTrue(result.UnSpecifiedUserId);
-
-        }
-
-        [Test]
         public void SignUp_InputValidate_Failure_UnSpecifiedUserId_ContainNumberAndKana()
         {
             var signUpValidation = new SignUpValidation();
@@ -144,17 +152,6 @@ namespace MeetingApp.Test.Models.Validate
 
         }
 
-        [Test]
-        public void SignUp_InputValidate_Failure_UnSpecifiedPassword_AllNumber()
-        {
-            var signUpValidation = new SignUpValidation();
-            var result = signUpValidation.InputValidate("test", "123456");
-
-            Assert.IsFalse(result.IsSuccessed);
-            Assert.IsTrue(result.HasError);
-            Assert.IsTrue(result.UnSpecifiedPassword);
-
-        }
 
         [Test]
         public void SignUp_InputValidate_Failure_UnSpecifiedPassword_ContainNumberAndKana()

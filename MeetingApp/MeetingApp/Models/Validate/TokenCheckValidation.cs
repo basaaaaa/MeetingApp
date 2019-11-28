@@ -1,14 +1,12 @@
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
-using MeetingApp.Utils;
 using System.Threading.Tasks;
 
 namespace MeetingApp.Models.Validate
 {
     public class TokenCheckValidation
     {
-        ApplicationProperties _applicationProperties;
         RestService _restService;
 
         public async Task<TokenCheckParam> Validate(TokenData token)
