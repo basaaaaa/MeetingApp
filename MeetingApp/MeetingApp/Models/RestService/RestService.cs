@@ -20,6 +20,7 @@ namespace MeetingApp
     {
         HttpClient _client;
         CheckString _checkString;
+        JsonProcessing _jsonProcessing;
 
         public RestService()
         {
@@ -27,12 +28,17 @@ namespace MeetingApp
             _checkString = new CheckString();
         }
 
+        #region Meeting
 
-        //Meeting系API
-
-        //会議情報を単一で取得するAPIコール
+        /// <summary>
+        /// 会議情報単一取得のAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="mid">会議ID</param>
+        /// <returns>GetMeetingParam</returns>
         public async Task<GetMeetingParam> GetMeetingDataAsync(string uri, int mid)
         {
+            _jsonProcessing = new JsonProcessing();
             var getMeetingParam = new GetMeetingParam();
             uri = uri + "?mid=" + mid;
             try
@@ -41,9 +47,11 @@ namespace MeetingApp
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(content);
-                    content = content.TrimStart('[');
-                    content = content.TrimEnd(']');
+
+                    //[]を除去する処理
+                    content = _jsonProcessing.RemoveOuterBrackets(content);
+
+                    //jsonからオブジェクト化
                     getMeetingParam.MeetingData = JsonConvert.DeserializeObject<MeetingData>(content);
 
                     getMeetingParam.MeetingData.StartTime = getMeetingParam.MeetingData.StartDatetime.ToShortTimeString();
@@ -66,11 +74,17 @@ namespace MeetingApp
 
             return getMeetingParam;
         }
-        ///
-        //会議情報を全件取得するAPIコール
-        public async Task<List<MeetingData>> GetMeetingsDataAsync(string uri, string userId)
+
+        /// <summary>
+        /// 会議情報全件取得のAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="userId">ユーザーID</param>
+        /// <returns>会議情報のリスト</returns>
+        public async Task<GetMeetingsParam> GetMeetingsDataAsync(string uri, string userId)
         {
-            List<MeetingData> meetingDatas = new List<MeetingData>();
+            var meetingsData = new List<MeetingData>();
+            var getMeetingsParam = new GetMeetingsParam();
 
             //userIdからidを取得
             GetUserParam getUserParam = await GetUserDataAsync(UserConstants.OpenUserEndPoint, userId);
@@ -82,10 +96,12 @@ namespace MeetingApp
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
-                    meetingDatas = JsonConvert.DeserializeObject<List<MeetingData>>(content);
-                    Console.WriteLine(meetingDatas);
+                    meetingsData = JsonConvert.DeserializeObject<List<MeetingData>>(content);
+                    Console.WriteLine(meetingsData);
 
-                    foreach (MeetingData meeting in meetingDatas)
+                    getMeetingsParam.Meetings = meetingsData;
+
+                    foreach (MeetingData meeting in meetingsData)
                     {
                         meeting.StartTime = meeting.StartDatetime.ToShortTimeString();
                         meeting.EndTime = meeting.EndDatetime.ToShortTimeString();
@@ -111,15 +127,22 @@ namespace MeetingApp
                 Debug.WriteLine("\tERROR {0}", ex.Message);
             }
 
-            return meetingDatas;
+            return getMeetingsParam;
         }
 
-        //会議情報を新規登録するAPIのコール
+        /// <summary>
+        /// 会議情報を新規登録するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="meetingData">新規登録する会議情報</param>
+        /// <param name="labels">会議に紐づくラベルリスト</param>
+        /// <returns>CreateMeetingParam</returns>
         public async Task<CreateMeetingParam> CreateMeetingDataAsync(string uri, MeetingData meetingData, ObservableCollection<MeetingLabelData> labels)
         {
 
             var json = JsonConvert.SerializeObject(meetingData);
             var jobj = JObject.Parse(json);
+
             //MeetingDataモデルからJSON化に不要な属性を削除
             jobj.Remove("StartTime");
             jobj.Remove("EndTime");
@@ -172,7 +195,11 @@ namespace MeetingApp
 
         }
 
-        //会議情報を1件削除するAPIコール
+        /// <summary>
+        /// 会議情報を1件削除するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="mid">削除する会議ID</param>
         public async void DeleteMeetingDataAsync(string uri, int mid)
         {
             uri = uri + mid;
@@ -191,7 +218,12 @@ namespace MeetingApp
             }
         }
 
-        //会議情報を更新するAPIコール
+        /// <summary>
+        /// 会議情報を更新するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="meeting">更新対象の会議データ</param>
+        /// <returns>UpdateMeetingParam</returns>
         public async Task<UpdateMeetingParam> UpdateMeetingDataAsync(string uri, MeetingData meeting)
         {
 
@@ -229,10 +261,18 @@ namespace MeetingApp
             return updateMeetingParam;
         }
 
+        #endregion
 
-        //MeetingLabel系API
 
-        //指定midの会議ラベル情報を全件取得するAPIコール
+        #region MeetingLabel
+
+        /// <summary>
+        /// 指定会議における指定ユーザーが持つラベル情報群を取得
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="mid">ラベルを取得する対象の会議ID</param>
+        /// <param name="uid">ラベルに対する項目を取得する対象のユーザーID</param>
+        /// <returns>GetMeetingLabelsParam</returns>
         public async Task<GetMeetingLabelsParam> GetMeetingLabelsDataAsync(string uri, int mid, int uid)
         {
             GetMeetingLabelsParam getMeetingLabelsParam = new GetMeetingLabelsParam();
@@ -271,7 +311,13 @@ namespace MeetingApp
             return getMeetingLabelsParam;
         }
 
-        //会議ラベル情報を新規登録するAPIのコール
+        /// <summary>
+        /// 会議に対するラベルを新規追加するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="labelName">追加するラベルの名前</param>
+        /// <param name="mid">ラベルを追加する対象の会議ID</param>
+        /// <returns>CreateMeetingLabelParam</returns>
         public async Task<CreateMeetingLabelParam> CreateMeetingLabelDataAsync(string uri, string labelName, int mid)
         {
             var meetingLabel = new MeetingLabelData(mid, labelName);
@@ -311,9 +357,18 @@ namespace MeetingApp
 
         }
 
-        //MeetingLabelItem系API
+        #endregion
 
-        //会議ラベル項目情報を新規登録するAPIのコール
+
+        #region MeetingLabelItem
+
+
+        /// <summary>
+        /// 会議ラベルに対する項目を追加するAPIのコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="meetingLabelItem">追加する項目の情報</param>
+        /// <returns>CreateMeetingLabelItemParam</returns>
         public async Task<CreateMeetingLabelItemParam> CreateMeetingLabelItemDataAsync(string uri, MeetingLabelItemData meetingLabelItem)
         {
             var json = JsonConvert.SerializeObject(meetingLabelItem);
@@ -343,7 +398,13 @@ namespace MeetingApp
 
         }
 
-        //指定lid,uidの会議ラベルアイテム情報を全件取得するAPIコール
+        /// <summary>
+        /// 指定した会議のラベルに対するユーザーが持つ項目群の取得APIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="lid">項目群を取得するラベルID</param>
+        /// <param name="uid">項目群を取得する対象の保持者のユーザーID</param>
+        /// <returns>GetMeetingLabelItemsParam</returns>
         public async Task<GetMeetingLabelItemsParam> GetMeetingLabelItemsDataAsync(string uri, int lid, int uid)
         {
             GetMeetingLabelItemsParam getMeetingLabelItemsParam = new GetMeetingLabelItemsParam();
@@ -375,7 +436,12 @@ namespace MeetingApp
             return getMeetingLabelItemsParam;
         }
 
-        //会議ラベル項目を1件削除するAPIコール
+        /// <summary>
+        /// 会議ラベルに対する項目情報を1件削除するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="iid">削除対象の項目ID</param>
+        /// <returns>DeleteMeetingLabelItemParam</returns>
         public async Task<DeleteMeetingLabelItemParam> DeleteMeetingLabelItemDataAsync(string uri, int iid)
         {
             uri = uri + iid;
@@ -402,10 +468,18 @@ namespace MeetingApp
                 return deleteMeetingLabelItemParam;
             }
         }
+        #endregion
 
-        //Participant系API
 
-        //会議入室する際のParticipantDBにデータを登録するAPIコール
+        #region Participant
+
+        /// <summary>
+        /// 会議入室の際の参加者情報を登録するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="uid">参加者のユーザーID</param>
+        /// <param name="mid">入室対象の会議ID</param>
+        /// <returns>CreateParticipateParam</returns>
         public async Task<CreateParticipateParam> CreateParticipateDataAsync(string uri, int uid, int mid)
         {
             var participantData = new ParticipantData(uid, mid);
@@ -445,7 +519,12 @@ namespace MeetingApp
 
         }
 
-        //ParticipantにUserDataが存在するかどうかチェックするAPIコール
+        /// <summary>
+        /// 指定ユーザーが会議に参加済みかどうか確認するAPIコール(ユーザーIDのみ)
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="uid">確認する対象のユーザーID</param>
+        /// <returns>CheckParticipantParam</returns>
         public async Task<CheckParticipantParam> CheckParticipantDataAsync(string uri, int uid)
         {
             var checkParticipantParam = new CheckParticipantParam();
@@ -476,9 +555,16 @@ namespace MeetingApp
             return checkParticipantParam;
         }
 
-        //ParticipantにUserDataが存在するかどうかチェックするAPIコール
+        /// <summary>
+        /// 指定ユーザーが会議に参加済みかどうか確認するAPIコール(ユーザーID、会議情報ID)
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="uid">探索対象のユーザーID</param>
+        /// <param name="mid">探索対象の会議ID</param>
+        /// <returns>CheckParticipantParam</returns>
         public async Task<CheckParticipantParam> CheckParticipantDataAsync(string uri, int uid, int mid)
         {
+            _jsonProcessing = new JsonProcessing();
             var checkParticipantParam = new CheckParticipantParam();
             try
             {
@@ -495,8 +581,8 @@ namespace MeetingApp
                     }
                     //ユーザーが見つかった場合
                     //list -> 要素の処理
-                    content = content.TrimStart('[');
-                    content = content.TrimEnd(']');
+                    //[]を除去する処理
+                    content = _jsonProcessing.RemoveOuterBrackets(content);
 
                     checkParticipantParam.IsSuccessed = true;
                     checkParticipantParam.Participant = JsonConvert.DeserializeObject<ParticipantData>(content);
@@ -512,7 +598,12 @@ namespace MeetingApp
             return checkParticipantParam;
         }
 
-        //ParticipantsDB中の指定会議のuserを全件取得するAPIコール
+        /// <summary>
+        /// 指定会議に参加中のユーザーを全件取得するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="mid">探索対象の会議ID</param>
+        /// <returns>GetParitipantsParam</returns>
         public async Task<GetParticipantsParam> GetParticipantsDataAsync(string uri, int mid)
         {
             var getParticipantsParam = new GetParticipantsParam();
@@ -556,7 +647,13 @@ namespace MeetingApp
             return getParticipantsParam;
         }
 
-        //ParticipantDBから1件削除するAPIコール
+        /// <summary>
+        /// 会議参加者情報を1件削除するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="uid">削除対象参加者のユーザーID</param>
+        /// <param name="mid">参加者が入室した会議ID</param>
+        /// <returns>DeleteParticipantParam</returns>
         public async Task<DeleteParticipantParam> DeleteParticipantDataAsync(string uri, int uid, int mid)
         {
             uri = uri + "?uid=" + uid + "&mid=" + mid;
@@ -570,7 +667,6 @@ namespace MeetingApp
                 {
                     deleteParticipantParam.IsSuccessed = true;
                     string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("DELETE SUCCESSED");
                     return deleteParticipantParam;
                 }
 
@@ -587,7 +683,12 @@ namespace MeetingApp
             }
         }
 
-        //Participants情報を更新するAPIコール
+        /// <summary>
+        /// 会議の参加者情報を更新するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="participant">参加者の更新内容情報</param>
+        /// <returns>UpdateParticipantParam</returns>
         public async Task<UpdateParticipantParam> UpdateParticipantDataAsync(string uri, ParticipantData participant)
         {
 
@@ -624,11 +725,21 @@ namespace MeetingApp
             }
             return updateParticipantParam;
         }
+        #endregion
 
-        //ユーザー情報系API
-        //userIdからユーザー情報を取得するAPIコール
+
+        #region User
+
+        /// <summary>
+        /// ユーザー情報を取得するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="userId">対象のユーザーID</param>
+        /// <returns>GetUserParam</returns>
         public async Task<GetUserParam> GetUserDataAsync(string uri, string userId)
         {
+
+            _jsonProcessing = new JsonProcessing();
             var getUserParam = new GetUserParam();
 
             try
@@ -637,10 +748,8 @@ namespace MeetingApp
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(content);
-                    content = content.TrimStart('[');
-                    content = content.TrimEnd(']');
-                    Console.WriteLine(content);
+                    //[]を除去する処理
+                    content = _jsonProcessing.RemoveOuterBrackets(content);
 
                     getUserParam.User = JsonConvert.DeserializeObject<UserData>(content);
 
@@ -657,7 +766,12 @@ namespace MeetingApp
             return getUserParam;
         }
 
-        //userIdからユーザー情報を取得するAPIコール
+        /// <summary>
+        /// 一意の自然数uidからユーザー情報を取得するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="uid">ユーザーのuid</param>
+        /// <returns>GetUserParam</returns>
         public async Task<GetUserParam> GetUserDataAsync(string uri, int uid)
         {
             var getUserParam = new GetUserParam();
@@ -669,9 +783,6 @@ namespace MeetingApp
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     Console.WriteLine(content);
-                    //content = content.TrimStart('[');
-                    //content = content.TrimEnd(']');
-                    //Console.WriteLine(content);
 
                     getUserParam.User = JsonConvert.DeserializeObject<UserData>(content);
 
@@ -688,7 +799,13 @@ namespace MeetingApp
             return getUserParam;
         }
 
-        //ユーザー情報を新規登録するAPIのコール
+        /// <summary>
+        /// /ユーザー情報を新規登録するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="userId">登録するユーザーID</param>
+        /// <param name="password">登録するパスワード</param>
+        /// <returns>SignUpParam</returns>
         public async Task<SignUpParam> SignUpUserDataAsync(string uri, string userId, string password)
         {
             var user = new UserData(userId, password);
@@ -728,7 +845,13 @@ namespace MeetingApp
 
         }
 
-        //ログインAPIのコール
+        /// <summary>
+        /// ログインAPIのコール
+        /// </summary>
+        /// <param name="uri">コールするAPI</param>
+        /// <param name="userId">ログイン情報のユーザーID</param>
+        /// <param name="password">ログイン情報のパスワード</param>
+        /// <returns>LoginParam</returns>
         public async Task<LoginParam> LoginUserDataAsync(string uri, string userId, string password)
         {
             var user = new UserData(userId, password);
@@ -774,7 +897,12 @@ namespace MeetingApp
         }
 
 
-        //ユーザーがDBに存在するかどうかチェックするAPIコール
+        /// <summary>
+        /// ユーザー情報が存在するかどうかチェックするAPIコール
+        /// </summary>
+        /// <param name="uri">コールするAPI</param>
+        /// <param name="userId">確認対象のユーザーID</param>
+        /// <returns>存在すればTrue、いなければFalse</returns>
         public async Task<Boolean> CheckUserDataAsync(string uri, string userId)
         {
             try
@@ -794,11 +922,18 @@ namespace MeetingApp
             return true;
         }
 
+        #endregion
 
-        //Token情報系API
 
-        //Localに保持するtoken情報がDB内に存在するかチェックするAPIコール
-        public async Task<TokenCheckParam> CheckTokenDataAsync(string uri, TokenData token)
+        #region Token
+
+        /// <summary>
+        /// トークン情報が正しいものかどうか照合するAPIコール
+        /// </summary>
+        /// <param name="uri">コールするURL</param>
+        /// <param name="token">トークン情報</param>
+        /// <returns>TokenCheckParam</returns>
+        public virtual async Task<TokenCheckParam> CheckTokenDataAsync(string uri, TokenData token)
         {
             var TokenCheckParam = new TokenCheckParam();
             var tokenCheckUrl = uri + "?tokenText=" + token.TokenText;
@@ -842,6 +977,7 @@ namespace MeetingApp
 
             return TokenCheckParam;
         }
+        #endregion
 
     }
 }

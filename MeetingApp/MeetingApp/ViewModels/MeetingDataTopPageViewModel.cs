@@ -15,7 +15,9 @@ namespace MeetingApp.ViewModels
 {
     public class MeetingDataTopPageViewModel : ViewModelBase
     {
-        private string _test;
+
+        #region private data
+
         private string _meetingTitle;
         private string _scheduledDate;
         private string _scheduledTime;
@@ -23,19 +25,23 @@ namespace MeetingApp.ViewModels
         private string _myUserId;
         private List<MeetingData> _meetings;
         private Boolean _isOwner;
-        private TokenCheckParam _tokenCheckParam;
         private Boolean _loadingMeetingData;
 
+        #endregion
+
+        #region private param
+
+        private GetMeetingsParam _getMeetingsParam;
+        private TokenCheckParam _tokenCheckParam;
+
+        #endregion
+
+        #region public data
 
         public List<MeetingData> Meetings
         {
             get { return _meetings; }
             set { SetProperty(ref _meetings, value); }
-        }
-        public string Test
-        {
-            get { return _test; }
-            set { SetProperty(ref _test, value); }
         }
         public string MeetingTitle
         {
@@ -67,27 +73,47 @@ namespace MeetingApp.ViewModels
             get { return _isOwner; }
             set { SetProperty(ref _isOwner, value); }
         }
-        public TokenCheckParam TokenCheckParam
-        {
-            get { return _tokenCheckParam; }
-            set { SetProperty(ref _tokenCheckParam, value); }
-        }
         public bool LoadingMeetingData
         {
             get { return _loadingMeetingData; }
             set { SetProperty(ref _loadingMeetingData, value); }
         }
+        #endregion
+
+        #region public param
+
+        public TokenCheckParam TokenCheckParam
+        {
+            get { return _tokenCheckParam; }
+            set { SetProperty(ref _tokenCheckParam, value); }
+        }
+
+        public GetMeetingsParam GetMeetingsParam
+        {
+            get { return _getMeetingsParam; }
+            set { SetProperty(ref _getMeetingsParam, value); }
+        }
+
+        #endregion
+
+        #region command
 
         public ICommand NavigateMeetingCreatePage { get; }
         public ICommand NavigateMeetingAttendPage { get; }
         public ICommand DeleteMeetingCommand { get; }
 
+        #endregion
+
+        #region others
+
         RestService _restService;
         ApplicationProperties _applicationProperties;
         INavigationService _navigationService;
+        OperateDateTime _operateDateTime;
+        #endregion
 
         /// <summary>
-        /// 
+        /// コンストラクタ
         /// </summary>
         /// <param name="navigationService"></param>
         public MeetingDataTopPageViewModel(INavigationService navigationService) : base(navigationService)
@@ -96,6 +122,7 @@ namespace MeetingApp.ViewModels
             _applicationProperties = new ApplicationProperties();
             _tokenCheckParam = new TokenCheckParam();
             _navigationService = navigationService;
+            _operateDateTime = new OperateDateTime();
 
 
             //myUserIdの取得
@@ -113,9 +140,6 @@ namespace MeetingApp.ViewModels
                 {
                     var mid = Convert.ToInt32(id);
 
-                    ////物理削除
-                    //_restService.DeleteMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
-
                     //論理削除
 
                     //対象となる会議情報を1件取得
@@ -128,7 +152,8 @@ namespace MeetingApp.ViewModels
 
                     //会議情報再取得
                     //会議情報全件取得APIのコール
-                    Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+                    GetMeetingsParam = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+                    Meetings = GetMeetingsParam.Meetings;
                 }
                 else
                 {
@@ -167,7 +192,10 @@ namespace MeetingApp.ViewModels
 
         }
 
-
+        /// <summary>
+        /// 画面遷移時の処理
+        /// </summary>
+        /// <param name="parameters">遷移中のパラメータ</param>
         public override async void OnNavigatingTo(INavigationParameters parameters)
         {
 
@@ -175,7 +203,7 @@ namespace MeetingApp.ViewModels
 
             LoadingMeetingData = true;
 
-            TokenCheckValidation tokenCheckValidation = new TokenCheckValidation();
+            TokenCheckValidation tokenCheckValidation = new TokenCheckValidation(_restService);
             TokenCheckParam = await tokenCheckValidation.Validate(_applicationProperties.GetFromProperties<TokenData>("token"));
 
             if (_tokenCheckParam.HasError == true)
@@ -189,7 +217,8 @@ namespace MeetingApp.ViewModels
             MyUserId = _applicationProperties.GetFromProperties<string>("userId");
 
             //会議情報全件取得APIのコール
-            Meetings = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+            GetMeetingsParam = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
+            Meetings = GetMeetingsParam.Meetings;
 
             LoadingMeetingData = false;
 

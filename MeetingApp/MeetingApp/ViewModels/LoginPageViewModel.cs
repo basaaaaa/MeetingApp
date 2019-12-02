@@ -12,16 +12,17 @@ namespace MeetingApp.ViewModels
     {
         INavigationService _navigationService;
 
+        #region private data
         private string _loginUserId;
         private string _loginPassword;
         private bool _loadingLogin;
+        #endregion
 
+        #region private param
         private LoginParam _loginParam;
+        #endregion
 
-
-        public ICommand NavigationSignUpPageCommand { get; }
-        public ICommand LoginCommand { get; }
-
+        #region public data
         public string LoginUserId
         {
             get { return _loginUserId; }
@@ -38,6 +39,9 @@ namespace MeetingApp.ViewModels
             get { return _loadingLogin; }
             set { SetProperty(ref _loadingLogin, value); }
         }
+        #endregion
+
+        #region public param
 
         public LoginParam LoginParam
         {
@@ -45,8 +49,19 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _loginParam, value); }
         }
 
+        #endregion
+
+        #region command
+
+        public ICommand NavigationSignUpPageCommand { get; }
+        public ICommand LoginCommand { get; }
+
+        #endregion
+
+        #region others
         RestService _restService;
         ApplicationProperties _applicationProperties;
+        #endregion
 
         public LoginPageViewModel(INavigationService navigationService) : base(navigationService)
         {

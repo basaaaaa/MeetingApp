@@ -121,6 +121,7 @@ namespace MeetingApp.ViewModels
         RestService _restService;
         TokenCheckValidation _tokenCheckValidation;
         ApplicationProperties _applicationProperties;
+        OperateDateTime _operateDateTime;
 
 
         public MeetingAttendPageViewModel(INavigationService navigationService) : base(navigationService)
@@ -128,11 +129,13 @@ namespace MeetingApp.ViewModels
             _createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
             _attendMeetingParam = new AttendMeetingParam();
             _deleteMeetingLabelItemParam = new DeleteMeetingLabelItemParam();
+            _restService = new RestService();
+            _operateDateTime = new OperateDateTime();
 
             _createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
 
             _navigationService = navigationService;
-            _tokenCheckValidation = new TokenCheckValidation();
+            _tokenCheckValidation = new TokenCheckValidation(_restService);
             _applicationProperties = new ApplicationProperties();
             _attendMeetingValidation = new AttendMeetingValidation();
 
