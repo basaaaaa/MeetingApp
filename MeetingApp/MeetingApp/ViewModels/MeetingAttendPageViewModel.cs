@@ -16,14 +16,22 @@ namespace MeetingApp.ViewModels
 {
     public class MeetingAttendPageViewModel : ViewModelBase
     {
+        #region private data
+
         private MeetingData _targetMeetingData;
         private ObservableCollection<MeetingLabelData> _targetMeetingLabels;
         private string _inputLabelItemName;
         private int _labelItemCount;
         private bool _loadingData;
 
+        #endregion
+
+        #region private validation
         private CreateMeetingLabelItemValidation _createMeetingLabelItemValidation;
         private AttendMeetingValidation _attendMeetingValidation;
+        #endregion
+
+        #region private param
 
         private TokenCheckParam _tokenCheckParam;
         private GetUserParam _getUserParam;
@@ -34,7 +42,9 @@ namespace MeetingApp.ViewModels
         private DeleteMeetingLabelItemParam _deleteMeetingLabelItemParam;
         private CreateParticipateParam _createParticipateParam;
         private CheckParticipantParam _checkParticipantParam;
+        #endregion
 
+        #region public data
 
         public MeetingData TargetMeetingData
         {
@@ -56,7 +66,15 @@ namespace MeetingApp.ViewModels
             get { return _targetMeetingLabels; }
             set { SetProperty(ref _targetMeetingLabels, value); }
         }
+        public int LabelItemCount
+        {
+            get { return _labelItemCount; }
+            set { SetProperty(ref _labelItemCount, value); }
+        }
 
+        #endregion
+
+        #region public param
         public CreateMeetingLabelItemParam CreateMeetingLabelItemParam
         {
             get { return _createMeetingLabelItemParam; }
@@ -71,11 +89,6 @@ namespace MeetingApp.ViewModels
         {
             get { return _getMeetingParam; }
             set { SetProperty(ref _getMeetingParam, value); }
-        }
-        public int LabelItemCount
-        {
-            get { return _labelItemCount; }
-            set { SetProperty(ref _labelItemCount, value); }
         }
         public TokenCheckParam TokenCheckParam
         {
@@ -109,6 +122,9 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _checkParticipantParam, value); }
         }
 
+        #endregion
+
+        #region command
 
         public ICommand CreateMeetingLabelItemCommand { get; }
         public ICommand EnterMeetingCommand { get; }
@@ -116,42 +132,46 @@ namespace MeetingApp.ViewModels
 
         public ICommand NavigateMeetingLabelItemDataCreatePage { get; }
 
-        INavigationService _navigationService;
+        #endregion
 
+        #region others
+
+        INavigationService _navigationService;
         RestService _restService;
         TokenCheckValidation _tokenCheckValidation;
         ApplicationProperties _applicationProperties;
         OperateDateTime _operateDateTime;
 
+        #endregion
+
 
         public MeetingAttendPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+            _navigationService = navigationService;
+            _restService = new RestService();
+            _operateDateTime = new OperateDateTime();
+            _applicationProperties = new ApplicationProperties();
+
             _createMeetingLabelItemParam = new CreateMeetingLabelItemParam();
             _attendMeetingParam = new AttendMeetingParam();
             _deleteMeetingLabelItemParam = new DeleteMeetingLabelItemParam();
-            _restService = new RestService();
-            _operateDateTime = new OperateDateTime();
 
             _createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
-
-            _navigationService = navigationService;
             _tokenCheckValidation = new TokenCheckValidation(_restService);
-            _applicationProperties = new ApplicationProperties();
             _attendMeetingValidation = new AttendMeetingValidation();
 
-            Console.WriteLine(TargetMeetingLabels);
 
-            //ラベルに項目を追加するページへ遷移するコマンド
+            //ラベルに関する項目を追加するページへ遷移するコマンド
             NavigateMeetingLabelItemDataCreatePage = new DelegateCommand<object>((meetingLabelData) =>
             {
                 var targetMeetingLabelData = (MeetingLabelData)(meetingLabelData);
-
 
                 var p = new NavigationParameters
                 {
                     { "meetingLabelData", targetMeetingLabelData},
                 };
                 _navigationService.NavigateAsync("MeetingLabelItemDataCreatePage", p);
+
             });
 
 

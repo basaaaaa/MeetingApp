@@ -10,7 +10,6 @@ namespace MeetingApp.ViewModels
 {
     public class LoginPageViewModel : ViewModelBase
     {
-        INavigationService _navigationService;
 
         #region private data
         private string _loginUserId;
@@ -61,17 +60,18 @@ namespace MeetingApp.ViewModels
         #region others
         RestService _restService;
         ApplicationProperties _applicationProperties;
+        INavigationService _navigationService;
         #endregion
 
         public LoginPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _navigationService = navigationService;
+
             _restService = new RestService();
-            _loginParam = new LoginParam();
             _applicationProperties = new ApplicationProperties();
 
-            //LoginUserId = "test";
-            //LoginPassword = "password";
+            LoginParam = new LoginParam();
+
 
             //新規登録ページへ遷移
             NavigationSignUpPageCommand = new DelegateCommand(() =>
@@ -82,10 +82,12 @@ namespace MeetingApp.ViewModels
             //ログインボタンの動作
             LoginCommand = new DelegateCommand(async () =>
             {
-
+                //ローディング情報の表示
                 LoadingLogin = true;
 
+                //ログインAPIのコール
                 LoginParam = await _restService.LoginUserDataAsync(UserConstants.OpenUserLoginEndPoint, LoginUserId, LoginPassword);
+
                 //ログイン処理にエラーが無く追加が実行されていれば
                 if (LoginParam.HasError == false)
                 {
@@ -95,6 +97,7 @@ namespace MeetingApp.ViewModels
                     //ローカルにuserId情報を保持する
                     _applicationProperties.SaveToProperties<string>("userId", LoginUserId);
 
+                    //ローディング情報を非表示にする
                     LoadingLogin = false;
 
                     //会議情報トップページに遷移する
@@ -102,6 +105,7 @@ namespace MeetingApp.ViewModels
                 }
                 else
                 {
+                    //ローディング情報を非表示にする
                     LoadingLogin = false;
                 }
             });
