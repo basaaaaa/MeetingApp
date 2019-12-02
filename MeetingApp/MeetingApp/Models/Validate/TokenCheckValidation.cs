@@ -1,6 +1,7 @@
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Data;
 using MeetingApp.Models.Param;
+using MeetingApp.Utils;
 using System.Threading.Tasks;
 
 namespace MeetingApp.Models.Validate
@@ -8,11 +9,16 @@ namespace MeetingApp.Models.Validate
     public class TokenCheckValidation
     {
         RestService _restService;
+        OperateDateTime _operateDateTime;
+
+        public TokenCheckValidation(RestService restService)
+        {
+            _restService = restService;
+        }
 
         public async Task<TokenCheckParam> Validate(TokenData token)
         {
-            TokenCheckParam tokenCheckParam = new TokenCheckParam();
-            _restService = new RestService();
+            var tokenCheckParam = new TokenCheckParam();
 
 
             //Localのtoken情報参照

@@ -933,7 +933,7 @@ namespace MeetingApp
         /// <param name="uri">コールするURL</param>
         /// <param name="token">トークン情報</param>
         /// <returns>TokenCheckParam</returns>
-        public async Task<TokenCheckParam> CheckTokenDataAsync(string uri, TokenData token)
+        public virtual async Task<TokenCheckParam> CheckTokenDataAsync(string uri, TokenData token)
         {
             var TokenCheckParam = new TokenCheckParam();
             var tokenCheckUrl = uri + "?tokenText=" + token.TokenText;

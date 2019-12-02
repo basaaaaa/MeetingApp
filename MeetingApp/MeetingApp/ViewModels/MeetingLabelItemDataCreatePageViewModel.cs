@@ -81,12 +81,15 @@ namespace MeetingApp.ViewModels
         TokenCheckValidation _tokenCheckValidation;
         RestService _restService;
         ApplicationProperties _applicationProperties;
+        OperateDateTime _operateDateTime;
 
         public MeetingLabelItemDataCreatePageViewModel(INavigationService navigationService) : base(navigationService)
         {
-            _createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
-            _tokenCheckValidation = new TokenCheckValidation();
             _restService = new RestService();
+            _operateDateTime = new OperateDateTime();
+
+            _createMeetingLabelItemValidation = new CreateMeetingLabelItemValidation();
+            _tokenCheckValidation = new TokenCheckValidation(_restService);
             _applicationProperties = new ApplicationProperties();
             _meetingLabelItemDatas = new ObservableCollection<MeetingLabelItemData>();
             _createMeetingLabelItemParam = new CreateMeetingLabelItemParam();

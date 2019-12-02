@@ -109,6 +109,7 @@ namespace MeetingApp.ViewModels
         RestService _restService;
         ApplicationProperties _applicationProperties;
         INavigationService _navigationService;
+        OperateDateTime _operateDateTime;
         #endregion
 
         /// <summary>
@@ -121,6 +122,7 @@ namespace MeetingApp.ViewModels
             _applicationProperties = new ApplicationProperties();
             _tokenCheckParam = new TokenCheckParam();
             _navigationService = navigationService;
+            _operateDateTime = new OperateDateTime();
 
 
             //myUserIdの取得
@@ -201,7 +203,7 @@ namespace MeetingApp.ViewModels
 
             LoadingMeetingData = true;
 
-            TokenCheckValidation tokenCheckValidation = new TokenCheckValidation();
+            TokenCheckValidation tokenCheckValidation = new TokenCheckValidation(_restService);
             TokenCheckParam = await tokenCheckValidation.Validate(_applicationProperties.GetFromProperties<TokenData>("token"));
 
             if (_tokenCheckParam.HasError == true)
