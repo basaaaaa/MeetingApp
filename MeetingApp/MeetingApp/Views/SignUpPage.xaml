@@ -5,37 +5,55 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="MeetingApp.Views.SignUpPage"
              Title="ユーザー新規登録">
-    <StackLayout VerticalOptions="Center">
-        <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="false" WidthRequest="200">
-            <StackLayout>
-                <Label Text="SignUp"  HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" Margin="0,0,0,5"/>
-                <Entry Placeholder="userId" Text="{Binding SignUpUserId}" />
-                <Entry Placeholder="password" Text="{Binding SignUpPassword}" IsPassword="True"/>
-                
-                <StackLayout Margin="0,5,0,0">
-                    <Button Text="登録" Command="{Binding SignUpCommand}" BackgroundColor="Black" TextColor="White"/>
-                    <Label IsVisible="{Binding SignUpParam.IsSuccessed}" Text="新規登録が成功しました" TextColor="Blue" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding SignUpParam.UserExists}" Text="既にそのユーザーIDは使用されています" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding SignUpParam.BlankUserId}" Text="ユーザーIDが未入力です" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding SignUpParam.BlankPassword}" Text="パスワードが未入力です" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding SignUpParam.ShortPassword}" Text="パスワードが短すぎます" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding SignUpParam.UnSpecifiedUserId}" Text="ユーザーIDに使用できない文字が含まれています" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label IsVisible="{Binding SignUpParam.UnSpecifiedPassword}" Text="パスワードに使用できない文字が含まれています" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label HorizontalOptions="End">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="戻る" TextColor="White" FontFamily="UnderLine">
-                                    <Span.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding GoBackCommand}"/>
-                                    </Span.GestureRecognizers>
-                                </Span>
-                            </FormattedString>
 
-                        </Label.FormattedText>
-                    </Label>
+    <AbsoluteLayout>
+        <StackLayout VerticalOptions="Center" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <Frame CornerRadius="10" Margin="20,20,20,20" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" HasShadow="false" WidthRequest="200">
+                <StackLayout>
+                    <Label Text="SignUp"  HorizontalOptions="Center" FontSize="30" FontAttributes="Bold" Margin="0,0,0,5"/>
+                    <Entry Placeholder="userId" Text="{Binding SignUpUserId}" />
+                    <Entry Placeholder="password" Text="{Binding SignUpPassword}" IsPassword="True"/>
+
+                    <StackLayout Margin="0,5,0,0">
+                        <Button Text="登録" Command="{Binding SignUpCommand}" BackgroundColor="Black" TextColor="White"/>
+                        <!--<Label IsVisible="{Binding SignUpParam.IsSuccessed}" Text="新規登録が成功しました" TextColor="Blue" HorizontalOptions="Center"/>-->
+                        <Label IsVisible="{Binding SignUpParam.UserExists}" Text="既にそのユーザーIDは使用されています" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding SignUpParam.BlankUserId}" Text="ユーザーIDが未入力です" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding SignUpParam.BlankPassword}" Text="パスワードが未入力です" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding SignUpParam.ShortPassword}" Text="パスワードが短すぎます" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding SignUpParam.UnSpecifiedUserId}" Text="ユーザーIDに使用できない文字が含まれています" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label IsVisible="{Binding SignUpParam.UnSpecifiedPassword}" Text="パスワードに使用できない文字が含まれています" TextColor="Red" HorizontalOptions="Center"/>
+                        <Label HorizontalOptions="End">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="戻る" TextColor="White" FontFamily="UnderLine">
+                                        <Span.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding GoBackCommand}"/>
+                                        </Span.GestureRecognizers>
+                                    </Span>
+                                </FormattedString>
+
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
                 </StackLayout>
+            </Frame>
+        </StackLayout>
+        
+        <ContentView BackgroundColor="Black"
+             Opacity="0.4"
+             IsVisible="{Binding SignUpLoading}"
+             AbsoluteLayout.LayoutFlags="All"
+             AbsoluteLayout.LayoutBounds="0,0,1,1" />
+
+        <Frame IsVisible="{Binding SignUpLoading}"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize">
+            <StackLayout>
+                <ActivityIndicator IsRunning="{Binding SignUpLoading}" Color="Black" />
+                <Label Text="新規登録中…" />
             </StackLayout>
         </Frame>
-    </StackLayout>
+    </AbsoluteLayout>
 
 </ContentPage>

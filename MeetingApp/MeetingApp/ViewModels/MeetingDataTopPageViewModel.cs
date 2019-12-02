@@ -118,18 +118,20 @@ namespace MeetingApp.ViewModels
         /// <param name="navigationService"></param>
         public MeetingDataTopPageViewModel(INavigationService navigationService) : base(navigationService)
         {
+            _navigationService = navigationService;
+
             _restService = new RestService();
             _applicationProperties = new ApplicationProperties();
-            _tokenCheckParam = new TokenCheckParam();
-            _navigationService = navigationService;
             _operateDateTime = new OperateDateTime();
 
+            _tokenCheckParam = new TokenCheckParam();
 
-            //myUserIdの取得
+
+            //アプリ使用者のユーザーIDの取得
             MyUserId = _applicationProperties.GetFromProperties<string>("userId");
 
 
-            //会議の削除ボタンが押されたときのコマンド
+            //会議の削除ボタンが押されたときの処理
             DeleteMeetingCommand = new DelegateCommand<object>(async id =>
             {
 
@@ -140,18 +142,16 @@ namespace MeetingApp.ViewModels
                 {
                     var mid = Convert.ToInt32(id);
 
-                    //論理削除
-
                     //対象となる会議情報を1件取得
-                    GetMeetingParam getMeetingParam = new GetMeetingParam();
+                    var getMeetingParam = new GetMeetingParam();
                     getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
                     var updateMeetingData = getMeetingParam.MeetingData;
+
                     //フラグをfalseに変更
                     updateMeetingData.IsVisible = false;
                     await _restService.UpdateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, updateMeetingData);
 
                     //会議情報再取得
-                    //会議情報全件取得APIのコール
                     GetMeetingsParam = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
                     Meetings = GetMeetingsParam.Meetings;
                 }
@@ -177,7 +177,7 @@ namespace MeetingApp.ViewModels
                 var mid = Convert.ToInt32(id);
 
                 //指定の会議の情報をCommandParameterで受け取り、会議id(mid)を取得する
-                GetMeetingParam getMeetingParam = new GetMeetingParam();
+                var getMeetingParam = new GetMeetingParam();
                 getMeetingParam = await _restService.GetMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, mid);
 
                 var p = new NavigationParameters
@@ -201,25 +201,26 @@ namespace MeetingApp.ViewModels
 
             base.OnNavigatingTo(parameters);
 
+            //ローディングの表示
             LoadingMeetingData = true;
 
-            TokenCheckValidation tokenCheckValidation = new TokenCheckValidation(_restService);
+            var tokenCheckValidation = new TokenCheckValidation(_restService);
             TokenCheckParam = await tokenCheckValidation.Validate(_applicationProperties.GetFromProperties<TokenData>("token"));
 
-            if (_tokenCheckParam.HasError == true)
+            //token照合の際にエラーが発生した際の処理(ログイン画面に戻す）
+            if (TokenCheckParam.HasError == true)
             {
-                //token照合の際にエラーが発生した際の処理
-                Console.WriteLine("ログインに失敗しました");
                 await _navigationService.NavigateAsync("LoginPage");
             }
 
-            //myUserIdの取得
+            //アプリ使用者のユーザーIDの取得
             MyUserId = _applicationProperties.GetFromProperties<string>("userId");
 
             //会議情報全件取得APIのコール
             GetMeetingsParam = await _restService.GetMeetingsDataAsync(MeetingConstants.OpenMeetingEndPoint, MyUserId);
             Meetings = GetMeetingsParam.Meetings;
 
+            //ローディング非表示
             LoadingMeetingData = false;
 
         }

@@ -15,24 +15,31 @@ namespace MeetingApp.ViewModels
 {
     public class MeetingDataCreatePageViewModel : ViewModelBase
     {
-        //private List<MeetingLabelData> _labels;
+
+        #region private data
+
         private ObservableCollection<MeetingLabelData> _labels;
         private string _createLabelName;
-
         private string _inputMeetingTitle;
         private DateTime _inputMeetingDate;
         private TimeSpan _inputMeetingStartTime;
         private TimeSpan _inputMeetingEndTime;
         private string _inputMeetingLocation;
-        private CreateMeetingParam _createMeetingParam;
-        private CreateMeetingLabelParam _createMeetingLabelParam;
         private int _labelListViewHeight;
-
         private DateTime _selectedDate;
         private TimeSpan _selectedTime;
 
+        #endregion
+
+        #region private param
+
+        private CreateMeetingParam _createMeetingParam;
+        private CreateMeetingLabelParam _createMeetingLabelParam;
+
+        #endregion
 
 
+        #region public data
         public ObservableCollection<MeetingLabelData> Labels
         {
             get { return _labels; }
@@ -90,6 +97,13 @@ namespace MeetingApp.ViewModels
             get { return _labelListViewHeight; }
             set { SetProperty(ref _labelListViewHeight, value); }
         }
+
+        public MeetingData CreateMeetingData;
+
+        #endregion
+
+
+        #region public param
         public CreateMeetingParam CreateMeetingParam
         {
             get { return _createMeetingParam; }
@@ -101,36 +115,40 @@ namespace MeetingApp.ViewModels
             set { SetProperty(ref _createMeetingLabelParam, value); }
         }
 
+        #endregion
+
+        #region command
+
         public ICommand CreateMeetingDataCommand { get; }
         public ICommand CreateMeetingLabelCommand { get; }
         public ICommand NavigateMeetingDataTopPage { get; }
 
+        #endregion
 
-        public MeetingData CreateMeetingData;
-
+        #region ohers
         RestService _restService;
         ApplicationProperties _applicationProperties;
         INavigationService _navigationService;
         CreateMeetingValidation _createMeetingValidation;
         CreateMeetingLabelValidation _createMeetingLabelValidation;
 
+        #endregion
+
         public MeetingDataCreatePageViewModel(INavigationService navigationService) : base(navigationService)
         {
-            _restService = new RestService();
             _navigationService = navigationService;
+
+            _restService = new RestService();
             _applicationProperties = new ApplicationProperties();
+
             _createMeetingParam = new CreateMeetingParam();
             _createMeetingLabelParam = new CreateMeetingLabelParam();
-            Labels = new ObservableCollection<MeetingLabelData>();
+
             _createMeetingValidation = new CreateMeetingValidation();
             _createMeetingLabelValidation = new CreateMeetingLabelValidation();
 
-            ////仮入力データ
-            //InputMeetingTitle = "テスト会議";
-            //InputMeetingDate = "2019-09-07";
-            //InputMeetingStartTime = "10:00";
-            //InputMeetingEndTime = "10:15";
-            //InputMeetingLocation = "どこか";
+            Labels = new ObservableCollection<MeetingLabelData>();
+
 
             //入力初期値
             InputMeetingDate = DateTime.UtcNow;
@@ -138,31 +156,20 @@ namespace MeetingApp.ViewModels
             CreateMeetingDataCommand = new DelegateCommand(async () =>
 
             {
-                //入力値のバリデーション
+                //会議情報入力値のバリデーション処理
                 CreateMeetingParam = _createMeetingValidation.InputValidate(InputMeetingTitle, InputMeetingDate, InputMeetingStartTime, InputMeetingEndTime, InputMeetingLocation, Labels);
+
                 //バリデーションエラーが存在すれば失敗で返す
                 if (CreateMeetingParam.HasError == true) { return; }
-
-                //テスト用DateTime結合
-
-
-
-                //会議開始時間と終了時間をDateTime型に変換
-                //var testDateTime = SelectedDate;
-                //var testDateTime2 = SelectedTime;
 
                 //DateTimeとTimeSpanを結合
                 var InputMeetingStartDateTime = InputMeetingDate + InputMeetingStartTime;
                 var InputMeetingEndDateTime = InputMeetingDate + InputMeetingEndTime;
 
-
-                //var InputMeetingStartDateTime = DateTime.Parse(InputMeetingDate + " " + InputMeetingStartTime);
-                //var InputMeetingEndDateTime = DateTime.Parse(InputMeetingDate + " " + InputMeetingEndTime);
-
                 //userIdに対するidを取得
-                //ローカルにid情報を保持する
                 var getUserParam = await _restService.GetUserDataAsync(UserConstants.OpenUserEndPoint, _applicationProperties.GetFromProperties<string>("userId"));
 
+                //ユーザー取得時にエラーがあれば処理終了
                 if (getUserParam.HasError == true) { return; }
 
                 //Json用のモデルを作成
@@ -176,26 +183,31 @@ namespace MeetingApp.ViewModels
                 CreateMeetingData.Location = InputMeetingLocation;
                 CreateMeetingData.IsVisible = true;
 
+                //会議作成APIのコール
                 CreateMeetingParam = await _restService.CreateMeetingDataAsync(MeetingConstants.OpenMeetingEndPoint, CreateMeetingData, Labels);
 
+                //会議作成が成功すればMeetingDataTopPageに遷移する
                 if (CreateMeetingParam.IsSuccessed == true)
                 {
-                    //会議情報トップページに遷移する
                     await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
                 }
 
             });
 
-            //カードラベルの追加ボタンを押したときのコマンド Labelsリストにlabelオブジェクトを追加する
+            //ラベル追加の際のコマンド
             CreateMeetingLabelCommand = new DelegateCommand(() =>
             {
+                //作成するラベル名のバリデーション
                 CreateMeetingLabelParam = _createMeetingLabelValidation.InputValidate(CreateLabelName);
+                //ラベル作成に失敗すれば処理中断
                 if (CreateMeetingLabelParam.HasError == true) { return; }
 
+                //リストにラベル情報を保持
                 var label = new MeetingLabelData(CreateLabelName);
                 Labels.Add(label);
                 CreateLabelName = "";
 
+                //ViewにおけるFrameの高さを大きくする
                 LabelListViewHeight += 85;
 
             });
