@@ -17,6 +17,9 @@ namespace MeetingApp.Models.Param
 
         public bool TimeError { get; set; }
 
+        public bool MeetingTitleCharactersOver { get; set; }
+        public bool MeetingLocationCharactersOver { get; set; }
+
 
         public CreateMeetingParam()
         {
@@ -32,6 +35,8 @@ namespace MeetingApp.Models.Param
             this.NotTimeType = false;
             this.ApiCallError = false;
             this.TimeError = false;
+            this.MeetingLocationCharactersOver = false;
+            this.MeetingTitleCharactersOver = false;
         }
     }
 }

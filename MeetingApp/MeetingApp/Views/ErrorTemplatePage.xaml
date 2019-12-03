@@ -6,8 +6,8 @@
              Title="{Binding ErrorMessageTitle}">
 
     <StackLayout Margin="5,5,5,5">
-        <Label TextColor="Red" Text="{Binding ErrorMessage}" FontSize="30" FontAttributes="Bold"/>
-        <Label Text="{Binding ErrorMessageDespription}" />
+        <Label TextColor="Red" Text="{Binding ErrorMessage}" FontSize="30" FontAttributes="Bold" HorizontalOptions="Center"/>
+        <Label Text="{Binding ErrorMessageDespription}" HorizontalOptions="Center"/>
         <Button HorizontalOptions="Center" VerticalOptions="Center" Text="戻る" Command="{Binding NavigateLoginPageCommand}" BackgroundColor="Black" TextColor="White"/>
     </StackLayout>
   

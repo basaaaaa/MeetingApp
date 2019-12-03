@@ -5,7 +5,15 @@ namespace MeetingApp.Utils
         /// <summary>
         /// 会議が既に終了している際のエラー
         /// </summary>
-        FinishedMeeting
+        FinishedMeeting,
+        /// <summary>
+        /// トークン失効
+        /// </summary>
+        ExpiredToken,
+        /// <summary>
+        /// 予期せぬエラー
+        /// </summary>
+        Unexpected
 
     }
 }

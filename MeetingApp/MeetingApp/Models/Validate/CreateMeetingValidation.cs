@@ -40,6 +40,22 @@ namespace MeetingApp.Models.Validate
                 createMeetingParam.NoExistLabel = true;
             }
 
+            //会議タイトルが12文字以内かチェック
+            if (!string.IsNullOrEmpty(title) && title.Length > 12)
+            {
+                createMeetingParam.HasError = true;
+                createMeetingParam.MeetingTitleCharactersOver = true;
+            }
+
+            //会議実施場所が13文字以内かチェック
+            if (!string.IsNullOrEmpty(location) && location.Length > 13)
+            {
+                createMeetingParam.HasError = true;
+                createMeetingParam.MeetingLocationCharactersOver = true;
+            }
+
+
+            //上記でエラーが無ければ成功フラグを立てて返す
             if (createMeetingParam.HasError == false)
             {
                 createMeetingParam.IsSuccessed = true;

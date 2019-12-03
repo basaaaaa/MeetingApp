@@ -207,10 +207,15 @@ namespace MeetingApp.ViewModels
             var tokenCheckValidation = new TokenCheckValidation(_restService);
             TokenCheckParam = await tokenCheckValidation.Validate(_applicationProperties.GetFromProperties<TokenData>("token"));
 
-            //token照合の際にエラーが発生した際の処理(ログイン画面に戻す）
+            //token照合の際にエラーが発生した際の処理
             if (TokenCheckParam.HasError == true)
             {
-                await _navigationService.NavigateAsync("LoginPage");
+                var p = new NavigationParameters
+                {
+                    {"ErrorPageType",ErrorPageType.ExpiredToken }
+                };
+                //終了している会議なのでエラー画面に飛ばす
+                await _navigationService.NavigateAsync("/NavigationPage/ErrorTemplatePage", p);
             }
 
             //アプリ使用者のユーザーIDの取得

@@ -18,6 +18,8 @@
                     <Label TextColor="Red" Text="会議の実施場所が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingLocation}"/>
                     <Label TextColor="Red" Text="ラベルが追加されていません" IsVisible="{Binding CreateMeetingParam.NoExistLabel}"/>
                     <Label TextColor="Red" Text="会議時刻の適切な入力がされていません" IsVisible="{Binding CreateMeetingParam.TimeError}" />
+                    <Label TextColor="Red" Text="会議タイトルが長すぎます" IsVisible="{Binding CreateMeetingParam.MeetingTitleCharactersOver}" />
+                    <Label TextColor="Red" Text="会議実施場所の文字数が長すぎます" IsVisible="{Binding CreateMeetingParam.MeetingLocationCharactersOver}" />
 
                     <Label Text="会議タイトル" TextColor="White"/>
                     <Entry Placeholder="朝会" Text="{Binding InputMeetingTitle}" />

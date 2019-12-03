@@ -26,6 +26,7 @@ namespace MeetingApp
         {
             _client = new HttpClient();
             _checkString = new CheckString();
+            _jsonProcessing = new JsonProcessing();
         }
 
         #region Meeting
@@ -38,7 +39,6 @@ namespace MeetingApp
         /// <returns>GetMeetingParam</returns>
         public async Task<GetMeetingParam> GetMeetingDataAsync(string uri, int mid)
         {
-            _jsonProcessing = new JsonProcessing();
             var getMeetingParam = new GetMeetingParam();
             uri = uri + "?mid=" + mid;
             try
@@ -564,7 +564,6 @@ namespace MeetingApp
         /// <returns>CheckParticipantParam</returns>
         public async Task<CheckParticipantParam> CheckParticipantDataAsync(string uri, int uid, int mid)
         {
-            _jsonProcessing = new JsonProcessing();
             var checkParticipantParam = new CheckParticipantParam();
             try
             {
@@ -739,7 +738,6 @@ namespace MeetingApp
         public async Task<GetUserParam> GetUserDataAsync(string uri, string userId)
         {
 
-            _jsonProcessing = new JsonProcessing();
             var getUserParam = new GetUserParam();
 
             try
@@ -935,7 +933,7 @@ namespace MeetingApp
         /// <returns>TokenCheckParam</returns>
         public virtual async Task<TokenCheckParam> CheckTokenDataAsync(string uri, TokenData token)
         {
-            var TokenCheckParam = new TokenCheckParam();
+            var tokenCheckParam = new TokenCheckParam();
             var tokenCheckUrl = uri + "?tokenText=" + token.TokenText;
             try
             {
@@ -943,31 +941,40 @@ namespace MeetingApp
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    content = content.TrimStart('[');
-                    content = content.TrimEnd(']');
+
+                    if (content == "[null]")
+                    {
+                        tokenCheckParam.HasError = true;
+                        tokenCheckParam.NotFoundTokenText = true;
+                        return tokenCheckParam;
+                    }
+
+                    //[]ÇèúãéÇ∑ÇÈèàóù
+                    content = _jsonProcessing.RemoveOuterBrackets(content);
 
                     var receivedTokenData = JsonConvert.DeserializeObject<TokenData>(content);
+
 
                     //óLå¯éûä‘ì‡Ç©Ç«Ç§Ç©åüèÿ
                     DateTime dt = DateTime.Now;
                     if (receivedTokenData.StartTime < dt && receivedTokenData.EndTime > dt)
                     {
-                        TokenCheckParam.IsSuccessed = true;
-                        return TokenCheckParam;
+                        tokenCheckParam.IsSuccessed = true;
+                        return tokenCheckParam;
                     }
                     else
                     {
                         //óLå¯éûä‘äOÇÃTokenÇæÇ¡ÇΩèÍçá
-                        TokenCheckParam.HasError = true;
-                        TokenCheckParam.IsOverTimeToken = true;
+                        tokenCheckParam.HasError = true;
+                        tokenCheckParam.IsOverTimeToken = true;
                     }
 
                 }
                 else
                 {
                     //äYìñÇ∑ÇÈtokenTextÇ™DBì‡Ç…å©Ç¬Ç©ÇÁÇ»Ç¢Ç∆Ç´
-                    TokenCheckParam.HasError = true;
-                    TokenCheckParam.NotFoundTokenText = true;
+                    tokenCheckParam.HasError = true;
+                    tokenCheckParam.NotFoundTokenText = true;
                 }
             }
             catch (Exception ex)
@@ -975,7 +982,7 @@ namespace MeetingApp
                 Debug.WriteLine("\tERROR {0}", ex.Message);
             }
 
-            return TokenCheckParam;
+            return tokenCheckParam;
         }
         #endregion
 
