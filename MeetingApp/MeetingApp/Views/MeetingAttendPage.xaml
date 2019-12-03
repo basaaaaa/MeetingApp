@@ -15,11 +15,11 @@
         <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
         <Frame CornerRadius="10" Margin="5,10,5,5" Opacity="0.7" BackgroundColor="Gray" HeightRequest="150" HasShadow="false">
                 <StackLayout >
-                    <Label Text="{Binding TargetMeetingData.Title}" FontSize="30" TextColor="White"/>
+                    <Label Text="{Binding TargetMeetingData.Title}" FontSize="22" TextColor="White"/>
                     <Grid Margin="0,0,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.2*" />
-                            <ColumnDefinition Width="0.7*" />
+                            <ColumnDefinition Width="0.8*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20" />

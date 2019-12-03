@@ -1,6 +1,7 @@
 using MeetingApp.Models.Constants;
 using MeetingApp.Models.Param;
 using MeetingApp.Models.Validate;
+using MeetingApp.Utils;
 using Prism.Commands;
 using Prism.Navigation;
 using System.Windows.Input;
@@ -15,6 +16,7 @@ namespace MeetingApp.ViewModels
         private string _signUpUserId;
         private string _signUpPassword;
         private bool _signUpLoading;
+
         #endregion
 
         #region param
@@ -60,6 +62,7 @@ namespace MeetingApp.ViewModels
         RestService _restService;
         INavigationService _navigationService;
         SignUpValidation _signUpValidation;
+        CheckString _checkString;
 
         #endregion
 
@@ -67,10 +70,11 @@ namespace MeetingApp.ViewModels
         {
             _navigationService = navigationService;
             _restService = new RestService();
+            _checkString = new CheckString();
 
             _signUpParam = new SignUpParam();
 
-            _signUpValidation = new SignUpValidation();
+            _signUpValidation = new SignUpValidation(_checkString);
 
 
             SignUpCommand = new DelegateCommand(async () =>

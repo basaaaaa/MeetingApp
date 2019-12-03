@@ -143,7 +143,7 @@ namespace MeetingApp.ViewModels
 
                 if (UpdateParticipantParam.IsSuccessed == true)
                 {
-                    await _navigationService.NavigateAsync("MeetingDataTopPage");
+                    await _navigationService.NavigateAsync("/NavigationPage/MeetingDataTopPage");
                 }
 
 

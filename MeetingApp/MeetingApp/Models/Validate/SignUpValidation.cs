@@ -5,7 +5,12 @@ namespace MeetingApp.Models.Validate
 {
     public class SignUpValidation
     {
-        CheckString _checkString = new CheckString();
+        CheckString _checkString;
+
+        public SignUpValidation(CheckString checkString)
+        {
+            _checkString = checkString;
+        }
         public SignUpParam InputValidate(string userId, string password)
         {
             SignUpParam signUpParam = new SignUpParam();

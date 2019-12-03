@@ -19,7 +19,7 @@ namespace MeetingApp.ViewModels
             get { return _errorMessage; }
             set { SetProperty(ref _errorMessage, value); }
         }
-        public string ErrorMessageDespription
+        public string ErroreMessageDescription
         {
             get { return _errorMessageDescription; }
             set { SetProperty(ref _errorMessageDescription, value); }
@@ -68,8 +68,18 @@ namespace MeetingApp.ViewModels
                     //会議が終了済みであるエラー
                     ErrorMessageTitle = "会議終了済みエラー";
                     ErrorMessage = "この会議は終了しています";
-                    ErrorMessageDespription = "会議は既に終了しています。Top画面に戻ってください。";
+                    ErroreMessageDescription = "会議は既に終了しています。Top画面に戻ってください。";
 
+                    break;
+                case ErrorPageType.ExpiredToken:
+                    ErrorMessageTitle = "ログイン切れエラー";
+                    ErrorMessage = "ログイン情報が失効しています";
+                    ErroreMessageDescription = "ログイン情報が期限切れです。Top画面に戻ってください。";
+                    break;
+                case ErrorPageType.Unexpected:
+                    ErrorMessageTitle = "予期せぬエラー";
+                    ErrorMessage = "予期せぬエラーが発生";
+                    ErroreMessageDescription = "予期せぬエラーが発生しました。Top画面に戻ってください。";
                     break;
             }
         }
