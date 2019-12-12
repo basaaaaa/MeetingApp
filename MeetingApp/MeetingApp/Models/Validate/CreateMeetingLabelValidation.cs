@@ -6,15 +6,22 @@ namespace MeetingApp.Models.Validate
     {
         public CreateMeetingLabelParam InputValidate(string labelName)
         {
-            CreateMeetingLabelParam createMeetingLabelParam = new CreateMeetingLabelParam();
+            var createMeetingLabelParam = new CreateMeetingLabelParam();
 
-            //入力されたラベル名が空かどうかチェック
+            //ラベル名が空だった場合
             if (string.IsNullOrEmpty(labelName))
             {
-                //存在していた場合POSTを失敗で終了
                 createMeetingLabelParam.HasError = true;
                 createMeetingLabelParam.BlankLabelName = true;
                 return createMeetingLabelParam;
+            }
+            //ラベル名が長すぎた場合
+            if (labelName.Length > 12)
+            {
+                createMeetingLabelParam.HasError = true;
+                createMeetingLabelParam.MeetingLabelNameCharactersOver = true;
+                return createMeetingLabelParam;
+
             }
 
             createMeetingLabelParam.IsSuccessed = true;
