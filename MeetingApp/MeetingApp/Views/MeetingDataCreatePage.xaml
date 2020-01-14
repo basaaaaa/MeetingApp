@@ -14,15 +14,11 @@
             </StackLayout>
             <Frame CornerRadius="10" Margin="5,5,5,5" Opacity="0.7" BackgroundColor="Gray" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HasShadow="false" WidthRequest="300">
                 <StackLayout>
-                    <Label IsVisible="{Binding CreateMeetingParam.BlankMeetingTitle}" TextColor="Red" Text="会議タイトルが入力されていません" />
-                    <Label TextColor="Red" Text="会議の実施場所が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingLocation}"/>
-                    <Label TextColor="Red" Text="ラベルが追加されていません" IsVisible="{Binding CreateMeetingParam.NoExistLabel}"/>
-                    <Label TextColor="Red" Text="会議時刻の適切な入力がされていません" IsVisible="{Binding CreateMeetingParam.TimeError}" />
-                    <Label TextColor="Red" Text="会議タイトルが長すぎます" IsVisible="{Binding CreateMeetingParam.MeetingTitleCharactersOver}" />
-                    <Label TextColor="Red" Text="会議実施場所の文字数が長すぎます" IsVisible="{Binding CreateMeetingParam.MeetingLocationCharactersOver}" />
 
                     <Label Text="会議タイトル" TextColor="White"/>
                     <Entry Placeholder="朝会" Text="{Binding InputMeetingTitle}" />
+                    <Label IsVisible="{Binding CreateMeetingParam.BlankMeetingTitle}" TextColor="Red" Text="会議タイトルが入力されていません" />
+                    <Label TextColor="Red" Text="会議タイトルが長すぎます" IsVisible="{Binding CreateMeetingParam.MeetingTitleCharactersOver}" />
 
                     <Label Text="実施日" TextColor="White"/>
                     <!--<Entry Placeholder="2019-09-04" Text="{Binding InputMeetingDate}"/>-->
@@ -31,13 +27,17 @@
                     <Label Text="開始時間" TextColor="White"/>
                     <!--<Entry Placeholder="10:00" Text="{Binding InputMeetingStartTime}"/>-->
                     <TimePicker Time="{Binding InputMeetingStartTime}" />
+                    <Label TextColor="Red" Text="会議時刻の適切な入力がされていません" IsVisible="{Binding CreateMeetingParam.TimeError}" />
 
                     <Label Text="終了時間" TextColor="White"/>
                     <!--<Entry Placeholder="10:15" Text="{Binding InputMeetingEndTime}" />-->
                     <TimePicker Time="{Binding InputMeetingEndTime}" />
+                    <Label TextColor="Red" Text="会議時刻の適切な入力がされていません" IsVisible="{Binding CreateMeetingParam.TimeError}" />
 
                     <Label Text="実施場所" TextColor="White"/>
                     <Entry Placeholder="第3MTGスペース" Text="{Binding InputMeetingLocation}"/>
+                    <Label TextColor="Red" Text="会議の実施場所が入力されていません" IsVisible="{Binding CreateMeetingParam.BlankMeetingLocation}"/>
+                    <Label TextColor="Red" Text="会議実施場所の文字数が長すぎます" IsVisible="{Binding CreateMeetingParam.MeetingLocationCharactersOver}" />
 
                     <Label Text="カードラベル" VerticalOptions="Center" TextColor="White"/>
                     <Entry Text="{Binding CreateLabelName}" Placeholder="共有事項">
@@ -47,7 +47,9 @@
                                 Command="{Binding CreateMeetingLabelCommand}" />
                         </Entry.Behaviors>
                     </Entry>
-                <Label TextColor="Red" Text="ラベル名が入力されていません" IsVisible="{Binding CreateMeetingLabelParam.BlankLabelName}" />
+                    <Label TextColor="Red" Text="ラベルが追加されていません" IsVisible="{Binding CreateMeetingParam.NoExistLabel}"/>
+                    <Label TextColor="Red" Text="ラベル名が入力されていません" IsVisible="{Binding CreateMeetingLabelParam.BlankLabelName}" />
+                    <Label TextColor="Red" Text="ラベル名の文字数が長すぎます" IsVisible="{Binding CreateMeetingLabelParam.MeetingLabelNameCharactersOver}" />
                 </StackLayout>
             </Frame>
 

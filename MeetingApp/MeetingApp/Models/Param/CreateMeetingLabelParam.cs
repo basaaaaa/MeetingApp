@@ -8,12 +8,14 @@ namespace MeetingApp.Models.Param
         public bool HasError { get; set; }  //ログイン処理においてエラーが発生したかどうか
 
         public bool BlankLabelName { get; set; }
+        public bool MeetingLabelNameCharactersOver { get; set; }
 
         public CreateMeetingLabelParam()
         {
             this.IsSuccessed = false;
             this.HasError = false;
             this.BlankLabelName = false;
+            this.MeetingLabelNameCharactersOver = false;
         }
     }
 }
